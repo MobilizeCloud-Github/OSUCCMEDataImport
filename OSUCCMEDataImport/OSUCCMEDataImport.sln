@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.32802.440
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSUCCMEDataImport", "OSUCCMEDataImport\OSUCCMEDataImport.csproj", "{94339FB6-8A0E-4C7D-9D7B-D421F22E0612}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSUCCMEDataImport", "OSUCCMEDataImport.csproj", "{94339FB6-8A0E-4C7D-9D7B-D421F22E0612}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OldOSUDatabase", "OldOSUDatabase\OldOSUDatabase.csproj", "{E689782F-05BE-4203-89CE-A61F2A1DB89E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OldOSUDatabase", "..\OldOSUDatabase\OldOSUDatabase.csproj", "{E689782F-05BE-4203-89CE-A61F2A1DB89E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
