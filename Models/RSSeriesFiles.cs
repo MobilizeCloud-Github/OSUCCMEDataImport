@@ -15,10 +15,20 @@ namespace OSUCCMEDataImport.Models
     public partial class RSSeriesFiles
     {
         public int ID { get; set; }
-        public Nullable<int> RSSeriesID { get; set; }
+        public int RSSeriesID { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
-        public string Filename { get; set; }
-        public Nullable<bool> IsDeleted { get; set; }
+        public string FileName { get; set; }
+        public string Location { get; set; }
+        public System.DateTime CreatedOn { get; set; }
+        public string CreatedBy { get; set; }
+        public System.DateTime LastUpdatedOn { get; set; }
+        public string LastUpdatedBy { get; set; }
+        public int Rank { get; set; }
+        public bool IsDeleted { get; set; }
+        public bool LoginRequired { get; set; }
+        public bool RegisteredRequired { get; set; }
+    
+        public virtual RSSeries RSSeries { get; set; }
     }
 }

@@ -16,9 +16,10 @@ namespace OSUCCMEDataImport.Models
     {
         public int ID { get; set; }
         public string UserID { get; set; }
-        public string Type { get; set; }
-        public int FrequencyID { get; set; }
+        public string EmailType { get; set; }
+        public string EmailFrequency { get; set; }
+        public Nullable<System.DateTime> LastUpdated { get; set; }
     
-        public virtual EmailFrequencies EmailFrequencies { get; set; }
+        public virtual EmailTypes EmailTypes { get; set; }
     }
 }

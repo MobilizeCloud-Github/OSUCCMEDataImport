@@ -56,14 +56,8 @@
     <Compile Include="Jobs\ImportJobUser.cs" />
     <Compile Include="Jobs\TruncateJobs.cs" />
     <Compile Include="Jobs\UserJobs.cs" />
-    <Compile Include="Models\ActivityType.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\AggregatedCounter.cs">
       <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Answers.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\AspNetRoles.cs">
       <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
@@ -77,50 +71,8 @@
     <Compile Include="Models\AspNetUsers.cs">
       <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\aspnet_Applications.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\aspnet_Membership.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\aspnet_Paths.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\aspnet_PersonalizationAllUsers.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\aspnet_PersonalizationPerUser.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\aspnet_Profile.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\aspnet_Roles.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\aspnet_SchemaVersions.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\aspnet_Users.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\aspnet_WebEvent_Events.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\Boards.cs">
       <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\CMSPages.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\CommercialSupporters.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\ConferenceAdditionalRegistrationAnswers.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\ConferenceAdminCategories.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ConferenceCreditImportErrors.cs">
       <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
@@ -146,14 +98,8 @@
     <Compile Include="Models\ConferenceEvaluationSpeakers.cs">
       <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\ConferenceExtraGroups.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\ConferenceExtras.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\ConferenceFiles.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+      <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ConferenceJointProviders.cs">
       <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
@@ -171,40 +117,19 @@
       <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ConferencePrices.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\ConferencePromoCodeDegrees.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\ConferencePromoCodeProfessions.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\ConferencePromoCodeRestrictedEmails.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\ConferencePromoCodes.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+      <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ConferenceQuestions.cs">
       <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\ConferenceRegistrationDuplicates.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ConferenceRegistrationItems.cs">
       <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ConferenceRegistrations.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+      <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Conferences.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\ConferenceSearchCategories.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\ConferenceShoppingCarts.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+      <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ConferenceSpeakerChecklistAVNeeds.cs">
       <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
@@ -228,10 +153,10 @@
       <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ConferenceStreams.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+      <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ConferenceStreamViews.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+      <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ConferenceViews.cs">
       <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
@@ -239,14 +164,8 @@
     <Compile Include="Models\ConferenceWaitlist.cs">
       <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\ConferenceWaitlists.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\ConferenceWaitlistSettings.cs">
       <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\ContactRequests.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ContentManagementSystem.cs">
       <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
@@ -257,14 +176,8 @@
     <Compile Include="Models\Countries.cs">
       <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\CreditLog.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\CreditNotifications.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\Criteria.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+      <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Criteria23.cs">
       <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
@@ -293,20 +206,11 @@
     <Compile Include="Models\Criteria37.cs">
       <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\CriteriaElements.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\DegreeMapping.cs">
       <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Degrees.cs">
       <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\DisclosureForms.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Displays.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\DuplicateUserRunIgnoreRecords.cs">
       <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
@@ -317,44 +221,20 @@
     <Compile Include="Models\DuplicateUserRuns.cs">
       <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\ELMAH_Error.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\EmailFrequencies.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\EmailHistory.cs">
       <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\EmailLastSent.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\EmailPreferences.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\EmailQueue.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+      <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\EmailQueueMessages.cs">
       <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\EmailQueueParameters.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\EmailQueues.cs">
       <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\EmailQueueType.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\EmailTemplates.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\EmailTypes.cs">
       <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\EnduringMaterialAdminCategories.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\EnduringMaterialBoards.cs">
       <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
@@ -384,7 +264,7 @@
       <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\EnduringMaterialFiles.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+      <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\EnduringMaterialJointProviders.cs">
       <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
@@ -404,20 +284,17 @@
     <Compile Include="Models\EnduringMaterialPrices.cs">
       <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\EnduringMaterialRegistrationDuplicates.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\EnduringMaterialRegistrationItems.cs">
       <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\EnduringMaterialRegistrations.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+      <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\EnduringMaterials.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+      <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\EnduringMaterialSeries.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+      <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\EnduringMaterialSpeakerChecklistCVs.cs">
       <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
@@ -440,59 +317,14 @@
     <Compile Include="Models\EnduringMaterialSpecialties.cs">
       <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\EnduringMaterialsSearchCategories.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\EnduringMaterialViews.cs">
       <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\EnduringPromoCodeProfessions.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\EnduringPromoCodeRestrictedEmails.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\EnduringPromoCodes.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\EnduringShoppingCarts.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ErrorLog.cs">
       <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\ErrorLogs.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Eval.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\EvalGroup.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\EvalQuestion.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\EvalQuestionOptions.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Evaluations.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\EvaluationsBackup.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\EventAdvertisers.cs">
       <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\EventCategories.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\EventCriteria.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\EventEval.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\EventExpenses.cs">
       <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
@@ -521,14 +353,8 @@
     <Compile Include="Models\EventSupport.cs">
       <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\EventTitles.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\EventTypes.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Expenses.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+      <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\FacultyDisclosureCommercialInterests.cs">
       <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
@@ -542,9 +368,6 @@
     <Compile Include="Models\Hash.cs">
       <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\HospitalAdminCategories.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\HospitalAdmins.cs">
       <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
     </Compile>
@@ -554,23 +377,11 @@
     <Compile Include="Models\HospitalGroups.cs">
       <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\HospitalMOCUsers.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\Hospitals.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\HospitalSurveyAnswers.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\HospitalSurveyQuestions.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+      <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\HospitalUsers.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\InKind.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+      <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Job.cs">
       <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
@@ -581,29 +392,17 @@
     <Compile Include="Models\JobQueue.cs">
       <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\LearningFromTeachings.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\List.cs">
       <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\LoginLog.cs">
       <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\MaterialUsage.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\MOCBoards.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\MOCCreditTypes.cs">
       <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\NelnetTransactionLog.cs">
       <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\NewletterBatchLastSent.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\NewOSUCCMEModel.Context.cs">
       <AutoGen>True</AutoGen>
@@ -620,83 +419,20 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>NewOSUCCMEModel.edmx</DependentUpon>
     </Compile>
-    <Compile Include="Models\NewsletterBatch.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\NewsletterHistory.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Newsletters.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\ObjectivesTestQuestions.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\OldOSUCCMEModel.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>OldOSUCCMEModel.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\OldOSUCCMEModel.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\OldOSUCCMEModel.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>OldOSUCCMEModel.edmx</DependentUpon>
-    </Compile>
     <Compile Include="Models\PaymentHistory.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+      <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\PaymentMethods.cs">
       <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\PlanningCommittee.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\PodcastFiles.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\PodcastRegistrationDuplicates.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\PodcastRegistrations.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Podcasts.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\PodcastsSearchCategories.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\PointOfCares.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ProfessionMapping.cs">
       <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Professions.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\ProgramPopularity.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Questions.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Revenues.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+      <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\RSSeries.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\RSSeriesAdminNotifications.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\RSSeriesAdminTitles.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+      <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\RSSeriesCreditImportErrors.cs">
       <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
@@ -706,9 +442,6 @@
     </Compile>
     <Compile Include="Models\RSSeriesCreditImports.cs">
       <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\RSSeriesCriteria.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\RSSeriesEvaluationCompetencies.cs">
       <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
@@ -726,7 +459,7 @@
       <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\RSSeriesFiles.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+      <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\RSSeriesJointProviders.cs">
       <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
@@ -737,14 +470,8 @@
     <Compile Include="Models\RSSeriesPanels.cs">
       <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\RSSeriesRegistrationDuplicates.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\RSSeriesRegistrations.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\RSSeriesSearchCategories.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+      <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\RSSeriesSeries.cs">
       <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
@@ -782,9 +509,6 @@
     <Compile Include="Models\RSSeriesStreamViews.cs">
       <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\RSSeriesTitles.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\RSSeriesViews.cs">
       <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
     </Compile>
@@ -812,20 +536,11 @@
     <Compile Include="Models\SingleSignOnTokens.cs">
       <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\SpeakerDisclosures.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Speakers.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\Specialties.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+      <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\SpecialtyMapping.cs">
       <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\SpecMap.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\State.cs">
       <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
@@ -833,32 +548,11 @@
     <Compile Include="Models\SubSpecialties.cs">
       <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Survey.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\SurveyQuestions.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\SurveyResult.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\SurveyResultAnswers.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\SurveyTargetedRoles.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\sysdiagrams.cs">
       <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Testing.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\TestingPackages.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\TestingQuestionAnswers.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+      <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\TestingQuestions.cs">
       <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
@@ -878,9 +572,6 @@
     <Compile Include="Models\Titles.cs">
       <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\UnaffiliatedUsers.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\UploadedFiles.cs">
       <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
     </Compile>
@@ -889,24 +580,6 @@
     </Compile>
     <Compile Include="Models\UserBoardIdentificationNumbers.cs">
       <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\UserCredits.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\UserCreditsDuplicates.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\UserDegrees.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\UserEval.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\UserEvalAnswer.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\UserIDMap.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\UserIDMapping.cs">
       <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
@@ -923,20 +596,8 @@
     <Compile Include="Models\UserNotes.cs">
       <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\UserPrefixes.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\UserProfiles.cs">
       <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Users.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\UsersTest.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\UserTestingCredit.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\UserTestQuestionAnswers.cs">
       <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
@@ -950,9 +611,6 @@
     <Compile Include="Models\WebcastACCMEIDs.cs">
       <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\WebcastAdminCategories.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\WebcastBoards.cs">
       <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
     </Compile>
@@ -964,9 +622,6 @@
     </Compile>
     <Compile Include="Models\WebcastCreditImports.cs">
       <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\WebcastEmails.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\WebcastEvaluationCompetencies.cs">
       <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
@@ -984,19 +639,13 @@
       <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\WebcastFiles.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+      <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\WebcastJointProviders.cs">
       <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\WebcastLinks.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\WebcastMOC.cs">
       <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\WebcastMOCBoards.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\WebcastMOCCreditTypes.cs">
       <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
@@ -1013,47 +662,20 @@
     <Compile Include="Models\WebcastPanels.cs">
       <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\WebcastPollAnswers.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\WebcastPolls.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\WebcastPrices.cs">
       <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\WebcastPromoCodeProfessions.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\WebcastPromoCodeRestrictedEmails.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\WebcastPromoCodes.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\WebcastQuestions.cs">
       <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\WebCastRegistrationDuplicates.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\WebcastRegistrationItems.cs">
       <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\WebcastRegistrations.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+      <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Webcasts.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\WebcastsACCMEIDs.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\WebcastSearchCategories.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\WebcastShoppingCarts.cs">
-      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+      <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\WebcastSpeakerChecklistAVNeeds.cs">
       <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
@@ -1088,11 +710,468 @@
     <Compile Include="Models\WebcastViews.cs">
       <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="OldModels\ActivityType.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\Answers.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\aspnet_Applications.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\aspnet_Membership.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\aspnet_Paths.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\aspnet_PersonalizationAllUsers.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\aspnet_PersonalizationPerUser.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\aspnet_Profile.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\aspnet_Roles.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\aspnet_SchemaVersions.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\aspnet_Users.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\aspnet_WebEvent_Events.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\CMSPages.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\CommercialSupporters.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\ConferenceAdditionalRegistrationAnswers.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\ConferenceAdminCategories.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\ConferenceExtraGroups.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\ConferenceExtras.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\ConferenceFiles.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\ConferencePrices.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\ConferencePromoCodeDegrees.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\ConferencePromoCodeProfessions.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\ConferencePromoCodeRestrictedEmails.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\ConferencePromoCodes.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\ConferenceRegistrationDuplicates.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\ConferenceRegistrations.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\Conferences.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\ConferenceSearchCategories.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\ConferenceShoppingCarts.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\ConferenceStreams.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\ConferenceStreamViews.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\ConferenceWaitlists.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\ContactRequests.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\CreditLog.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\CreditNotifications.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\Criteria.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\CriteriaElements.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\DisclosureForms.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\Displays.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\ELMAH_Error.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\EmailFrequencies.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\EmailLastSent.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\EmailPreferences.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\EmailQueue.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\EmailQueueParameters.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\EmailQueueType.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\EmailTemplates.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\EnduringMaterialAdminCategories.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\EnduringMaterialFiles.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\EnduringMaterialRegistrationDuplicates.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\EnduringMaterialRegistrations.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\EnduringMaterials.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\EnduringMaterialSeries.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\EnduringMaterialsSearchCategories.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\EnduringPromoCodeProfessions.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\EnduringPromoCodeRestrictedEmails.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\EnduringPromoCodes.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\EnduringShoppingCarts.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\ErrorLogs.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\Eval.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\EvalGroup.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\EvalQuestion.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\EvalQuestionOptions.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\Evaluations.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\EvaluationsBackup.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\EventCategories.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\EventCriteria.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\EventEval.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\EventTitles.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\EventTypes.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\Expenses.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\HospitalAdminCategories.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\HospitalMOCUsers.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\Hospitals.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\HospitalSurveyAnswers.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\HospitalSurveyQuestions.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\HospitalUsers.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\InKind.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\LearningFromTeachings.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\MaterialUsage.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\MOCBoards.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\NewletterBatchLastSent.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\NewsletterBatch.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\NewsletterHistory.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\Newsletters.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\ObjectivesTestQuestions.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\OldOSUCCMEModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>OldOSUCCMEModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\OldOSUCCMEModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\OldOSUCCMEModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>OldOSUCCMEModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\PaymentHistory.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\PlanningCommittee.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\PodcastFiles.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\PodcastRegistrationDuplicates.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\PodcastRegistrations.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\Podcasts.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\PodcastsSearchCategories.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\PointOfCares.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\Professions.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\ProgramPopularity.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\Questions.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\Revenues.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\RSSeries.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\RSSeriesAdminNotifications.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\RSSeriesAdminTitles.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\RSSeriesCriteria.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\RSSeriesFiles.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\RSSeriesRegistrationDuplicates.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\RSSeriesRegistrations.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\RSSeriesSearchCategories.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\RSSeriesTitles.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\SpeakerDisclosures.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\Speakers.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\Specialties.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\SpecMap.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\Survey.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\SurveyQuestions.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\SurveyResult.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\SurveyResultAnswers.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\SurveyTargetedRoles.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\Testing.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\TestingPackages.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\TestingQuestionAnswers.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\UnaffiliatedUsers.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\UserCredits.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\UserCreditsDuplicates.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\UserDegrees.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\UserEval.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\UserEvalAnswer.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\UserIDMap.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\UserPrefixes.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\Users.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\UsersTest.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\UserTestingCredit.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\WebcastAdminCategories.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\WebcastEmails.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\WebcastFiles.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\WebcastLinks.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\WebcastMOCBoards.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\WebcastPollAnswers.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\WebcastPolls.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\WebcastPromoCodeProfessions.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\WebcastPromoCodeRestrictedEmails.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\WebcastPromoCodes.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\WebCastRegistrationDuplicates.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\WebcastRegistrations.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\Webcasts.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\WebcastsACCMEIDs.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\WebcastSearchCategories.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OldModels\WebcastShoppingCarts.cs">
+      <DependentUpon>OldOSUCCMEModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <EntityDeploy Include="OldModels\OldOSUCCMEModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>OldOSUCCMEModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
     <EntityDeploy Include="Models\NewOSUCCMEModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>NewOSUCCMEModel.Designer.cs</LastGenOutput>
@@ -1100,11 +1179,7 @@
     <None Include="Models\NewOSUCCMEModel.edmx.diagram">
       <DependentUpon>NewOSUCCMEModel.edmx</DependentUpon>
     </None>
-    <EntityDeploy Include="Models\OldOSUCCMEModel.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>OldOSUCCMEModel.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <None Include="Models\OldOSUCCMEModel.edmx.diagram">
+    <None Include="OldModels\OldOSUCCMEModel.edmx.diagram">
       <DependentUpon>OldOSUCCMEModel.edmx</DependentUpon>
     </None>
     <None Include="packages.config" />
@@ -1112,20 +1187,20 @@
   <ItemGroup>
     <Content Include="Models\NewOSUCCMEModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>NewOSUCCMEModel.Context.cs</LastGenOutput>
       <DependentUpon>NewOSUCCMEModel.edmx</DependentUpon>
+      <LastGenOutput>NewOSUCCMEModel.Context.cs</LastGenOutput>
     </Content>
     <Content Include="Models\NewOSUCCMEModel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>NewOSUCCMEModel.edmx</DependentUpon>
       <LastGenOutput>NewOSUCCMEModel.cs</LastGenOutput>
     </Content>
-    <Content Include="Models\OldOSUCCMEModel.Context.tt">
+    <Content Include="OldModels\OldOSUCCMEModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>OldOSUCCMEModel.edmx</DependentUpon>
       <LastGenOutput>OldOSUCCMEModel.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="Models\OldOSUCCMEModel.tt">
+    <Content Include="OldModels\OldOSUCCMEModel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>OldOSUCCMEModel.edmx</DependentUpon>
       <LastGenOutput>OldOSUCCMEModel.cs</LastGenOutput>
@@ -1134,5 +1209,6 @@
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

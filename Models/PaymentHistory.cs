@@ -17,11 +17,9 @@ namespace OSUCCMEDataImport.Models
         public int ID { get; set; }
         public string EventType { get; set; }
         public int EventID { get; set; }
-        public string OtherIdentifier { get; set; }
-        public string PaymentType { get; set; }
-        public decimal PaymentAmount { get; set; }
+        public string PaymentMethod { get; set; }
         public System.DateTime TimeStamp { get; set; }
         public string UserID { get; set; }
-        public string OrderNumber { get; set; }
+        public string ConfirmationNumber { get; set; }
     }
 }

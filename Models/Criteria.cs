@@ -14,29 +14,13 @@ namespace OSUCCMEDataImport.Models
     
     public partial class Criteria
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Criteria()
-        {
-            this.CriteriaElements = new HashSet<CriteriaElements>();
-            this.EventCriteria = new HashSet<EventCriteria>();
-            this.RSSeriesCriteria = new HashSet<RSSeriesCriteria>();
-        }
-    
         public int ID { get; set; }
-        public string Title { get; set; }
-        public string ShortDescription { get; set; }
-        public string FullDescription { get; set; }
-        public string CriticalElements { get; set; }
-        public string Standard { get; set; }
-        public bool IsDisabled { get; set; }
-        public Nullable<int> Percentage { get; set; }
-        public Nullable<int> Min { get; set; }
-    
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CriteriaElements> CriteriaElements { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<EventCriteria> EventCriteria { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<RSSeriesCriteria> RSSeriesCriteria { get; set; }
+        public int EventID { get; set; }
+        public string EventType { get; set; }
+        public System.DateTime CreatedOn { get; set; }
+        public string CreatedBy { get; set; }
+        public Nullable<System.DateTime> LastUpdateOn { get; set; }
+        public string LastUpdetedBy { get; set; }
+        public Nullable<bool> CriteriaIsCompleted { get; set; }
     }
 }

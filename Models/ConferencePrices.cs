@@ -14,11 +14,24 @@ namespace OSUCCMEDataImport.Models
     
     public partial class ConferencePrices
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public ConferencePrices()
+        {
+            this.ConferenceRegistrationItems = new HashSet<ConferenceRegistrationItems>();
+        }
+    
         public int ID { get; set; }
-        public Nullable<int> ConfID { get; set; }
-        public string Name { get; set; }
-        public string Value { get; set; }
-        public Nullable<int> Order { get; set; }
-        public Nullable<bool> IsDeleted { get; set; }
+        public int ConferenceID { get; set; }
+        public string Tier { get; set; }
+        public decimal Price { get; set; }
+        public System.DateTime CreatedOn { get; set; }
+        public string CreatedBy { get; set; }
+        public System.DateTime LastUpdatedOn { get; set; }
+        public string LastUpdatedBy { get; set; }
+        public int Rank { get; set; }
+        public bool IsDeleted { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ConferenceRegistrationItems> ConferenceRegistrationItems { get; set; }
     }
 }

@@ -81,7 +81,7 @@ namespace OSUCCMEDataImport.Jobs
                 AccessFailedCount = 0,
                 UserName = "ccmeimport@osumc.edu"
             };
-            db.AspNetUsers.Add(SystemUserLogin);
+            db.AspNetUsers.Add(ImportUserLogin);
             db.SaveChanges();
 
             var ImportUser = new UserProfiles()
@@ -111,6 +111,7 @@ namespace OSUCCMEDataImport.Jobs
                 ZipCode = "43202",
                 PostalCode = "",
                 CreatedBy = "b942c30a-575c-4263-8028-28fad69beacf",
+                CreatedOn = DateTime.Now,
                 IsDeceased = false,
                 IsDeleted = false,
                 OSUID = "",
@@ -119,7 +120,7 @@ namespace OSUCCMEDataImport.Jobs
                 AnnualFacultyDisclosureAccess = false
             };
 
-            db.UserProfiles.Add(SystemUser);
+            db.UserProfiles.Add(ImportUser);
             db.SaveChanges();
         }
     }

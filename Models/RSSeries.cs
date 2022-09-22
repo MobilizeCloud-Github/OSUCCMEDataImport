@@ -14,66 +14,121 @@ namespace OSUCCMEDataImport.Models
     
     public partial class RSSeries
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public RSSeries()
+        {
+            this.RSSeriesCreditImports = new HashSet<RSSeriesCreditImports>();
+            this.RSSeriesEvaluations = new HashSet<RSSeriesEvaluations>();
+            this.RSSeriesFiles = new HashSet<RSSeriesFiles>();
+            this.RSSeriesJointProviders = new HashSet<RSSeriesJointProviders>();
+            this.RSSeriesNotes = new HashSet<RSSeriesNotes>();
+            this.RSSeriesPanels = new HashSet<RSSeriesPanels>();
+            this.RSSeriesRegistrations = new HashSet<RSSeriesRegistrations>();
+            this.RSSeriesSpeakerChecklists = new HashSet<RSSeriesSpeakerChecklists>();
+            this.RSSeriesSpeakers = new HashSet<RSSeriesSpeakers>();
+            this.RSSeriesSpeakerTopics = new HashSet<RSSeriesSpeakerTopics>();
+            this.RSSeriesSpecialties = new HashSet<RSSeriesSpecialties>();
+            this.RSSeriesStreams = new HashSet<RSSeriesStreams>();
+            this.RSSeriesStreamViews = new HashSet<RSSeriesStreamViews>();
+            this.RSSeriesViews = new HashSet<RSSeriesViews>();
+        }
+    
         public int ID { get; set; }
-        public Nullable<int> CategoryID { get; set; }
+        public int SeriesID { get; set; }
         public string Title { get; set; }
-        public string SeriesTitle { get; set; }
-        public Nullable<int> SeriesTitleID { get; set; }
+        public string URL { get; set; }
         public string Description { get; set; }
-        public string AdditionalInfo { get; set; }
-        public Nullable<System.DateTime> EventDateTime { get; set; }
-        public Nullable<float> Credits { get; set; }
-        public Nullable<bool> ActivityGoalsChangeCompetence { get; set; }
-        public Nullable<bool> ActivityGoalsChangePerformance { get; set; }
-        public Nullable<bool> ActivityGoalsChangePatientOutcomes { get; set; }
-        public string Location { get; set; }
-        public string LocationAddress1 { get; set; }
-        public string LocationAddress2 { get; set; }
+        public string Objectives { get; set; }
+        public bool IsFacultyDevelopment { get; set; }
+        public string Providership { get; set; }
+        public System.DateTime StartDate { get; set; }
+        public System.DateTime EndDate { get; set; }
+        public Nullable<decimal> Credits { get; set; }
+        public bool IsAccredited { get; set; }
+        public bool LocationKnown { get; set; }
+        public string LocationName { get; set; }
+        public string LocationAddressLine1 { get; set; }
+        public string LocationAddressLine2 { get; set; }
         public string LocationCity { get; set; }
         public string LocationState { get; set; }
-        public string LocationZip { get; set; }
+        public string LocationZipCode { get; set; }
+        public Nullable<decimal> Latitude { get; set; }
+        public Nullable<decimal> Longitude { get; set; }
+        public string Status { get; set; }
         public string ContactName { get; set; }
         public string ContactDepartment { get; set; }
-        public string ContactPhone { get; set; }
         public string ContactEmail { get; set; }
-        public string Narrative { get; set; }
-        public string EducationalNeed { get; set; }
-        public Nullable<System.DateTime> CreatedDate { get; set; }
-        public string CreatingUserID { get; set; }
-        public Nullable<bool> IsDeleted { get; set; }
-        public Nullable<bool> Accredited { get; set; }
-        public Nullable<bool> IsCancelled { get; set; }
-        public Nullable<bool> ToChangeCompetence { get; set; }
-        public Nullable<bool> ToChangePerformance { get; set; }
-        public Nullable<bool> ToChangePatientOutcomes { get; set; }
-        public Nullable<bool> PublicViewable { get; set; }
-        public Nullable<System.DateTime> AttendanceCutOff { get; set; }
-        public Nullable<bool> AttendanceAdminOverRide { get; set; }
-        public Nullable<System.DateTime> AttendanceAdminOverRideExp { get; set; }
-        public string Objective { get; set; }
-        public Nullable<bool> IsFacultyDevelopment { get; set; }
-        public Nullable<bool> OSUAffiliated { get; set; }
-        public Nullable<bool> isJointSponsor { get; set; }
-        public string JointSponsor { get; set; }
+        public string ContactPhone { get; set; }
+        public string AdditionalInformation { get; set; }
         public bool SendCreditNotifications { get; set; }
-        public Nullable<System.DateTime> LastCreditUpdate { get; set; }
-        public Nullable<bool> ABMSPatientCareAndProceduralSkills { get; set; }
-        public Nullable<bool> ABMSMedicalKnowledge { get; set; }
-        public Nullable<bool> ABMSPracticeBasedLearningAndImprovement { get; set; }
-        public Nullable<bool> ABMSInterpersonalAndCommunicationSkills { get; set; }
-        public Nullable<bool> ABMSProfessionalism { get; set; }
-        public Nullable<bool> ABMSSystemsBasedPractice { get; set; }
-        public Nullable<bool> IOMProvidePatientCenteredCare { get; set; }
-        public Nullable<bool> IOMWorkInInterdisciplinaryTeams { get; set; }
-        public Nullable<bool> IOMEmployEvidenceBasedPractice { get; set; }
-        public Nullable<bool> IOMApplyQualityImprovement { get; set; }
-        public Nullable<bool> IOMUtilizeInformatics { get; set; }
-        public Nullable<bool> IECValuesEthicsForInterprofessionalPractice { get; set; }
-        public Nullable<bool> IECRolesResponsibilities { get; set; }
-        public Nullable<bool> IECInterprofessionalCommunication { get; set; }
-        public Nullable<bool> IECTeamsAndTeamwork { get; set; }
-        public Nullable<bool> OCCompetenciesOtherThanThoseListedWereAddressed { get; set; }
-        public Nullable<bool> IsClone { get; set; }
-        public Nullable<int> ClonedFromID { get; set; }
+        public System.DateTime CreatedOn { get; set; }
+        public string CreatedBy { get; set; }
+        public System.DateTime LastUpdatedOn { get; set; }
+        public string LastUpdatedBy { get; set; }
+        public bool IsDeleted { get; set; }
+        public bool ABMSPatientCareAndProceduralSkills { get; set; }
+        public bool ABMSMedicalKnowledge { get; set; }
+        public bool ABMSPracticeBasedLearningAndImprovement { get; set; }
+        public bool ABMSInterpersonalAndCommunicationSkills { get; set; }
+        public bool ABMSProfessionalism { get; set; }
+        public bool ABMSSystemsBasedPractice { get; set; }
+        public bool IOMProvidePatientCenteredCare { get; set; }
+        public bool IOMWorkInInterdisciplinaryTeams { get; set; }
+        public bool IOMEmployEvidenceBasedPractice { get; set; }
+        public bool IOMApplyQualityImprovement { get; set; }
+        public bool IOMUtilizeInformatics { get; set; }
+        public bool IECValueEthicsForInterprofessionalPractice { get; set; }
+        public bool IECRolesResponsibilities { get; set; }
+        public bool IECInterprofessionalCommunication { get; set; }
+        public bool IECTeamsAndTeamwork { get; set; }
+        public bool OCCompetenciesOtherThanThoseListedWereAddressed { get; set; }
+        public string RSSeriesType { get; set; }
+        public Nullable<bool> IsMOCEligible { get; set; }
+        public Nullable<decimal> MOCPoints { get; set; }
+        public Nullable<bool> ShowContactInformation { get; set; }
+        public Nullable<bool> LearnerCompetence { get; set; }
+        public Nullable<bool> LearnerCompetenceObjective { get; set; }
+        public Nullable<bool> LearnerCompetenceSubjective { get; set; }
+        public Nullable<bool> LearnerPerformance { get; set; }
+        public Nullable<bool> LearnerPerformanceObjective { get; set; }
+        public Nullable<bool> LearnerPerformanceSubjective { get; set; }
+        public Nullable<bool> PatientHealth { get; set; }
+        public Nullable<bool> PatientHealthObjective { get; set; }
+        public Nullable<bool> PatientHealthSubjective { get; set; }
+        public Nullable<bool> CommunityPopulationHealth { get; set; }
+        public Nullable<bool> CommunityPopulationHealthObjective { get; set; }
+        public Nullable<bool> CommunityPopulationHealthSubjective { get; set; }
+    
+        public virtual EventProvidership EventProvidership { get; set; }
+        public virtual EventStatus EventStatus { get; set; }
+        public virtual RSSeriesSeries RSSeriesSeries { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<RSSeriesCreditImports> RSSeriesCreditImports { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<RSSeriesEvaluations> RSSeriesEvaluations { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<RSSeriesFiles> RSSeriesFiles { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<RSSeriesJointProviders> RSSeriesJointProviders { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<RSSeriesNotes> RSSeriesNotes { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<RSSeriesPanels> RSSeriesPanels { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<RSSeriesRegistrations> RSSeriesRegistrations { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<RSSeriesSpeakerChecklists> RSSeriesSpeakerChecklists { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<RSSeriesSpeakers> RSSeriesSpeakers { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<RSSeriesSpeakerTopics> RSSeriesSpeakerTopics { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<RSSeriesSpecialties> RSSeriesSpecialties { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<RSSeriesStreams> RSSeriesStreams { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<RSSeriesStreamViews> RSSeriesStreamViews { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<RSSeriesViews> RSSeriesViews { get; set; }
     }
 }

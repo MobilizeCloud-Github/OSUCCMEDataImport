@@ -22,5 +22,6 @@ namespace OSUCCMEDataImport.Models
     
         public virtual Conferences Conferences { get; set; }
         public virtual ConferenceStreams ConferenceStreams { get; set; }
+        public virtual UserProfiles UserProfiles { get; set; }
     }
 }

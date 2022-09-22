@@ -14,18 +14,43 @@ namespace OSUCCMEDataImport.Models
     
     public partial class ConferenceRegistrations
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public ConferenceRegistrations()
+        {
+            this.ConferenceRegistrationItems = new HashSet<ConferenceRegistrationItems>();
+        }
+    
         public int ID { get; set; }
+        public int ConferenceID { get; set; }
         public string UserID { get; set; }
-        public Nullable<int> ConferenceID { get; set; }
-        public Nullable<bool> IsPaid { get; set; }
-        public string PaymentType { get; set; }
-        public Nullable<System.DateTime> RegisteredOn { get; set; }
-        public Nullable<bool> IsDeleted { get; set; }
-        public string PaymentAmount { get; set; }
-        public string Confirmation { get; set; }
-        public Nullable<bool> EvaluationSent { get; set; }
-        public Nullable<bool> IsCancelled { get; set; }
-        public string AdditionalRegistrationQuestion { get; set; }
-        public Nullable<bool> LiveStreamViewed { get; set; }
+        public Nullable<decimal> CreditHours { get; set; }
+        public Nullable<System.DateTime> CreditAssignedOn { get; set; }
+        public string CreditAssignedBy { get; set; }
+        public Nullable<System.DateTime> CreditLastUpdatedOn { get; set; }
+        public string CreditLastUpdatedBy { get; set; }
+        public string PaymentMethod { get; set; }
+        public decimal PaymentAmount { get; set; }
+        public Nullable<bool> IsCanceled { get; set; }
+        public bool IsDeleted { get; set; }
+        public string ConfirmationNumber { get; set; }
+        public bool EvaluationSent { get; set; }
+        public Nullable<System.DateTime> EvaluationSentOn { get; set; }
+        public Nullable<int> EvaluationID { get; set; }
+        public Nullable<System.DateTime> EvaluationCompletedOn { get; set; }
+        public System.DateTime CreatedOn { get; set; }
+        public string CreatedBy { get; set; }
+        public System.DateTime LastUpdatedOn { get; set; }
+        public string LastUpdatedBy { get; set; }
+        public bool FileAccessEnabled { get; set; }
+        public Nullable<decimal> MOCPoints { get; set; }
+        public Nullable<System.DateTime> MOCPointsAssignedOn { get; set; }
+        public string MOCPointsAssignedBy { get; set; }
+        public Nullable<System.DateTime> MOCLastUpdatedOn { get; set; }
+        public string MOCLastUpdatedBy { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ConferenceRegistrationItems> ConferenceRegistrationItems { get; set; }
+        public virtual PaymentMethods PaymentMethods { get; set; }
+        public virtual UserProfiles UserProfiles { get; set; }
     }
 }

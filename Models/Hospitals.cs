@@ -14,19 +14,40 @@ namespace OSUCCMEDataImport.Models
     
     public partial class Hospitals
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Hospitals()
+        {
+            this.HospitalAdmins = new HashSet<HospitalAdmins>();
+            this.HospitalUsers = new HashSet<HospitalUsers>();
+            this.HospitalDocuments = new HashSet<HospitalDocuments>();
+            this.HospitalGroups = new HashSet<HospitalGroups>();
+        }
+    
         public int ID { get; set; }
         public string HospitalName { get; set; }
-        public Nullable<bool> Access_Live { get; set; }
-        public Nullable<bool> Access_VOD { get; set; }
-        public Nullable<bool> Access_WebcastDownload { get; set; }
-        public Nullable<bool> IsDeleted { get; set; }
-        public Nullable<bool> IsUpdated { get; set; }
-        public Nullable<bool> AutoApprove { get; set; }
-        public string EmailMustContain { get; set; }
-        public Nullable<bool> SendPendingApprovalNotifications { get; set; }
         public string MasterContactEmail { get; set; }
-        public Nullable<bool> Access_EnduringMaterials { get; set; }
-        public Nullable<bool> Access_Podcasts { get; set; }
-        public Nullable<bool> SendCreditNotifications { get; set; }
+        public string EmailContains { get; set; }
+        public bool WebcastAccess { get; set; }
+        public bool DownloadAccess { get; set; }
+        public bool EnduringMaterialsAccess { get; set; }
+        public bool AutoApprove { get; set; }
+        public bool SendApprovalNotifications { get; set; }
+        public bool SendCreditNotifications { get; set; }
+        public Nullable<System.DateTime> CreatedOn { get; set; }
+        public string CreatedBy { get; set; }
+        public Nullable<System.DateTime> UpdatedOn { get; set; }
+        public string UpdatedBy { get; set; }
+        public Nullable<bool> Archived { get; set; }
+        public Nullable<bool> IsUpdated { get; set; }
+        public bool IsDeleted { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<HospitalAdmins> HospitalAdmins { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<HospitalUsers> HospitalUsers { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<HospitalDocuments> HospitalDocuments { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<HospitalGroups> HospitalGroups { get; set; }
     }
 }

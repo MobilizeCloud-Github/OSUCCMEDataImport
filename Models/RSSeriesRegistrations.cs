@@ -15,12 +15,29 @@ namespace OSUCCMEDataImport.Models
     public partial class RSSeriesRegistrations
     {
         public int ID { get; set; }
+        public int RSSeriesID { get; set; }
         public string UserID { get; set; }
-        public Nullable<int> RSSeriesID { get; set; }
-        public Nullable<System.DateTime> RegisteredOn { get; set; }
-        public Nullable<bool> IsDeleted { get; set; }
-        public Nullable<bool> IsCancelled { get; set; }
-        public string Confirmation { get; set; }
-        public Nullable<bool> EvaluationSent { get; set; }
+        public Nullable<decimal> CreditHours { get; set; }
+        public Nullable<System.DateTime> CreditAssignedOn { get; set; }
+        public string CreditAssignedBy { get; set; }
+        public Nullable<System.DateTime> CreditLastUpdatedOn { get; set; }
+        public string CreditLastUpdatedBy { get; set; }
+        public System.DateTime CreatedOn { get; set; }
+        public string CreatedBy { get; set; }
+        public bool IsDeleted { get; set; }
+        public bool EvaluationSent { get; set; }
+        public Nullable<System.DateTime> EvaluationSentOn { get; set; }
+        public Nullable<int> EvaluationID { get; set; }
+        public Nullable<System.DateTime> EvaluationCompletedOn { get; set; }
+        public System.DateTime LastUpdatedOn { get; set; }
+        public string LastUpdatedBy { get; set; }
+        public Nullable<decimal> MOCPoints { get; set; }
+        public Nullable<System.DateTime> MOCPointsAssignedOn { get; set; }
+        public string MOCPointsAssignedBy { get; set; }
+        public Nullable<System.DateTime> MOCLastUpdatedOn { get; set; }
+        public string MOCLastUpdatedBy { get; set; }
+    
+        public virtual RSSeries RSSeries { get; set; }
+        public virtual UserProfiles UserProfiles { get; set; }
     }
 }

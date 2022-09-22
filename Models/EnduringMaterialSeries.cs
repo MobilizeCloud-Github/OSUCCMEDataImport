@@ -14,8 +14,23 @@ namespace OSUCCMEDataImport.Models
     
     public partial class EnduringMaterialSeries
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public EnduringMaterialSeries()
+        {
+            this.EnduringMaterials = new HashSet<EnduringMaterials>();
+        }
+    
         public int ID { get; set; }
         public string Name { get; set; }
-        public Nullable<bool> IsDeleted { get; set; }
+        public string URL { get; set; }
+        public Nullable<System.DateTime> AttendanceOverrideExpiration { get; set; }
+        public System.DateTime CreatedOn { get; set; }
+        public string CreatedBy { get; set; }
+        public System.DateTime LastUpdatedOn { get; set; }
+        public string LastUpdatedBy { get; set; }
+        public bool IsDeleted { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<EnduringMaterials> EnduringMaterials { get; set; }
     }
 }

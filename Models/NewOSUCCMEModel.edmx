@@ -592,17 +592,6 @@
           <Property Name="NumberCode" Type="int" Nullable="false" />
           <Property Name="PhoneCode" Type="int" Nullable="false" />
         </EntityType>
-        <EntityType Name="CreditNotifications">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="EventID" Type="int" Nullable="false" />
-          <Property Name="EventType" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="UserID" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="SentOn" Type="datetime" Nullable="false" />
-          <Property Name="SentBy" Type="nvarchar" MaxLength="128" Nullable="false" />
-        </EntityType>
         <EntityType Name="Criteria">
           <Key>
             <PropertyRef Name="ID" />
@@ -793,12 +782,6 @@
           <Property Name="Completed" Type="int" />
           <Property Name="StartTimeStamp" Type="smalldatetime" />
           <Property Name="EndTimeStamp" Type="smalldatetime" />
-        </EntityType>
-        <EntityType Name="EmailFrequencies">
-          <Key>
-            <PropertyRef Name="Frequency" />
-          </Key>
-          <Property Name="Frequency" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="EmailHistory">
           <Key>
@@ -3533,18 +3516,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_CreditNotifications_EventTypes">
-          <End Role="EventTypes" Type="Self.EventTypes" Multiplicity="1" />
-          <End Role="CreditNotifications" Type="Self.CreditNotifications" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="EventTypes">
-              <PropertyRef Name="EventType" />
-            </Principal>
-            <Dependent Role="CreditNotifications">
-              <PropertyRef Name="EventType" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -3670,18 +3641,6 @@
             </Principal>
             <Dependent Role="EmailHistory">
               <PropertyRef Name="EmailType" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_EmailPreferences_EmailFrequencies">
-          <End Role="EmailFrequencies" Type="Self.EmailFrequencies" Multiplicity="1" />
-          <End Role="EmailPreferences" Type="Self.EmailPreferences" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="EmailFrequencies">
-              <PropertyRef Name="Frequency" />
-            </Principal>
-            <Dependent Role="EmailPreferences">
-              <PropertyRef Name="EmailFrequency" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -5974,7 +5933,6 @@
           <EntitySet Name="ConferenceWaitlistSettings" EntityType="Self.ConferenceWaitlistSettings" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ContentManagementSystem" EntityType="Self.ContentManagementSystem" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Countries" EntityType="Self.Countries" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="CreditNotifications" EntityType="Self.CreditNotifications" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Criteria" EntityType="Self.Criteria" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Criteria23" EntityType="Self.Criteria23" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Criteria24" EntityType="Self.Criteria24" Schema="dbo" store:Type="Tables" />
@@ -5990,7 +5948,6 @@
           <EntitySet Name="DuplicateUserRunIgnoreRecords" EntityType="Self.DuplicateUserRunIgnoreRecords" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DuplicateUserRunRecords" EntityType="Self.DuplicateUserRunRecords" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DuplicateUserRuns" EntityType="Self.DuplicateUserRuns" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="EmailFrequencies" EntityType="Self.EmailFrequencies" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EmailHistory" EntityType="Self.EmailHistory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EmailPreferences" EntityType="Self.EmailPreferences" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EmailQueueMessages" EntityType="Self.EmailQueueMessages" Schema="dbo" store:Type="Tables" />
@@ -6292,10 +6249,6 @@
             <End Role="UserProfiles" EntitySet="UserProfiles" />
             <End Role="ContentManagementSystem" EntitySet="ContentManagementSystem" />
           </AssociationSet>
-          <AssociationSet Name="FK_CreditNotifications_EventTypes" Association="Self.FK_CreditNotifications_EventTypes">
-            <End Role="EventTypes" EntitySet="EventTypes" />
-            <End Role="CreditNotifications" EntitySet="CreditNotifications" />
-          </AssociationSet>
           <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserClaims" EntitySet="AspNetUserClaims" />
@@ -6335,10 +6288,6 @@
           <AssociationSet Name="FK_EmailHistory_EmailTypes" Association="Self.FK_EmailHistory_EmailTypes">
             <End Role="EmailTypes" EntitySet="EmailTypes" />
             <End Role="EmailHistory" EntitySet="EmailHistory" />
-          </AssociationSet>
-          <AssociationSet Name="FK_EmailPreferences_EmailFrequencies" Association="Self.FK_EmailPreferences_EmailFrequencies">
-            <End Role="EmailFrequencies" EntitySet="EmailFrequencies" />
-            <End Role="EmailPreferences" EntitySet="EmailPreferences" />
           </AssociationSet>
           <AssociationSet Name="FK_EmailPreferences_EmailTypes" Association="Self.FK_EmailPreferences_EmailTypes">
             <End Role="EmailTypes" EntitySet="EmailTypes" />
@@ -7728,18 +7677,6 @@
           <Property Name="NumberCode" Type="Int32" Nullable="false" />
           <Property Name="PhoneCode" Type="Int32" Nullable="false" />
         </EntityType>
-        <EntityType Name="CreditNotifications">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="EventID" Type="Int32" Nullable="false" />
-          <Property Name="EventType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="UserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="SentOn" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="SentBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="EventTypes" Relationship="Self.FK_CreditNotifications_EventTypes" FromRole="CreditNotifications" ToRole="EventTypes" />
-        </EntityType>
         <EntityType Name="Criteria">
           <Key>
             <PropertyRef Name="ID" />
@@ -7939,13 +7876,6 @@
           <NavigationProperty Name="DuplicateUserRunRecords" Relationship="Self.FK_DuplicateUserRunRecords_DuplicateUserRuns" FromRole="DuplicateUserRuns" ToRole="DuplicateUserRunRecords" />
           <NavigationProperty Name="UserProfiles" Relationship="Self.FK_DuplicateUserRuns_UserProfiles" FromRole="DuplicateUserRuns" ToRole="UserProfiles" />
         </EntityType>
-        <EntityType Name="EmailFrequencies">
-          <Key>
-            <PropertyRef Name="Frequency" />
-          </Key>
-          <Property Name="Frequency" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="EmailPreferences" Relationship="Self.FK_EmailPreferences_EmailFrequencies" FromRole="EmailFrequencies" ToRole="EmailPreferences" />
-        </EntityType>
         <EntityType Name="EmailHistory">
           <Key>
             <PropertyRef Name="ID" />
@@ -7968,7 +7898,6 @@
           <Property Name="EmailType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="EmailFrequency" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="LastUpdated" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="EmailFrequencies" Relationship="Self.FK_EmailPreferences_EmailFrequencies" FromRole="EmailPreferences" ToRole="EmailFrequencies" />
           <NavigationProperty Name="EmailTypes" Relationship="Self.FK_EmailPreferences_EmailTypes" FromRole="EmailPreferences" ToRole="EmailTypes" />
         </EntityType>
         <EntityType Name="EmailQueueMessages">
@@ -8708,7 +8637,6 @@
             <PropertyRef Name="EventType" />
           </Key>
           <Property Name="EventType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="CreditNotifications" Relationship="Self.FK_CreditNotifications_EventTypes" FromRole="EventTypes" ToRole="CreditNotifications" />
           <NavigationProperty Name="EventAdvertisers" Relationship="Self.FK_EventDisplays_EventTypes" FromRole="EventTypes" ToRole="EventAdvertisers" />
           <NavigationProperty Name="FacultyDisclosures" Relationship="Self.FK_FacultyDisclosures_EventTypes" FromRole="EventTypes" ToRole="FacultyDisclosures" />
         </EntityType>
@@ -11070,18 +10998,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_CreditNotifications_EventTypes">
-          <End Role="EventTypes" Type="Self.EventTypes" Multiplicity="1" />
-          <End Role="CreditNotifications" Type="Self.CreditNotifications" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="EventTypes">
-              <PropertyRef Name="EventType" />
-            </Principal>
-            <Dependent Role="CreditNotifications">
-              <PropertyRef Name="EventType" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_EventPromoCodeDegreeRestriction_Degrees">
           <End Role="Degrees" Type="Self.Degrees" Multiplicity="1" />
           <End Role="EventPromoCodeDegreeRestriction" Type="Self.EventPromoCodeDegreeRestriction" Multiplicity="*" />
@@ -11163,18 +11079,6 @@
             </Principal>
             <Dependent Role="DuplicateUserRuns">
               <PropertyRef Name="UserID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_EmailPreferences_EmailFrequencies">
-          <End Role="EmailFrequencies" Type="Self.EmailFrequencies" Multiplicity="1" />
-          <End Role="EmailPreferences" Type="Self.EmailPreferences" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="EmailFrequencies">
-              <PropertyRef Name="Frequency" />
-            </Principal>
-            <Dependent Role="EmailPreferences">
-              <PropertyRef Name="EmailFrequency" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -13313,7 +13217,6 @@
           <EntitySet Name="ConferenceWaitlistSettings" EntityType="Self.ConferenceWaitlistSettings" />
           <EntitySet Name="ContentManagementSystem" EntityType="Self.ContentManagementSystem" />
           <EntitySet Name="Countries" EntityType="Self.Countries" />
-          <EntitySet Name="CreditNotifications" EntityType="Self.CreditNotifications" />
           <EntitySet Name="Criteria" EntityType="Self.Criteria" />
           <EntitySet Name="Criteria23" EntityType="Self.Criteria23" />
           <EntitySet Name="Criteria24" EntityType="Self.Criteria24" />
@@ -13329,7 +13232,6 @@
           <EntitySet Name="DuplicateUserRunIgnoreRecords" EntityType="Self.DuplicateUserRunIgnoreRecords" />
           <EntitySet Name="DuplicateUserRunRecords" EntityType="Self.DuplicateUserRunRecords" />
           <EntitySet Name="DuplicateUserRuns" EntityType="Self.DuplicateUserRuns" />
-          <EntitySet Name="EmailFrequencies" EntityType="Self.EmailFrequencies" />
           <EntitySet Name="EmailHistory" EntityType="Self.EmailHistory" />
           <EntitySet Name="EmailPreferences" EntityType="Self.EmailPreferences" />
           <EntitySet Name="EmailQueueMessages" EntityType="Self.EmailQueueMessages" />
@@ -13642,10 +13544,6 @@
             <End Role="UserProfiles" EntitySet="UserProfiles" />
             <End Role="ContentManagementSystem" EntitySet="ContentManagementSystem" />
           </AssociationSet>
-          <AssociationSet Name="FK_CreditNotifications_EventTypes" Association="Self.FK_CreditNotifications_EventTypes">
-            <End Role="EventTypes" EntitySet="EventTypes" />
-            <End Role="CreditNotifications" EntitySet="CreditNotifications" />
-          </AssociationSet>
           <AssociationSet Name="FK_EventPromoCodeDegreeRestriction_Degrees" Association="Self.FK_EventPromoCodeDegreeRestriction_Degrees">
             <End Role="Degrees" EntitySet="Degrees" />
             <End Role="EventPromoCodeDegreeRestriction" EntitySet="EventPromoCodeDegreeRestriction" />
@@ -13673,10 +13571,6 @@
           <AssociationSet Name="FK_DuplicateUserRuns_UserProfiles" Association="Self.FK_DuplicateUserRuns_UserProfiles">
             <End Role="UserProfiles" EntitySet="UserProfiles" />
             <End Role="DuplicateUserRuns" EntitySet="DuplicateUserRuns" />
-          </AssociationSet>
-          <AssociationSet Name="FK_EmailPreferences_EmailFrequencies" Association="Self.FK_EmailPreferences_EmailFrequencies">
-            <End Role="EmailFrequencies" EntitySet="EmailFrequencies" />
-            <End Role="EmailPreferences" EntitySet="EmailPreferences" />
           </AssociationSet>
           <AssociationSet Name="FK_EmailHistory_EmailTypes" Association="Self.FK_EmailHistory_EmailTypes">
             <End Role="EmailTypes" EntitySet="EmailTypes" />
@@ -15008,18 +14902,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="CreditNotifications">
-            <EntityTypeMapping TypeName="NewOSUCCMEModel.CreditNotifications">
-              <MappingFragment StoreEntitySet="CreditNotifications">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="EventID" ColumnName="EventID" />
-                <ScalarProperty Name="EventType" ColumnName="EventType" />
-                <ScalarProperty Name="UserID" ColumnName="UserID" />
-                <ScalarProperty Name="SentOn" ColumnName="SentOn" />
-                <ScalarProperty Name="SentBy" ColumnName="SentBy" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Criteria">
             <EntityTypeMapping TypeName="NewOSUCCMEModel.Criteria">
               <MappingFragment StoreEntitySet="Criteria">
@@ -15223,13 +15105,6 @@
                 <ScalarProperty Name="Completed" ColumnName="Completed" />
                 <ScalarProperty Name="StartTimeStamp" ColumnName="StartTimeStamp" />
                 <ScalarProperty Name="EndTimeStamp" ColumnName="EndTimeStamp" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="EmailFrequencies">
-            <EntityTypeMapping TypeName="NewOSUCCMEModel.EmailFrequencies">
-              <MappingFragment StoreEntitySet="EmailFrequencies">
-                <ScalarProperty Name="Frequency" ColumnName="Frequency" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

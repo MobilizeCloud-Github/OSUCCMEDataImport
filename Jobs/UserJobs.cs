@@ -1,4 +1,5 @@
 ﻿using OSUCCMEDataImport.Models;
+using OSUCCMEDataImport.OldModels;
 using System;
 using System.IO;
 using System.Linq;

@@ -24,12 +24,12 @@ namespace OSUCCMEDataImport.Models
         public int ConferenceID { get; set; }
         public string StreamTitle { get; set; }
         public string StreamDescription { get; set; }
+        public string StreamType { get; set; }
         public string StreamURL { get; set; }
         public System.DateTime StartDateTime { get; set; }
         public System.DateTime EndDateTime { get; set; }
         public bool IsDeleted { get; set; }
     
-        public virtual Conferences Conferences { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ConferenceStreamViews> ConferenceStreamViews { get; set; }
     }

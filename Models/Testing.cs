@@ -14,18 +14,30 @@ namespace OSUCCMEDataImport.Models
     
     public partial class Testing
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Testing()
+        {
+            this.TestingQuestions = new HashSet<TestingQuestions>();
+            this.UserTests = new HashSet<UserTests>();
+        }
+    
         public int ID { get; set; }
+        public int EventID { get; set; }
+        public string EventType { get; set; }
         public string TestType { get; set; }
-        public Nullable<System.DateTime> DateCreated { get; set; }
-        public Nullable<int> AssociatedEventID { get; set; }
-        public string AssociatedEventType { get; set; }
-        public Nullable<System.DateTime> LastUpdate { get; set; }
-        public Nullable<bool> IsDeleted { get; set; }
-        public Nullable<double> PassingGrade { get; set; }
-        public string Price { get; set; }
-        public Nullable<bool> IsFree { get; set; }
-        public Nullable<bool> IsOSUFree { get; set; }
-        public Nullable<int> NumberOfTimesTaken { get; set; }
-        public Nullable<bool> IsHospitalSubscriptionFree { get; set; }
+        public Nullable<int> PassingGrade { get; set; }
+        public System.DateTime CreatedOn { get; set; }
+        public string CreatedBy { get; set; }
+        public System.DateTime LastUpdatedOn { get; set; }
+        public string LastUpdatedBy { get; set; }
+        public int NumberOfAttempts { get; set; }
+        public Nullable<bool> Random { get; set; }
+        public string Layout { get; set; }
+        public bool IsDeleted { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<TestingQuestions> TestingQuestions { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<UserTests> UserTests { get; set; }
     }
 }

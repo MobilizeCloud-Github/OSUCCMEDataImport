@@ -17,14 +17,17 @@ namespace OSUCCMEDataImport.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Professions()
         {
-            this.Users = new HashSet<Users>();
+            this.EventPromoCodeProfessionRestriction = new HashSet<EventPromoCodeProfessionRestriction>();
+            this.UserProfiles = new HashSet<UserProfiles>();
         }
     
         public int ID { get; set; }
         public string Profession { get; set; }
-        public Nullable<bool> IsDeleted { get; set; }
+        public Nullable<int> OldID { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Users> Users { get; set; }
+        public virtual ICollection<EventPromoCodeProfessionRestriction> EventPromoCodeProfessionRestriction { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<UserProfiles> UserProfiles { get; set; }
     }
 }

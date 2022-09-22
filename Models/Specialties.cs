@@ -17,14 +17,29 @@ namespace OSUCCMEDataImport.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Specialties()
         {
-            this.Users = new HashSet<Users>();
+            this.ConferenceSpecialties = new HashSet<ConferenceSpecialties>();
+            this.EnduringMaterialSpecialties = new HashSet<EnduringMaterialSpecialties>();
+            this.RSSeriesSpecialties = new HashSet<RSSeriesSpecialties>();
+            this.SubSpecialties = new HashSet<SubSpecialties>();
+            this.UserProfiles = new HashSet<UserProfiles>();
+            this.WebcastSpecialties = new HashSet<WebcastSpecialties>();
         }
     
         public int ID { get; set; }
         public string Specialty { get; set; }
-        public Nullable<bool> IsDeleted { get; set; }
+        public Nullable<int> OldID { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Users> Users { get; set; }
+        public virtual ICollection<ConferenceSpecialties> ConferenceSpecialties { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<EnduringMaterialSpecialties> EnduringMaterialSpecialties { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<RSSeriesSpecialties> RSSeriesSpecialties { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SubSpecialties> SubSpecialties { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<UserProfiles> UserProfiles { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<WebcastSpecialties> WebcastSpecialties { get; set; }
     }
 }
