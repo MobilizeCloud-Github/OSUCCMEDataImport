@@ -1,0 +1,452 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="7a42299ba5ca4801ac2ad7ed5829f280" Name="Diagram1">
+        <EntityTypeShape EntityType="NewOSUCCMEModel.AspNetRoles" Width="1.5" PointX="3.75" PointY="149.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.AspNetUserClaims" Width="1.5" PointX="8.25" PointY="142.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.AspNetUserLogins" Width="1.5" PointX="8.25" PointY="139.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.AspNetUsers" Width="1.5" PointX="6" PointY="147.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.Boards" Width="1.5" PointX="17.25" PointY="122.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.ConferenceCreditImportErrors" Width="1.5" PointX="12.75" PointY="124.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.ConferenceCreditImportRecords" Width="1.5" PointX="12.75" PointY="127.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.ConferenceCreditImports" Width="1.5" PointX="10.5" PointY="126.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.ConferenceEvaluationCompetencies" Width="1.5" PointX="12.75" PointY="131.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.ConferenceEvaluationPanels" Width="1.5" PointX="15.75" PointY="131.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.ConferenceEvaluationProgramResults" Width="1.5" PointX="12.75" PointY="137.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.ConferenceEvaluations" Width="1.5" PointX="10.5" PointY="131.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.ConferenceEvaluationSpeakers" Width="1.5" PointX="15.75" PointY="126.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.ConferenceFiles" Width="1.5" PointX="0.75" PointY="8.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.ConferenceJointProviders" Width="1.5" PointX="2.75" PointY="8.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.ConferenceNotes" Width="1.5" PointX="10.5" PointY="136.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.ConferenceOptions" Width="1.5" PointX="21.5" PointY="192.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.ConferenceOptionsGroups" Width="1.5" PointX="19.25" PointY="192.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.ConferencePanels" Width="1.5" PointX="11.25" PointY="141.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.ConferencePrices" Width="1.5" PointX="21.5" PointY="172.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.ConferenceQuestions" Width="1.5" PointX="2.75" PointY="11.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.ConferenceRegistrationItems" Width="1.5" PointX="23.75" PointY="168.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.ConferenceRegistrations" Width="1.5" PointX="10.5" PointY="155.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.Conferences" Width="1.5" PointX="11.25" PointY="189.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.ConferenceSpeakerChecklistAVNeeds" Width="1.5" PointX="18" PointY="173.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.ConferenceSpeakerChecklistCVs" Width="1.5" PointX="18" PointY="176.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.ConferenceSpeakerChecklistPresentationFiles" Width="1.5" PointX="18" PointY="179.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.ConferenceSpeakerChecklists" Width="1.5" PointX="15.75" PointY="175.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.ConferenceSpeakers" Width="1.5" PointX="13.5" PointY="156.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.ConferenceSpeakerTopics" Width="1.5" PointX="15.75" PointY="182.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.ConferenceSpecialties" Width="1.5" PointX="3" PointY="153" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.ConferenceStreams" Width="1.5" PointX="11.25" PointY="206" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.ConferenceStreamViews" Width="1.5" PointX="13.5" PointY="152.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.ConferenceViews" Width="1.5" PointX="10.75" PointY="7.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.ConferenceWaitlist" Width="1.5" PointX="10.5" PointY="164" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.ConferenceWaitlistSettings" Width="1.5" PointX="10.75" PointY="10.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.ContentManagementSystem" Width="1.5" PointX="10.5" PointY="167.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.Countries" Width="1.5" PointX="4.75" PointY="12.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.CreditNotifications" Width="1.5" PointX="16.5" PointY="110.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.Criteria" Width="1.5" PointX="6.75" PointY="12.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.Criteria23" Width="1.5" PointX="12.75" PointY="7.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.Criteria24" Width="1.5" PointX="8.75" PointY="13.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.Criteria25" Width="1.5" PointX="12.75" PointY="11.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.Criteria27" Width="1.5" PointX="13.75" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.Criteria28" Width="1.5" PointX="0.75" PointY="14.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.Criteria30" Width="1.5" PointX="2.75" PointY="15.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.Criteria32" Width="1.5" PointX="14.75" PointY="5.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.Criteria35" Width="1.5" PointX="14.75" PointY="9.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.Criteria37" Width="1.5" PointX="10.75" PointY="15.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.DegreeMapping" Width="1.5" PointX="14.75" PointY="13.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.Degrees" Width="1.5" PointX="6" PointY="158.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.DuplicateUserRunIgnoreRecords" Width="1.5" PointX="10.5" PointY="171.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.DuplicateUserRunRecords" Width="1.5" PointX="12.75" PointY="163.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.DuplicateUserRuns" Width="1.5" PointX="10.5" PointY="178.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.EmailFrequencies" Width="1.5" PointX="8.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.EmailHistory" Width="1.5" PointX="8" PointY="3.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.EmailPreferences" Width="1.5" PointX="11" PointY="3.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.EmailQueueMessages" Width="1.5" PointX="10.5" PointY="151.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.EmailQueues" Width="1.5" PointX="8.25" PointY="145.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.EmailTypes" Width="1.5" PointX="5.75" PointY="3.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.EnduringMaterialBoards" Width="1.5" PointX="19.5" PointY="122.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.EnduringMaterialCreditImportErrors" Width="1.5" PointX="18.75" PointY="169.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.EnduringMaterialCreditImportRecords" Width="1.5" PointX="18.75" PointY="183.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.EnduringMaterialCreditImports" Width="1.5" PointX="16.5" PointY="157.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.EnduringMaterialEvaluationCompetencies" Width="1.5" PointX="17.75" PointY="186.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.EnduringMaterialEvaluationPanels" Width="1.5" PointX="32" PointY="161.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.EnduringMaterialEvaluationProgramResults" Width="1.5" PointX="17.75" PointY="189.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.EnduringMaterialEvaluations" Width="1.5" PointX="15.5" PointY="163" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.EnduringMaterialEvaluationSpeakers" Width="1.5" PointX="26.75" PointY="166.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.EnduringMaterialFiles" Width="1.5" PointX="3" PointY="140.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.EnduringMaterialJointProviders" Width="1.5" PointX="3" PointY="145.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.EnduringMaterialNotes" Width="1.5" PointX="16.5" PointY="153.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.EnduringMaterialOptions" Width="1.5" PointX="24.5" PointY="185.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.EnduringMaterialOptionsGroups" Width="1.5" PointX="22.25" PointY="185.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.EnduringMaterialPanels" Width="1.5" PointX="26.75" PointY="158.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.EnduringMaterialPrices" Width="1.5" PointX="24.5" PointY="173.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.EnduringMaterialRegistrationItems" Width="1.5" PointX="26.75" PointY="171.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.EnduringMaterialRegistrations" Width="1.5" PointX="18.5" PointY="161.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.EnduringMaterials" Width="1.5" PointX="0.75" PointY="136.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.EnduringMaterialSeries" Width="1.5" PointX="1.5" PointY="132.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.EnduringMaterialSpeakerChecklistCVs" Width="1.5" PointX="32" PointY="157.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.EnduringMaterialSpeakerChecklistPresentationFiles" Width="1.5" PointX="32" PointY="166" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.EnduringMaterialSpeakerChecklists" Width="1.5" PointX="29.75" PointY="158.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.EnduringMaterialSpeakerConsentForms" Width="1.5" PointX="35" PointY="157.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.EnduringMaterialSpeakers" Width="1.5" PointX="19.5" PointY="154" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.EnduringMaterialSpeakerTopics" Width="1.5" PointX="26.75" PointY="162.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.EnduringMaterialSpecialties" Width="1.5" PointX="3" PointY="155.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.EnduringMaterialViews" Width="1.5" PointX="3" PointY="138.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.ErrorLog" Width="1.5" PointX="15.75" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.EventAdvertisers" Width="1.5" PointX="16.5" PointY="107" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.EventExpenses" Width="1.5" PointX="4.75" PointY="16.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.EventPromoCode" Width="1.5" PointX="15.75" PointY="262.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.EventPromoCodeDegreeRestriction" Width="1.5" PointX="18" PointY="211.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.EventPromoCodeEmailRestriction" Width="1.5" PointX="18" PointY="263" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.EventPromoCodeProfessionRestriction" Width="1.5" PointX="18" PointY="216" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.EventProvidership" Width="1.5" PointX="1.5" PointY="129" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.EventRevenues" Width="1.5" PointX="12.75" PointY="16.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.EventStatus" Width="1.5" PointX="1.5" PointY="166.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.EventSupport" Width="1.5" PointX="14.75" PointY="16.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.EventTypes" Width="1.5" PointX="14.25" PointY="121.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.FacultyDisclosureCommercialInterests" Width="1.5" PointX="18.75" PointY="142.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.FacultyDisclosureRoles" Width="1.5" PointX="18.75" PointY="139.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.FacultyDisclosures" Width="1.5" PointX="16.5" PointY="147.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.HospitalAdmins" Width="1.5" PointX="13.5" PointY="148.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.HospitalDocuments" Width="1.5" PointX="13.5" PointY="179.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.HospitalGroups" Width="1.5" PointX="13.5" PointY="190.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.Hospitals" Width="1.5" PointX="11.25" PointY="182.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.HospitalUsers" Width="1.5" PointX="13.5" PointY="194" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.LoginLog" Width="1.5" PointX="10.5" PointY="225.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.MOCCreditTypes" Width="1.5" PointX="27.75" PointY="116.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.NelnetTransactionLog" Width="1.5" PointX="16.75" PointY="4.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.PaymentHistory" Width="1.5" PointX="6.75" PointY="17.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.PaymentMethods" Width="1.5" PointX="8.25" PointY="170.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.ProfessionMapping" Width="1.5" PointX="16.75" PointY="8.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.Professions" Width="1.5" PointX="6" PointY="161.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.RSSeries" Width="1.5" PointX="3.75" PointY="170.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.RSSeriesCreditImportErrors" Width="1.5" PointX="21.75" PointY="138.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.RSSeriesCreditImportRecords" Width="1.5" PointX="21.75" PointY="134.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.RSSeriesCreditImports" Width="1.5" PointX="19.5" PointY="149.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.RSSeriesEvaluationCompetencies" Width="1.5" PointX="12.75" PointY="134.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.RSSeriesEvaluationPanels" Width="1.5" PointX="18.75" PointY="135.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.RSSeriesEvaluationProgramResults" Width="1.5" PointX="12.75" PointY="172.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.RSSeriesEvaluations" Width="1.5" PointX="10.5" PointY="146" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.RSSeriesEvaluationSpeakers" Width="1.5" PointX="27.75" PointY="148.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.RSSeriesFiles" Width="1.5" PointX="6" PointY="173.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.RSSeriesJointProviders" Width="1.5" PointX="6" PointY="178.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.RSSeriesNotes" Width="1.5" PointX="13.5" PointY="168.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.RSSeriesPanels" Width="1.5" PointX="16.5" PointY="118.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.RSSeriesRegistrations" Width="1.5" PointX="21.5" PointY="161.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.RSSeriesSeries" Width="1.5" PointX="1.5" PointY="176.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.RSSeriesSeriesAdmins" Width="1.5" PointX="21.5" PointY="168.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.RSSeriesSeriesNotes" Width="1.5" PointX="22.5" PointY="156.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.RSSeriesSeriesYearlyInfo" Width="1.5" PointX="3.75" PointY="188.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.RSSeriesSpeakerChecklistCVs" Width="1.5" PointX="27" PointY="134.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.RSSeriesSpeakerChecklistPresentationFiles" Width="1.5" PointX="27" PointY="176" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.RSSeriesSpeakerChecklists" Width="1.5" PointX="24.75" PointY="152.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.RSSeriesSpeakers" Width="1.5" PointX="22.5" PointY="149.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.RSSeriesSpeakerTopics" Width="1.5" PointX="27.75" PointY="153.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.RSSeriesSpecialties" Width="1.5" PointX="6" PointY="155.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.RSSeriesStreams" Width="1.5" PointX="14.25" PointY="186.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.RSSeriesStreamViews" Width="1.5" PointX="16.5" PointY="169.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.RSSeriesViews" Width="1.5" PointX="6" PointY="181.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.ShoppingCart" Width="1.5" PointX="10.5" PointY="267.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.ShoppingCartItems" Width="1.5" PointX="12.75" PointY="268.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.ShoppingCartOptions" Width="1.5" PointX="15" PointY="268.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.ShoppingCartPromoCodes" Width="1.5" PointX="18" PointY="267.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.SingleSignOnTokens" Width="1.5" PointX="10.5" PointY="272.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.Specialties" Width="1.5" PointX="0.75" PointY="155.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.SpecialtyMapping" Width="1.5" PointX="16.75" PointY="11.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.SubSpecialties" Width="1.5" PointX="3" PointY="161" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.sysdiagrams" Width="1.5" PointX="16.75" PointY="14.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.Testing" Width="1.5" PointX="11.25" PointY="119.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.TestingQuestions" Width="1.5" PointX="13.5" PointY="113.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.TestingQuestionsAnswers" Width="1.5" PointX="21.75" PointY="129.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.TestingQuestionsFiles" Width="1.5" PointX="15.75" PointY="114.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.TestingQuestionsTypes" Width="1.5" PointX="11.25" PointY="115.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.TitleMapping" Width="1.5" PointX="16.75" PointY="17.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.Titles" Width="1.5" PointX="6" PointY="164.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.UploadedFiles" Width="1.5" PointX="17.75" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.UploadedImages" Width="1.5" PointX="8.75" PointY="18.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.UserBoardIdentificationNumbers" Width="1.5" PointX="19.5" PointY="145.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.UserIDMapping" Width="1.5" PointX="0.75" PointY="19.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.UserImportErrors" Width="1.5" PointX="12.75" PointY="278.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.UserImportRecords" Width="1.5" PointX="12.75" PointY="281.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.UserImports" Width="1.5" PointX="10.5" PointY="281.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.UserNotes" Width="1.5" PointX="10.5" PointY="288.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.UserProfiles" Width="1.5" PointX="8.25" PointY="149" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.UserTestQuestionAnswers" Width="1.5" PointX="24" PointY="136.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.UserTestQuestions" Width="1.5" PointX="15.75" PointY="138.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.UserTests" Width="1.5" PointX="13.5" PointY="142.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.WebcastACCMEIDs" Width="1.5" PointX="18.75" PointY="4.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.WebcastBoards" Width="1.5" PointX="30" PointY="125.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.WebcastCreditImportErrors" Width="1.5" PointX="12.75" PointY="298" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.WebcastCreditImportRecords" Width="1.5" PointX="12.75" PointY="301.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.WebcastCreditImports" Width="1.5" PointX="10.5" PointY="299.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.WebcastEvaluationCompetencies" Width="1.5" PointX="12.75" PointY="304.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.WebcastEvaluationPanels" Width="1.5" PointX="15.75" PointY="305.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.WebcastEvaluationProgramResults" Width="1.5" PointX="12.75" PointY="311.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.WebcastEvaluations" Width="1.5" PointX="10.5" PointY="304.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.WebcastEvaluationSpeakers" Width="1.5" PointX="15.75" PointY="299.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.WebcastFiles" Width="1.5" PointX="18.75" PointY="7.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.WebcastJointProviders" Width="1.5" PointX="18.75" PointY="12.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.WebcastMOC" Width="1.5" PointX="18.75" PointY="15.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.WebcastMOCCreditTypes" Width="1.5" PointX="30" PointY="122.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.WebcastNotes" Width="1.5" PointX="10.5" PointY="309.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.WebcastOptions" Width="1.5" PointX="27.5" PointY="180.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.WebcastOptionsGroups" Width="1.5" PointX="25.25" PointY="180.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.WebcastPanels" Width="1.5" PointX="20.25" PointY="125.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.WebcastPrices" Width="1.5" PointX="27.5" PointY="184.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.WebcastQuestions" Width="1.5" PointX="8" PointY="8.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.WebcastRegistrationItems" Width="1.5" PointX="29.75" PointY="164.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.WebcastRegistrations" Width="1.5" PointX="24.5" PointY="160.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.Webcasts" Width="1.5" PointX="27.75" PointY="119" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.WebcastSpeakerChecklistAVNeeds" Width="1.5" PointX="27" PointY="138.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.WebcastSpeakerChecklistCVs" Width="1.5" PointX="27" PointY="141.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.WebcastSpeakerChecklistPresentationFiles" Width="1.5" PointX="27" PointY="144.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.WebcastSpeakerChecklists" Width="1.5" PointX="24.75" PointY="140.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.WebcastSpeakerConsentForms" Width="1.5" PointX="30" PointY="142.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.WebcastSpeakers" Width="1.5" PointX="22.5" PointY="141.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.WebcastSpeakerTopics" Width="1.5" PointX="24.75" PointY="148.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.WebcastSpecialties" Width="1.5" PointX="3" PointY="163.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.WebcastsViews" Width="1.5" PointX="16.5" PointY="143.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.WebcastTest" Width="1.5" PointX="5.75" PointY="7.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.WebcastViews" Width="1.5" PointX="18.75" PointY="18.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.AggregatedCounter" Width="1.5" PointX="19.75" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.Counter" Width="1.5" PointX="2.75" PointY="20.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.Hash" Width="1.5" PointX="10.75" PointY="20.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.Job" Width="1.5" PointX="0.75" PointY="2.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.JobParameter" Width="1.5" PointX="3" PointY="1.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.JobQueue" Width="1.5" PointX="20.75" PointY="4.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.List" Width="1.5" PointX="4.75" PointY="21.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.Schema" Width="1.5" PointX="10.75" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.Server" Width="1.5" PointX="20.75" PointY="7.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.Set" Width="1.5" PointX="6.75" PointY="21.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.State" Width="1.5" PointX="3" PointY="4.375" IsExpanded="true" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_UserProfiles_AspNetUsers" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_EnduringMaterialBoards_Boards" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_UserBoardIdentificationNumbers_Boards" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_WebcastBoards_Boards" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_ConferenceCreditImportErrors_ConferenceCreditImports" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_ConferenceCreditImportRecords_ConferenceCreditImports" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_ConferenceCreditImports_UserProfiles" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_ConferenceEvaluationCompetencies_ConferenceEvaluations" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_ConferenceEvaluatonPanels_ConferenceEvaluations" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_ConferenceEvaluatonPanels_ConferencePanels" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_ConferenceEvaluationProgramResults_ConferenceEvaluations" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_ConferenceEvaluations_UserProfiles" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_ConferenceEvaluatonSpeakers_ConferenceEvaluations" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_ConferenceEvaluatonSpeakers_ConferenceSpeakers" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_ConferenceNotes_UserProfiles" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_ConferenceNotes_UserProfiles1" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_ConferenceOptions_ConferenceOptionsGroups" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_ConferenceRegistrationItems_ConferenceOptions" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_ConferenceRegistrationItems_ConferencePrices" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_ConferenceRegistrationItems_ConferenceRegistrations" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_ConferenceRegistrations_PaymentMethods" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_ConferenceRegistrations_UserProfiles" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_Conferences_EventProvidership" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_Conferences_EventStatus" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_ConferenceStreamViews_Conferences" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_ConferenceSpeakerChecklistAVNeeds_ConferenceSpeakerChecklists" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_ConferenceSpeakerChecklistCVs_ConferenceSpeakerChecklist" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_ConferenceSpeakerChecklistPresentationFiles_ConferenceSpeakerChecklist" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_ConferenceSpeakerChecklist_ConferenceSpeakers" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_ConferenceSpeakers_UserProfiles" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_ConferenceSpeakerTopics_ConferenceSpeakers" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_ConferenceSpecailties_Specialties" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_ConferenceStreamViews_ConferenceStreams" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_ConferenceStreamViews_UserProfiles" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_ConferenceWaitlist_UserProfiles" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_ContentManagementSystem_UserProfiles" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_CreditNotifications_EventTypes" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_EventPromoCodeDegreeRestriction_Degrees" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_UserProfiles_Degrees" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_DuplicateUserRunIgnoreRecords_UserProfiles" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_DuplicateUserRunRecords_DuplicateUserRuns" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_DuplicateUserRunRecords_UserProfiles" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_DuplicateUserRunRecords_UserProfiles1" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_DuplicateUserRuns_UserProfiles" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_EmailPreferences_EmailFrequencies" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_EmailHistory_EmailTypes" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_EmailPreferences_EmailTypes" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_EmailQueueMessages_EmailQueues" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_EmailQueueMessages_UserProfiles" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_EnduringMaterialCreditImportErrors_EnduringMaterialCreditImports" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_EnduringMaterialCreditImportRecords_EnduringMaterialCreditImports" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_EnduringMaterialCreditImports_EnduringMaterials" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_EnduringMaterialCreditImports_UserProfiles" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_EnduringMaterialEvaluationCompetencies_EnduringMaterialEvaluations" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_EnduringMaterialEvaluatonPanels_EnduringMaterialEvaluations" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_EnduringMaterialEvaluatonPanels_EnduringMaterialPanels" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_EnduringMaterialEvaluationProgramResults_EnduringMaterialEvaluations" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_EnduringMaterialEvaluations_EnduringMaterials" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_EnduringMaterialEvaluations_UserProfiles" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_EnduringMaterialEvaluatonSpeakers_EnduringMaterialEvaluations" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_EnduringMaterialEvaluatonSpeakers_EnduringMaterialSpeakers" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_EnduringMaterialFiles_EnduringMaterials" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_EnduringMaterialJointProviders_EnduringMaterialJointProviders" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_EnduringMaterialNotes_EnduringMaterials" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_EnduringMaterialNotes_UserProfiles" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_EnduringMaterialNotes_UserProfiles1" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_EnduringMaterialOptions_EnduringMaterialOptionsGroups" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_EnduringMaterialRegistrationItems_EnduringMaterialOptions" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_EnduringMaterialOptionsGroups_EnduringMaterials" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_EnduringMaterialPanels_EnduringMaterials" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_EnduringMaterialRegistrationItems_EnduringMaterialPrices" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_EnduringMaterialRegistrationItems_EnduringMaterialRegistrations" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_EnduringMaterialRegistrations_EnduringMaterials" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_EnduringMaterialRegistrations_UserProfiles" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_EnduringMaterials_EnduringMaterialSeries" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_EnduringMaterials_EventProvidership" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_EnduringMaterials_EventStatus" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_EnduringMaterialSpeakerChecklist_EnduringMaterials" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_EnduringMaterialSpeakerConsentForms_EnduringMaterials" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_EnduringMaterialSpeakers_EnduringMaterials" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_EnduringMaterialSpeakerTopics_EnduringMaterials" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_EnduringMaterialSpecialties_EnduringMaterials" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_EnduringMaterialViews_EnduringMaterials" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_EnduringMaterialSpeakerChecklistCVs_EnduringMaterialSpeakerChecklist" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_EnduringMaterialSpeakerChecklistPresentationFiles_EnduringMaterialSpeakerChecklist" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_EnduringMaterialSpeakerChecklist_EnduringMaterialSpeakers" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_EnduringMaterialSpeakerConsentForms_EnduringMaterialSpeakerChecklists" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_EnduringMaterialSpeakerConsentForms_EnduringMaterialSpeakers" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_EnduringMaterialSpeakers_UserProfiles" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_EnduringMaterialSpeakerTopics_EnduringMaterialSpeakers" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_EnduringMaterialSpecialties_Specialties" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_EventDisplays_EventTypes" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_EventPromoCodeDegreeRestriction_EventPromoCode" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_EventPromoCodeEmailRestriction_EventPromoCode" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_EventPromoCodeProfessionRestriction_EventPromoCode" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_ShoppingCartPromoCodes_EventPromoCode" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_EventPromoCodeProfessionRestriction_Professions" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_RSSeries_EventProvidership" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_Webcasts_EventProvidership" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_RSSeries_EventStatus" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_Webcasts_EventStatus" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_FacultyDisclosures_EventTypes" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_FacultyDisclosureCommercialInterests_FacultyDisclosures" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_FacultyDisclosureRoles_FacultyDisclosures" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_FacultyDisclosures_UserProfiles" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_HospitalAdmins_Hospitals" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_HospitalAdmins_UserProfiles" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_HospitalUsers_Hospitals" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_LoginLog_UserProfiles" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_WebcastMOCCreditTypes_MOCCreditTypes1" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_WebcastRegistrations_PaymentMethods" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_UserProfiles_Professions" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_RSSeries_RSSeriesSeries" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_RSSeriesCreditImports_RSSeries" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_RSSeriesEvaluations_RSSeries" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_RSSeriesFiles_RSSeries" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_RSSeriesJointProviders_RSSeriesJointProviders" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_RSSeriesNotes_RSSeries" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_RSSeriesPanels_RSSeries" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_RSSeriesRegistrations_RSSeries" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_RSSeriesSpeakerChecklist_RSSeries" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_RSSeriesSpeakers_RSSeries" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_RSSeriesSpeakerTopics_RSSeries" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_RSSeriesSpecialties_RSSeries" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_RSSeriesStreams_RSSeries" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_RSSeriesStreamViews_RSSeries" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_RSSeriesViews_RSSeries" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_RSSeriesCreditImportErrors_RSSeriesCreditImports" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_RSSeriesCreditImportRecords_RSSeriesCreditImports" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_RSSeriesCreditImports_UserProfiles" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_RSSeriesEvaluationCompetencies_RSSeriesEvaluations" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_RSSeriesEvaluatonPanels_RSSeriesEvaluations" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_RSSeriesEvaluatonPanels_RSSeriesPanels" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_RSSeriesEvaluationProgramResults_RSSeriesEvaluations" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_RSSeriesEvaluations_UserProfiles" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_RSSeriesEvaluatonSpeakers_RSSeriesEvaluations" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_RSSeriesEvaluatonSpeakers_RSSeriesSpeakers" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_RSSeriesNotes_UserProfiles" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_RSSeriesNotes_UserProfiles1" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_RSSeriesRegistrations_UserProfiles" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_RSSeriesSeriesAdmins_RSSeriesSeries" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_RSSeriesSeriesNotes_RSSeriesSeries" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_RSSeriesSeriesYearlyInfo_RSSeriesSeries" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_RSSeriesSeriesAdmins_UserProfiles" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_RSSeriesSeriesNotes_UserProfiles" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_RSSeriesSeriesNotes_UserProfiles1" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_RSSeriesSpeakerChecklistCVs_RSSeriesSpeakerChecklist" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_RSSeriesSpeakerChecklistPresentationFiles_RSSeriesSpeakerChecklist" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_RSSeriesSpeakerChecklist_RSSeriesSpeakers" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_RSSeriesSpeakers_UserProfiles" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_RSSeriesSpeakerTopics_RSSeriesSpeakers" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_RSSeriesSpecialties_Specialties" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_RSSeriesStreamViews_RSSeriesStreams" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_RSSeriesStreamViews_UserProfiles" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_ShoppingCart_UserProfiles" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_ShoppingCartItems_ShoppingCart" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_ShoppingCartPromoCodes_ShoppingCart" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_ShoppingCartOptions_ShoppingCartItems" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_ShoppingCartPromoCodes_ShoppingCartItems" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_SingleSignOnTokens_UserProfiles" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_SubSpecialties_Specialties" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_UserProfiles_Specialties" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_WebcastSpecailties_Specialties" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_UserProfiles_SubSpecialties" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_TestingQuestions_Testing" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_UserTests_Testing" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_TestingQuestions_TestingQuestionsTypes" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_TestingQuestionsAnswers_TestingQuestions" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_TestingQuestionsFiles_TestingQuestions" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_UserTestQuestions_TestingQuestions" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_UserTestQuestionAnswers_TestingQuestionsAnswers" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_UserProfiles_Titles" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_UserBoardIdentificationNumbers_UserBoardIdentificationNumbers" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_UserImportErrors_UserImports" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_UserImportRecords_UserImports" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_UserImports_UserProfiles" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_UserNotes_UserProfiles" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_UserNotes_UserProfiles1" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_UserNotes_UserProfiles2" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_UserTests_UserProfiles" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_WebcastCreditImports_UserProfiles" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_WebcastEvaluations_UserProfiles" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_WebcastNotes_UserProfiles" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_WebcastNotes_UserProfiles1" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_WebcastRegistrations_UserProfiles" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_WebcastSpeakers_UserProfiles" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_WebcastsViews_WebcastsViews" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_UserTestQuestionAnswers_UserTestQuestions" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_UserTestQuestions_UserTestQuestions" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_UserTestQuestions_UserTests" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_WebcastBoards_Webcasts" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_WebcastCreditImportErrors_WebcastCreditImports" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_WebcastCreditImportRecords_WebcastCreditImports" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_WebcastEvaluationCompetencies_WebcastEvaluations" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_WebcastEvaluationPanels_WebcastEvaluationPanels" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_WebcastEvaluationPanels_WebcastPanels" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_WebcastEvaluationProgramResults_WebcastEvaluations" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_WebcastEvaluatonSpeakers_WebcastEvaluations" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_WebcastEvaluationSpeakers_WebcastSpeakers1" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_WebcastMOCCreditTypes_Webcasts" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_WebcastOptions_WebcastOptionsGroup" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_WebcastRegistrationItems_WebcastOptions" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_WebcastRegistrationItems_WebcastPrices" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_WebcastQuestions_WebcastTest" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_WebcastRegistrationItems_WebcastRegistrations" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_WebcastSpeakerConsentForms_Webcasts" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_WebcastsViews_Webcasts" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_WebcastSpeakerChecklistAVNeeds_WebcastSpeakerChecklists" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_WebcastSpeakerChecklistCVs_WebcastSpeakerChecklist" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_WebcastSpeakerChecklistPresentationFiles_WebcastSpeakerChecklist" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_WebcastSpeakerChecklist_WebcastSpeakers" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_WebcastSpeakerConsentForms_WebcastSpeakerChecklists" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_WebcastSpeakerConsentForms_WebcastSpeakers" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_WebcastEvaluationSpeakers_WebcastSpeakers" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_WebcastSpeakerTopics_WebcastSpeakers" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_HangFire_JobParameter_Job" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_HangFire_State_Job" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.AspNetUserRoles" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.ConferencePanelSpeakers" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.EnduringMaterialPanelSpeakers" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.HospitalDocumentsHospitals" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.HospitalGroupHospitals" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.RSSeriesPanelSpeakers" ManuallyRouted="false" />
+        <AssociationConnector Association="NewOSUCCMEModel.WebcastPanelSpeakers" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
