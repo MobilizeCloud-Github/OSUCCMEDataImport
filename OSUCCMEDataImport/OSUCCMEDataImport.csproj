@@ -731,6 +731,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Indentity Tables.txt" />
     <Content Include="Models\NewOSUCCMEModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>NewOSUCCMEModel.edmx</DependentUpon>

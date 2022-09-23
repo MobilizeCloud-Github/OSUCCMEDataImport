@@ -62,13 +62,14 @@ namespace OSUCCMEDataImport.Jobs
                                 Id = User.UserID,
                                 Email = User.Username,
                                 EmailConfirmed = false,
-                                PasswordHash = OldUserLogin.Password,
-                                SecurityStamp = OldUserLogin.PasswordSalt,
+                                PasswordHash = OldUserLogin.Password + '|' + OldUserLogin.PasswordFormat + '|' + OldUserLogin.PasswordSalt,
+                                SecurityStamp = new Guid().ToString(),
                                 PhoneNumberConfirmed = false,
                                 TwoFactorEnabled = false,
                                 LockoutEnabled = false,
                                 AccessFailedCount = 0,
-                                UserName = User.Username
+                                UserName = User.Username,
+                                PasswordHashUpdated = false
                             };
                             db.AspNetUsers.Add(NewUserLogin);
                             db.SaveChanges();
@@ -106,11 +107,12 @@ namespace OSUCCMEDataImport.Jobs
                                 AnnualFacultyDisclosureOverrideEnabled = false,
                                 Birthdate = User.DateOfBirth,
                                 IsBoardCertifiedPhysician = User.IsABIM
-
                             };
 
                             if (User.MailingCountry != "US")
                             {
+                                NewUser.State = "";
+                                NewUser.ZipCode = "";
                                 NewUser.ProvinceRegion = User.MailingState;
                                 NewUser.PostalCode = User.MailingZip ?? "";
                                 NewUser.Country = User.MailingCountry;
@@ -118,6 +120,8 @@ namespace OSUCCMEDataImport.Jobs
                             else
                             {
 
+                                NewUser.ProvinceRegion = "";
+                                NewUser.PostalCode = "";
                                 NewUser.State = User.MailingState ?? "";
                                 NewUser.ZipCode = User.MailingZip ?? "";
                                 NewUser.Country = "US";
@@ -166,7 +170,7 @@ namespace OSUCCMEDataImport.Jobs
             var db = new NewOSUCCMEEntities();
             var olddb = new OldOSUCCMEEntities();
             var UserIDs = (from u in db.UserProfiles
-                           where u.IsDeleted == false && u.IsDeceased == false
+                           where u.Email == "rob@mobilizecloud.com" && u.IsDeleted == false && u.IsDeceased == false
                            select u.UserID);
 
 
