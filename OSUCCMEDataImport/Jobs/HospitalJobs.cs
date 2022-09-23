@@ -15,7 +15,13 @@ namespace OSUCCMEDataImport.Jobs
             Console.WriteLine("-----------------------------------");
             Console.WriteLine("");
             ImportHospitals(ImportUserID);
+            Console.WriteLine("");
+            Console.WriteLine("-----------------------------------");
+            Console.WriteLine("");
             ImportHosptialUsers(ImportUserID);
+            Console.WriteLine("");
+            Console.WriteLine("-----------------------------------");
+            Console.WriteLine("");
             ImportHospitalAdmins(ImportUserID);
         }
 

@@ -18,7 +18,7 @@ namespace OSUCCMEDataImport
             Console.WriteLine(" 6. Enduring");
             Console.WriteLine(" 7. RSSeries");
             Console.WriteLine(" 8. Hospitals");
-            Console.WriteLine(" 9. Registrations & Credits");
+            Console.WriteLine(" 9. Credits, Speaker Hours, & MOC");
             Console.WriteLine("");
             Console.WriteLine("Please select 1-9 and hit enter.");
 

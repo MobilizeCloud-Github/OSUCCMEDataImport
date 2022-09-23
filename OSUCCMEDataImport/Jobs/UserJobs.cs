@@ -3,6 +3,7 @@ using OldOSUDatabase.Models;
 using System;
 using System.IO;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace OSUCCMEDataImport.Jobs
 {
@@ -32,8 +33,8 @@ namespace OSUCCMEDataImport.Jobs
             var olddb = new OldOSUCCMEEntities();
 
             var UsersToImport = (from u in olddb.Users
-                                 where u.Username == "rob@mobilizecloud.com"
-                                 select u).ToList();
+                                 where u.IsDeleted == false
+                                 select u);
 
             TextWriter tw = new StreamWriter("UsersToImportLog.txt");
 
@@ -41,6 +42,20 @@ namespace OSUCCMEDataImport.Jobs
             Console.Write("Importing User Profiles - Starting ");
             Console.WriteLine(Total + " to Process");
             var Index = 1;
+
+            var MappedSpecialties = (from x in db.SpecialtyMapping
+                                     select x).ToList();
+
+            var MappedDegrees = (from x in db.DegreeMapping
+                                 select x).ToList();
+
+            var MappedTitle = (from x in db.TitleMapping
+                                 select x).ToList();
+
+            var MappedProfessions = (from x in db.ProfessionMapping
+                                 select x).ToList();
+
+
             foreach (var User in UsersToImport)
             {
                 Console.Write("Processing : " + User.Username + " (" + Index + "/" + Total + ") ");
@@ -63,7 +78,7 @@ namespace OSUCCMEDataImport.Jobs
                                 Email = User.Username,
                                 EmailConfirmed = false,
                                 PasswordHash = OldUserLogin.Password + '|' + OldUserLogin.PasswordFormat + '|' + OldUserLogin.PasswordSalt,
-                                SecurityStamp = new Guid().ToString(),
+                                SecurityStamp = Guid.NewGuid().ToString(),
                                 PhoneNumberConfirmed = false,
                                 TwoFactorEnabled = false,
                                 LockoutEnabled = false,
@@ -71,8 +86,7 @@ namespace OSUCCMEDataImport.Jobs
                                 UserName = User.Username,
                                 PasswordHashUpdated = false
                             };
-                            db.AspNetUsers.Add(NewUserLogin);
-                            db.SaveChanges();
+                            db.AspNetUsers.Add(NewUserLogin);                            
 
                             Console.Write(" - Login Created");
 
@@ -80,14 +94,14 @@ namespace OSUCCMEDataImport.Jobs
                             {
                                 UserID = User.UserID,
                                 Email = User.Username,
-                                TitleID = GetMappedTitleID(db, User),
+                                TitleID = GetMappedTitleID(db, MappedTitle, User),
                                 FirstName = User.FirstName ?? "",
                                 MiddleName = User.MiddleName ?? "",
                                 LastName = User.LastName ?? "",
-                                ProfessionID = GetMappedProfessionID(db, User),
-                                DegreeID = GetMappedDegreeID(db, User),
+                                ProfessionID = GetMappedProfessionID(db, MappedProfessions,User),
+                                DegreeID = GetMappedDegreeID(db, MappedDegrees, User),
                                 TraineeType = "",
-                                SpecialtyID = GetMappedSpecialtyID(db, User),
+                                SpecialtyID = GetMappedSpecialtyID(db, MappedSpecialties, User),
                                 Phone = User.BusinessPhone ?? "",
                                 PhoneExtension = User.BusinessPhoneExtension ?? "",
                                 Fax = User.FaxNumber ?? "",
@@ -109,6 +123,23 @@ namespace OSUCCMEDataImport.Jobs
                                 IsBoardCertifiedPhysician = User.IsABIM
                             };
 
+                            if(User.MailingCountry == "1")
+                            {
+                                User.MailingCountry = "US";
+                            }
+                            if(User.MailingCountry == "")
+                            {
+                                User.MailingCountry = "PK";
+                            }
+                            if (User.MailingCountry == "None")
+                            {
+                                User.MailingCountry = "PE";
+                            }
+                            if (User.MailingCountry == "United States")
+                            {
+                                User.MailingCountry = "US";
+                            }
+
                             if (User.MailingCountry != "US")
                             {
                                 NewUser.State = "";
@@ -119,7 +150,6 @@ namespace OSUCCMEDataImport.Jobs
                             }
                             else
                             {
-
                                 NewUser.ProvinceRegion = "";
                                 NewUser.PostalCode = "";
                                 NewUser.State = User.MailingState ?? "";
@@ -400,11 +430,11 @@ namespace OSUCCMEDataImport.Jobs
             db.SaveChanges();
         }
 
-        private static int GetMappedSpecialtyID(NewOSUCCMEEntities db, Users User)
+        private static int GetMappedSpecialtyID(NewOSUCCMEEntities db, List<SpecialtyMapping> MappedSpecialties, Users User)
         {
             if (User.SpecialtyID != null)
             {
-                var NewID = (from x in db.SpecialtyMapping
+                var NewID = (from x in MappedSpecialties
                              where x.OldID == User.SpecialtyID
                              select x.NewID).FirstOrDefault();
                 if (NewID != null)
@@ -418,15 +448,15 @@ namespace OSUCCMEDataImport.Jobs
             }
             else
             {
-                throw (new Exception(User.Email + " " + User.UserID + " Error Importing - Speciality ID Blank"));
+                return 33;
             }
         }
 
-        private static int GetMappedDegreeID(NewOSUCCMEEntities db, Users User)
+        private static int GetMappedDegreeID(NewOSUCCMEEntities db, List<DegreeMapping> MappedDegress, Users User)
         {
             if (User.UserDegreeID != null)
             {
-                var NewID = (from x in db.TitleMapping
+                var NewID = (from x in MappedDegress
                              where x.OldID == User.UserDegreeID
                              select x.NewID).FirstOrDefault();
                 if (NewID != null)
@@ -440,15 +470,15 @@ namespace OSUCCMEDataImport.Jobs
             }
             else
             {
-                throw (new Exception(User.Email + " " + User.UserID + " Error Importing - Degree ID Blank"));
+                return 19;
             }
         }
 
-        private static int GetMappedProfessionID(NewOSUCCMEEntities db, Users User)
+        private static int GetMappedProfessionID(NewOSUCCMEEntities db, List<ProfessionMapping> MappedProfessions, Users User)
         {
             if (User.ProfessionID != null)
             {
-                var NewID = (from x in db.TitleMapping
+                var NewID = (from x in MappedProfessions
                              where x.OldID == User.ProfessionID
                              select x.NewID).FirstOrDefault();
                 if (NewID != null)
@@ -462,15 +492,15 @@ namespace OSUCCMEDataImport.Jobs
             }
             else
             {
-                throw (new Exception(User.Email + " " + User.UserID + " Error Importing - Mapped ID Blank"));
+                return 29;
             }
         }
 
-        private static int GetMappedTitleID(NewOSUCCMEEntities db, Users User)
+        private static int GetMappedTitleID(NewOSUCCMEEntities db, List<TitleMapping> MappedTitles, Users User)
         {
             if (User.PrefixID != null)
             {
-                var NewID = (from x in db.TitleMapping
+                var NewID = (from x in MappedTitles
                              where x.OldID == User.PrefixID
                              select x.NewID).FirstOrDefault();
                 if (NewID != null)
