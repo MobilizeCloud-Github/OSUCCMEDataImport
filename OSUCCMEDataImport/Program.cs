@@ -21,7 +21,7 @@ namespace OSUCCMEDataImport
             Console.WriteLine(" 9. Registrations & Credits");
             Console.WriteLine("");
             Console.WriteLine("Please select 1-9 and hit enter.");
-        
+
             var JobNumber = Console.ReadLine();
             var ImportUserID = "b942c30a-575c-4263-8028-28fad69beacf";
             var ApprovedJobs = new List<string> { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
@@ -50,6 +50,7 @@ namespace OSUCCMEDataImport
                             }
                         case "4":
                             {
+                                ConferenceJobs.Process();
                                 break;
                             }
                         case "5":
@@ -81,7 +82,7 @@ namespace OSUCCMEDataImport
                     Console.WriteLine("");
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Console.WriteLine("");
                 Console.WriteLine("");
