@@ -55,6 +55,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\CommonFunctions.cs" />
     <Compile Include="Jobs\HospitalJobs.cs" />
     <Compile Include="Jobs\ImportJobUser.cs" />
     <Compile Include="Jobs\TruncateJobs.cs" />
@@ -756,6 +757,7 @@
       <Name>OldOSUDatabase</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
