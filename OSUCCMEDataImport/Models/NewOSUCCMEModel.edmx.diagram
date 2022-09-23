@@ -442,6 +442,10 @@
         <AssociationConnector Association="NewOSUCCMEModel.HospitalGroupHospitals" ManuallyRouted="false" />
         <AssociationConnector Association="NewOSUCCMEModel.RSSeriesPanelSpeakers" ManuallyRouted="false" />
         <AssociationConnector Association="NewOSUCCMEModel.WebcastPanelSpeakers" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.CreditNotifications" Width="1.5" PointX="16.5" PointY="106.5" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.EmailFrequencies" Width="1.5" PointX="11.375" PointY="19.875" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_CreditNotifications_EventTypes" />
+        <AssociationConnector Association="NewOSUCCMEModel.FK_EmailPreferences_EmailFrequencies" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

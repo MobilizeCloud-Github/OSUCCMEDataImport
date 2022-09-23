@@ -90,7 +90,7 @@ namespace OSUCCMEDataImport
             }
 
             Console.WriteLine("");
-            Console.WriteLine("");
+            Console.WriteLine("-----------------------------------");
             Console.WriteLine("");
             goto Selection;
         }

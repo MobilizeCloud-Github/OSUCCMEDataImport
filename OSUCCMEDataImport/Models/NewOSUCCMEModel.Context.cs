@@ -238,5 +238,7 @@ namespace OSUCCMEDataImport.Models
         public virtual DbSet<Server> Server { get; set; }
         public virtual DbSet<Set> Set { get; set; }
         public virtual DbSet<State> State { get; set; }
+        public virtual DbSet<CreditNotifications> CreditNotifications { get; set; }
+        public virtual DbSet<EmailFrequencies> EmailFrequencies { get; set; }
     }
 }

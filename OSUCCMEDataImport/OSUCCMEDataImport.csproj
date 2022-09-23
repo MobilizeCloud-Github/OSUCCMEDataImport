@@ -180,6 +180,9 @@
     <Compile Include="Models\Countries.cs">
       <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\CreditNotifications.cs">
+      <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Criteria.cs">
       <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
     </Compile>
@@ -223,6 +226,9 @@
       <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\DuplicateUserRuns.cs">
+      <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EmailFrequencies.cs">
       <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\EmailHistory.cs">
@@ -739,6 +745,7 @@
       <DependentUpon>NewOSUCCMEModel.edmx</DependentUpon>
       <LastGenOutput>NewOSUCCMEModel.cs</LastGenOutput>
     </Content>
+    <Content Include="OSUDelete.sql" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

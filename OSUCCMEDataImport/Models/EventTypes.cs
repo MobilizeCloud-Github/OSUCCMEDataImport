@@ -19,6 +19,7 @@ namespace OSUCCMEDataImport.Models
         {
             this.EventAdvertisers = new HashSet<EventAdvertisers>();
             this.FacultyDisclosures = new HashSet<FacultyDisclosures>();
+            this.CreditNotifications = new HashSet<CreditNotifications>();
         }
     
         public string EventType { get; set; }
@@ -27,5 +28,7 @@ namespace OSUCCMEDataImport.Models
         public virtual ICollection<EventAdvertisers> EventAdvertisers { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<FacultyDisclosures> FacultyDisclosures { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CreditNotifications> CreditNotifications { get; set; }
     }
 }
