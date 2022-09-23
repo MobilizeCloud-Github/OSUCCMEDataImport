@@ -13,6 +13,7 @@ namespace OSUCCMEDataImport.Jobs
         {
             var db = new NewOSUCCMEEntities();
 
+            Console.WriteLine("Setting Up System and Import Users - Starting ");
             var SystemUserLogin = new AspNetUsers()
             {
                 Id = "91e0cfda-95f3-4b6d-a901-4ee15c996848",
@@ -28,6 +29,8 @@ namespace OSUCCMEDataImport.Jobs
             };
             db.AspNetUsers.Add(SystemUserLogin);
             db.SaveChanges();
+
+            Console.WriteLine("System User Login Complete");
 
             var SystemUser = new UserProfiles()
             {
@@ -68,6 +71,8 @@ namespace OSUCCMEDataImport.Jobs
             db.UserProfiles.Add(SystemUser);
             db.SaveChanges();
 
+            Console.WriteLine("System User Profile Complete");
+
             var ImportUserLogin = new AspNetUsers()
             {
                 Id = "b942c30a-575c-4263-8028-28fad69beacf",
@@ -83,6 +88,8 @@ namespace OSUCCMEDataImport.Jobs
             };
             db.AspNetUsers.Add(ImportUserLogin);
             db.SaveChanges();
+
+            Console.WriteLine("Import User Login Complete");
 
             var ImportUser = new UserProfiles()
             {
@@ -122,6 +129,8 @@ namespace OSUCCMEDataImport.Jobs
 
             db.UserProfiles.Add(ImportUser);
             db.SaveChanges();
+
+            Console.WriteLine("Import User Profile Complete");
         }
     }
 }

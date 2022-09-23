@@ -12,15 +12,15 @@ namespace OSUCCMEDataImport.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class EmailPreferences
+    public partial class CreditNotifications
     {
         public int ID { get; set; }
+        public int EventID { get; set; }
+        public string EventType { get; set; }
         public string UserID { get; set; }
-        public string EmailType { get; set; }
-        public string EmailFrequency { get; set; }
-        public Nullable<System.DateTime> LastUpdated { get; set; }
+        public System.DateTime SentOn { get; set; }
+        public string SentBy { get; set; }
     
-        public virtual EmailTypes EmailTypes { get; set; }
-        public virtual EmailFrequencies EmailFrequencies { get; set; }
+        public virtual EventTypes EventTypes { get; set; }
     }
 }

@@ -11,7 +11,20 @@ namespace OSUCCMEDataImport.Jobs
         public static void Process(string ImportUserID)
         {
             ImportUserProfiles(ImportUserID);
+            Console.WriteLine("");
+            Console.WriteLine("-----------------------------------");
+            Console.WriteLine("");
+            ImportUserEmailPreferences(ImportUserID);
+            Console.WriteLine("");
+            Console.WriteLine("-----------------------------------");
+            Console.WriteLine("");
+            ImportUserRoles(ImportUserID);
+            Console.WriteLine("");
+            Console.WriteLine("-----------------------------------");
+            Console.WriteLine("");
         }
+
+
 
         private static void ImportUserProfiles(string importUserID)
         {
@@ -23,8 +36,14 @@ namespace OSUCCMEDataImport.Jobs
                                  select u).ToList();
 
             TextWriter tw = new StreamWriter("UsersToImportLog.txt");
+
+            var Total = UsersToImport.Count();
+            Console.Write("Importing User Profiles - Starting ");
+            Console.WriteLine(Total + " to Process");
+            var Index = 1;
             foreach (var User in UsersToImport)
             {
+                Console.Write("Processing : " + User.Username + " (" + Index + "/" + Total + ") ");
                 Guid OldUserID = new Guid(User.UserID);
                 var OldUserLogin = (from u in olddb.aspnet_Membership
                                     where u.UserId == OldUserID
@@ -37,6 +56,7 @@ namespace OSUCCMEDataImport.Jobs
                     {
                         try
                         {
+
                             var NewUserLogin = new AspNetUsers()
                             {
                                 Id = User.UserID,
@@ -52,6 +72,8 @@ namespace OSUCCMEDataImport.Jobs
                             };
                             db.AspNetUsers.Add(NewUserLogin);
                             db.SaveChanges();
+
+                            Console.Write(" - Login Created");
 
                             var NewUser = new UserProfiles()
                             {
@@ -87,7 +109,7 @@ namespace OSUCCMEDataImport.Jobs
 
                             };
 
-                            if(User.MailingCountry != "US")
+                            if (User.MailingCountry != "US")
                             {
                                 NewUser.ProvinceRegion = User.MailingState;
                                 NewUser.PostalCode = User.MailingZip ?? "";
@@ -105,25 +127,260 @@ namespace OSUCCMEDataImport.Jobs
                             db.UserProfiles.Add(NewUser);
                             db.SaveChanges();
 
-                            if(NewUser.IsBoardCertifiedPhysician == true)
+                            Console.Write(" - Profile Created");
+
+                            if (NewUser.IsBoardCertifiedPhysician == true)
                             {
                                 SaveUserBoards(db, User);
+                                Console.Write(" - Boards Saved");
                             }
+
+                            Console.WriteLine(" - Complete");
                         }
-                        catch(Exception e)
+                        catch (Exception e)
                         {
-                            tw.WriteLine(e.Message);
+                            Console.WriteLine("");
+                            Console.WriteLine(" - " + e.Message);
+                            tw.WriteLineAsync(e.Message);
                         }
                     }
                     else
                     {
-                        tw.WriteLine(User.Email + " " + User.UserID + " Error Importing - No Membership Account");
+                        Console.WriteLine(" - No Membership Account");
+                        tw.WriteLineAsync(User.Email + " " + User.UserID + " Error Importing - No Membership Account");
                     }
                 }
                 else
                 {
-                    tw.WriteLine(User.Email + " " + User.UserID + " Error Importing - Old Switchbox Account");
+                    Console.WriteLine(" - Old Switchbox Account");
+                    tw.WriteLineAsync(User.Email + " " + User.UserID + " Error Importing - Old Switchbox Account");
+                    
                 }
+                Index++;
+            }
+            tw.Close();
+        }
+
+        private static void ImportUserEmailPreferences(string importUserID)
+        {
+            var db = new NewOSUCCMEEntities();
+            var olddb = new OldOSUCCMEEntities();
+            var UserIDs = (from u in db.UserProfiles
+                           where u.IsDeleted == false && u.IsDeceased == false
+                           select u.UserID);
+
+
+            TextWriter tw = new StreamWriter("UserEmailPreferencesLog.txt");
+
+            var Total = UserIDs.Count();
+            Console.Write("Importing User Email Preferences - Starting ");
+            Console.WriteLine(Total + " to Process");
+            var Index = 1;
+            foreach (var UserID in UserIDs)
+            {
+                try
+                {
+                    Console.Write("Processing : " + UserID + " (" + Index + "/" + Total + ") ");
+                    var Preferences = (from u in olddb.EmailPreferences
+                                       where u.UserID == UserID
+                                       select u);
+                    foreach (var Preference in Preferences)
+                    {
+                        var NewEmailPreference = new Models.EmailPreferences()
+                        {
+                            UserID = UserID,
+                            EmailType = GetEmailType(Preference.Type),
+                            EmailFrequency = GetEmailFrequency(Preference.FrequencyID),
+                            LastUpdated = DateTime.Now
+                        };
+                        db.EmailPreferences.Add(NewEmailPreference);
+                        db.SaveChanges();
+
+                        Console.Write(" - " + NewEmailPreference.EmailType + " saved");
+                    }
+
+                    var GeneralPreference = new Models.EmailPreferences()
+                    {
+                        UserID = UserID,
+                        EmailType = "GeneralAnnouncements",
+                        EmailFrequency = "Monthly",
+                        LastUpdated = DateTime.Now
+                    };
+                    db.EmailPreferences.Add(GeneralPreference);
+                    db.SaveChanges();
+
+                    Console.Write(" - GeneralAnnouncements saved");
+
+                    var RSSeriesPreference = new Models.EmailPreferences()
+                    {
+                        UserID = UserID,
+                        EmailType = "GrandRoundsNewsletters",
+                        EmailFrequency = "Monthly",
+                        LastUpdated = DateTime.Now
+                    };
+                    db.EmailPreferences.Add(RSSeriesPreference);
+                    db.SaveChanges();
+
+                    Console.Write(" - GrandRoundsNewsletters saved");
+
+                    Console.WriteLine(" - Complete");
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("");
+                    Console.WriteLine(" - " + e.Message);
+                    tw.WriteLineAsync(e.Message);
+                }
+                Index++;
+            }
+            tw.Close();
+        }
+
+        private static void ImportUserRoles(string importUserID)
+        {
+            var db = new NewOSUCCMEEntities();
+            var olddb = new OldOSUCCMEEntities();
+            var Roles = (from u in olddb.aspnet_Roles
+                         select u);
+
+            TextWriter tw = new StreamWriter("UserRolesLog.txt");
+
+            var Total = Roles.Count();
+            Console.Write("Importing User Roles - Starting ");
+            Console.WriteLine(Total + " to Process");
+            var Index = 1;
+            foreach (var Role in Roles)
+            {
+                var NewRole = GetNewRole(db, Role.RoleName);
+
+                Console.WriteLine("Processing : " + Role.RoleName + " (" + Index + "/" + Total + ") ");
+                var TotalUser = Role.aspnet_Users.Count();
+                Console.WriteLine(TotalUser + " users to Process");
+                foreach (var User in Role.aspnet_Users)
+                {
+                    try
+                    {
+                        var NewUser = (from u in db.UserProfiles
+                                       where u.UserID == User.UserId.ToString() && u.IsDeleted == false
+                                       select u).FirstOrDefault();
+                        if (NewUser != null)
+                        {
+                            NewUser.AspNetUsers.AspNetRoles.Add(NewRole);
+                            db.SaveChanges();
+                        }
+                        Console.WriteLine(User.UserName + " - Processed");
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine("");
+                        Console.WriteLine(" - " + e.Message);
+                        tw.WriteLineAsync(e.Message);
+                    }
+                }
+            }
+            tw.Close();
+        }
+
+        private static AspNetRoles GetNewRole(NewOSUCCMEEntities db, string OldRoleName)
+        {
+            var NewRoleId = "";
+            switch (OldRoleName)
+            {
+                case "Administrator":
+                    {
+                        NewRoleId = "WebsiteAdmin";
+                        break;
+                    }
+                case "ConferenceSuperAdmin":
+                    {
+                        NewRoleId = "ConferenceAdmin";
+                        break;
+                    }
+                case "EnduringSuperAdmin":
+                    {
+                        NewRoleId = "EnduringMaterialAdmin";
+                        break;
+                    }
+                case "HospitalAdmin":
+                    {
+                        NewRoleId = "IndividualHospitalAdmin";
+                        break;
+                    }
+                case "HospitalSuperAdmin":
+                    {
+                        NewRoleId = "HospitalAdmin";
+                        break;
+                    }
+                case "RSSeriesAdmin":
+                    {
+                        NewRoleId = "IndividualRSSeriesAdmin";
+                        break;
+                    }
+                case "RSSeriesSuperAdmin":
+                    {
+                        NewRoleId = "RSSeriesAdmin";
+                        break;
+                    }
+                case "SuperAdmin":
+                    {
+                        NewRoleId = "MasterAdmin";
+                        break;
+                    }
+                case "WebcastSuperAdmin":
+                    {
+                        NewRoleId = "WebcastAdmin";
+                        break;
+                    }
+                default:
+                    {
+                        return null;
+                    }
+            }
+
+            if (NewRoleId != "")
+            {
+                return (from r in db.AspNetRoles
+                        where r.Id == NewRoleId
+                        select r).FirstOrDefault();
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        private static string GetEmailFrequency(int FrequencyID)
+        {
+            switch (FrequencyID)
+            {
+                case 1:
+                    {
+                        return "Monthly";
+                    }
+                case 2:
+                    {
+                        return "Every Two Months";
+                    }
+                case 3:
+                    {
+                        return "Every Three Months";
+                    }
+                default:
+                    {
+                        return "Never";
+                    }
+            }
+        }
+
+        private static string GetEmailType(string Type)
+        {
+            if (Type == "Conferences")
+            {
+                return "ConferenceNewsletters";
+            }
+            else
+            {
+                return "WebcastNewsletters";
             }
         }
 
@@ -144,8 +401,8 @@ namespace OSUCCMEDataImport.Jobs
             if (User.SpecialtyID != null)
             {
                 var NewID = (from x in db.SpecialtyMapping
-                                  where x.OldID == User.SpecialtyID
-                                  select x.NewID).FirstOrDefault();
+                             where x.OldID == User.SpecialtyID
+                             select x.NewID).FirstOrDefault();
                 if (NewID != null)
                 {
                     return NewID.Value;
@@ -166,8 +423,8 @@ namespace OSUCCMEDataImport.Jobs
             if (User.UserDegreeID != null)
             {
                 var NewID = (from x in db.TitleMapping
-                                  where x.OldID == User.UserDegreeID
-                                  select x.NewID).FirstOrDefault();
+                             where x.OldID == User.UserDegreeID
+                             select x.NewID).FirstOrDefault();
                 if (NewID != null)
                 {
                     return NewID.Value;
@@ -188,8 +445,8 @@ namespace OSUCCMEDataImport.Jobs
             if (User.ProfessionID != null)
             {
                 var NewID = (from x in db.TitleMapping
-                                  where x.OldID == User.ProfessionID
-                                  select x.NewID).FirstOrDefault();
+                             where x.OldID == User.ProfessionID
+                             select x.NewID).FirstOrDefault();
                 if (NewID != null)
                 {
                     return NewID.Value;
@@ -210,9 +467,9 @@ namespace OSUCCMEDataImport.Jobs
             if (User.PrefixID != null)
             {
                 var NewID = (from x in db.TitleMapping
-                                  where x.OldID == User.PrefixID
-                                  select x.NewID).FirstOrDefault();
-                if(NewID != null)
+                             where x.OldID == User.PrefixID
+                             select x.NewID).FirstOrDefault();
+                if (NewID != null)
                 {
                     return NewID.Value;
                 }
@@ -220,7 +477,7 @@ namespace OSUCCMEDataImport.Jobs
                 {
                     throw (new Exception(User.Email + " " + User.UserID + " Error Importing - Prefix ID No Match"));
                 }
-                    }
+            }
             else
             {
                 throw (new Exception(User.Email + " " + User.UserID + " Error Importing - Prefix ID Blank"));
@@ -231,10 +488,10 @@ namespace OSUCCMEDataImport.Jobs
         {
             if (user.Username.Contains("@switchboxinc"))
             {
-                return false;
+                return true;
             }
 
-            return true;
+            return false;
         }
     }
 }

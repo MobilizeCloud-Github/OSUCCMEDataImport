@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="NewOSUCCMEModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="NewOSUCCMEModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="AspNetRoles">
           <Key>
             <PropertyRef Name="Id" />
@@ -592,6 +592,17 @@
           <Property Name="NumberCode" Type="int" Nullable="false" />
           <Property Name="PhoneCode" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="CreditNotifications">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EventID" Type="int" Nullable="false" />
+          <Property Name="EventType" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="UserID" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="SentOn" Type="datetime" Nullable="false" />
+          <Property Name="SentBy" Type="nvarchar" MaxLength="128" Nullable="false" />
+        </EntityType>
         <EntityType Name="Criteria">
           <Key>
             <PropertyRef Name="ID" />
@@ -782,6 +793,12 @@
           <Property Name="Completed" Type="int" />
           <Property Name="StartTimeStamp" Type="smalldatetime" />
           <Property Name="EndTimeStamp" Type="smalldatetime" />
+        </EntityType>
+        <EntityType Name="EmailFrequencies">
+          <Key>
+            <PropertyRef Name="Frequency" />
+          </Key>
+          <Property Name="Frequency" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="EmailHistory">
           <Key>
@@ -3504,15 +3521,15 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_ContentManagementSystem_UserProfiles">
-          <End Role="UserProfiles" Type="Self.UserProfiles" Multiplicity="1" />
-          <End Role="ContentManagementSystem" Type="Self.ContentManagementSystem" Multiplicity="*" />
+        <Association Name="FK_CreditNotifications_EventTypes">
+          <End Role="EventTypes" Type="Self.EventTypes" Multiplicity="1" />
+          <End Role="CreditNotifications" Type="Self.CreditNotifications" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="UserProfiles">
-              <PropertyRef Name="UserID" />
+            <Principal Role="EventTypes">
+              <PropertyRef Name="EventType" />
             </Principal>
-            <Dependent Role="ContentManagementSystem">
-              <PropertyRef Name="LastUpdatedBy" />
+            <Dependent Role="CreditNotifications">
+              <PropertyRef Name="EventType" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3641,6 +3658,18 @@
             </Principal>
             <Dependent Role="EmailHistory">
               <PropertyRef Name="EmailType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EmailPreferences_EmailFrequencies">
+          <End Role="EmailFrequencies" Type="Self.EmailFrequencies" Multiplicity="1" />
+          <End Role="EmailPreferences" Type="Self.EmailPreferences" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EmailFrequencies">
+              <PropertyRef Name="Frequency" />
+            </Principal>
+            <Dependent Role="EmailPreferences">
+              <PropertyRef Name="EmailFrequency" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -5933,6 +5962,7 @@
           <EntitySet Name="ConferenceWaitlistSettings" EntityType="Self.ConferenceWaitlistSettings" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ContentManagementSystem" EntityType="Self.ContentManagementSystem" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Countries" EntityType="Self.Countries" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CreditNotifications" EntityType="Self.CreditNotifications" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Criteria" EntityType="Self.Criteria" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Criteria23" EntityType="Self.Criteria23" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Criteria24" EntityType="Self.Criteria24" Schema="dbo" store:Type="Tables" />
@@ -5948,6 +5978,7 @@
           <EntitySet Name="DuplicateUserRunIgnoreRecords" EntityType="Self.DuplicateUserRunIgnoreRecords" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DuplicateUserRunRecords" EntityType="Self.DuplicateUserRunRecords" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DuplicateUserRuns" EntityType="Self.DuplicateUserRuns" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EmailFrequencies" EntityType="Self.EmailFrequencies" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EmailHistory" EntityType="Self.EmailHistory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EmailPreferences" EntityType="Self.EmailPreferences" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EmailQueueMessages" EntityType="Self.EmailQueueMessages" Schema="dbo" store:Type="Tables" />
@@ -6245,9 +6276,9 @@
             <End Role="UserProfiles" EntitySet="UserProfiles" />
             <End Role="ConferenceWaitlist" EntitySet="ConferenceWaitlist" />
           </AssociationSet>
-          <AssociationSet Name="FK_ContentManagementSystem_UserProfiles" Association="Self.FK_ContentManagementSystem_UserProfiles">
-            <End Role="UserProfiles" EntitySet="UserProfiles" />
-            <End Role="ContentManagementSystem" EntitySet="ContentManagementSystem" />
+          <AssociationSet Name="FK_CreditNotifications_EventTypes" Association="Self.FK_CreditNotifications_EventTypes">
+            <End Role="EventTypes" EntitySet="EventTypes" />
+            <End Role="CreditNotifications" EntitySet="CreditNotifications" />
           </AssociationSet>
           <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
@@ -6288,6 +6319,10 @@
           <AssociationSet Name="FK_EmailHistory_EmailTypes" Association="Self.FK_EmailHistory_EmailTypes">
             <End Role="EmailTypes" EntitySet="EmailTypes" />
             <End Role="EmailHistory" EntitySet="EmailHistory" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EmailPreferences_EmailFrequencies" Association="Self.FK_EmailPreferences_EmailFrequencies">
+            <End Role="EmailFrequencies" EntitySet="EmailFrequencies" />
+            <End Role="EmailPreferences" EntitySet="EmailPreferences" />
           </AssociationSet>
           <AssociationSet Name="FK_EmailPreferences_EmailTypes" Association="Self.FK_EmailPreferences_EmailTypes">
             <End Role="EmailTypes" EntitySet="EmailTypes" />
@@ -7038,8 +7073,7 @@
             <End Role="WebcastsViews" EntitySet="WebcastsViews" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="NewOSUCCMEModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -7899,6 +7933,7 @@
           <Property Name="EmailFrequency" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="LastUpdated" Type="DateTime" Precision="3" />
           <NavigationProperty Name="EmailTypes" Relationship="Self.FK_EmailPreferences_EmailTypes" FromRole="EmailPreferences" ToRole="EmailTypes" />
+          <NavigationProperty Name="EmailFrequencies" Relationship="NewOSUCCMEModel.FK_EmailPreferences_EmailFrequencies" FromRole="EmailPreferences" ToRole="EmailFrequencies" />
         </EntityType>
         <EntityType Name="EmailQueueMessages">
           <Key>
@@ -8639,6 +8674,7 @@
           <Property Name="EventType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="EventAdvertisers" Relationship="Self.FK_EventDisplays_EventTypes" FromRole="EventTypes" ToRole="EventAdvertisers" />
           <NavigationProperty Name="FacultyDisclosures" Relationship="Self.FK_FacultyDisclosures_EventTypes" FromRole="EventTypes" ToRole="FacultyDisclosures" />
+          <NavigationProperty Name="CreditNotifications" Relationship="NewOSUCCMEModel.FK_CreditNotifications_EventTypes" FromRole="EventTypes" ToRole="CreditNotifications" />
         </EntityType>
         <EntityType Name="FacultyDisclosureCommercialInterests">
           <Key>
@@ -14288,7 +14324,60 @@
             <End Role="WebcastPanels" EntitySet="WebcastPanels" />
             <End Role="WebcastSpeakers" EntitySet="WebcastSpeakers" />
           </AssociationSet>
+          <EntitySet Name="CreditNotifications" EntityType="NewOSUCCMEModel.CreditNotifications" />
+          <EntitySet Name="EmailFrequencies" EntityType="NewOSUCCMEModel.EmailFrequencies" />
+          <AssociationSet Name="FK_CreditNotifications_EventTypes" Association="NewOSUCCMEModel.FK_CreditNotifications_EventTypes">
+            <End Role="EventTypes" EntitySet="EventTypes" />
+            <End Role="CreditNotifications" EntitySet="CreditNotifications" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EmailPreferences_EmailFrequencies" Association="NewOSUCCMEModel.FK_EmailPreferences_EmailFrequencies">
+            <End Role="EmailFrequencies" EntitySet="EmailFrequencies" />
+            <End Role="EmailPreferences" EntitySet="EmailPreferences" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="CreditNotifications">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EventID" Type="Int32" Nullable="false" />
+          <Property Name="EventType" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="UserID" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="SentOn" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="SentBy" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="EventTypes" Relationship="NewOSUCCMEModel.FK_CreditNotifications_EventTypes" FromRole="CreditNotifications" ToRole="EventTypes" />
+        </EntityType>
+        <EntityType Name="EmailFrequencies">
+          <Key>
+            <PropertyRef Name="Frequency" />
+          </Key>
+          <Property Name="Frequency" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="EmailPreferences" Relationship="NewOSUCCMEModel.FK_EmailPreferences_EmailFrequencies" FromRole="EmailFrequencies" ToRole="EmailPreferences" />
+        </EntityType>
+        <Association Name="FK_CreditNotifications_EventTypes">
+          <End Type="NewOSUCCMEModel.EventTypes" Role="EventTypes" Multiplicity="1" />
+          <End Type="NewOSUCCMEModel.CreditNotifications" Role="CreditNotifications" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EventTypes">
+              <PropertyRef Name="EventType" />
+            </Principal>
+            <Dependent Role="CreditNotifications">
+              <PropertyRef Name="EventType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EmailPreferences_EmailFrequencies">
+          <End Type="NewOSUCCMEModel.EmailFrequencies" Role="EmailFrequencies" Multiplicity="1" />
+          <End Type="NewOSUCCMEModel.EmailPreferences" Role="EmailPreferences" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EmailFrequencies">
+              <PropertyRef Name="Frequency" />
+            </Principal>
+            <Dependent Role="EmailPreferences">
+              <PropertyRef Name="EmailFrequency" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -17609,6 +17698,25 @@
               <ScalarProperty Name="ID" ColumnName="WebcastSpeakerID" />
             </EndProperty>
           </AssociationSetMapping>
+          <EntitySetMapping Name="CreditNotifications">
+            <EntityTypeMapping TypeName="NewOSUCCMEModel.CreditNotifications">
+              <MappingFragment StoreEntitySet="CreditNotifications">
+                <ScalarProperty Name="SentBy" ColumnName="SentBy" />
+                <ScalarProperty Name="SentOn" ColumnName="SentOn" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="EventType" ColumnName="EventType" />
+                <ScalarProperty Name="EventID" ColumnName="EventID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EmailFrequencies">
+            <EntityTypeMapping TypeName="NewOSUCCMEModel.EmailFrequencies">
+              <MappingFragment StoreEntitySet="EmailFrequencies">
+                <ScalarProperty Name="Frequency" ColumnName="Frequency" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
