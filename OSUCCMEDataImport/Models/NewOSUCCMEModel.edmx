@@ -513,7 +513,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="None" Nullable="false" />
           <Property Name="ConferenceID" Type="int" Nullable="false" />
           <Property Name="StreamTitle" Type="nvarchar" MaxLength="256" Nullable="false" />
           <Property Name="StreamDescription" Type="nvarchar(max)" Nullable="false" />
@@ -7626,7 +7626,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="None" />
           <Property Name="ConferenceID" Type="Int32" Nullable="false" />
           <Property Name="StreamTitle" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="StreamDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />

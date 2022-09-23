@@ -50,7 +50,7 @@ namespace OSUCCMEDataImport
                             }
                         case "4":
                             {
-                                ConferenceJobs.Process();
+                                ConferenceJobs.Process(ImportUserID);
                                 break;
                             }
                         case "5":

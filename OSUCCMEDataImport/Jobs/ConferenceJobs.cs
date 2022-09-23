@@ -1,4 +1,5 @@
 ﻿using OldOSUDatabase.Models;
+using OSUCCMEDataImport.Common;
 using OSUCCMEDataImport.Models;
 using System;
 using System.IO;
@@ -10,144 +11,482 @@ namespace OSUCCMEDataImport.Jobs
     {
         public static void Process(string ImportUserID)
         {
-            Conferences();
+            Conferences(ImportUserID);
+            Console.WriteLine("");
+            Console.WriteLine("-----------------------------------");
+            Console.WriteLine("");
+            JointProviders();
+            Console.WriteLine("");
+            Console.WriteLine("-----------------------------------");
+            Console.WriteLine("");
+            ConferenceOptionGroup(ImportUserID);
+            Console.WriteLine("");
+            Console.WriteLine("-----------------------------------");
+            Console.WriteLine("");
+            ConferenceOptions(ImportUserID);
+            Console.WriteLine("");
+            Console.WriteLine("-----------------------------------");
+            Console.WriteLine("");
+            ConferencePrices(ImportUserID);
+            Console.WriteLine("");
+            Console.WriteLine("-----------------------------------");
+            Console.WriteLine("");
+            ConferenceRegistrations(ImportUserID);
+            Console.WriteLine("");
+            Console.WriteLine("-----------------------------------");
+            Console.WriteLine("");
+            ConferenceSpecialties(ImportUserID);
+            Console.WriteLine("");
+            Console.WriteLine("-----------------------------------");
+            Console.WriteLine("");
+            ConferenceStreams(ImportUserID);
+            Console.WriteLine("");
+            Console.WriteLine("-----------------------------------");
+            Console.WriteLine("");
+            ConferenceStreamViews(ImportUserID);
+            Console.WriteLine("");
+            Console.WriteLine("-----------------------------------");
+            Console.WriteLine("");
         }
 
-        private static void Conferences()
+        private static void Conferences(string ImportUserID)
         {
             var db = new NewOSUCCMEEntities();
             var olddb = new OldOSUCCMEEntities();
 
-            var ConferencesToImport = (from c in olddb.Conferences
-                                       select c).ToList();
-
             TextWriter tw = new StreamWriter("ConferencesImportLog.txt");
-            foreach (var c in ConferencesToImport)
+            try
             {
-                try
+                var ConferencesToImport = (from c in olddb.Conferences
+                                           where c.IsDeleted == false
+                                           select c).ToList();
+
+
+                foreach (var c in ConferencesToImport)
                 {
-                    var NewConference = new Models.Conferences()
+
+                    var Conference = new Models.Conferences()
                     {
                         ID = c.ID,
                         Title = c.Title,
-                        URL = "",
-                        Description = c.Description,
+                        URL = CommonFunctions.URLFriendly(c.Title),
+                        Description = c.Description ?? "",
                         Objectives = c.Objective,
-                        Agenda = "",
                         CEUs = "",
-                        Providership = "",
+                        Agenda = "",
                         StartDate = c.StartDate,
                         EndDate = c.EndDate,
-                        Credits = decimal.Parse(c.Credits.ToString() ?? "0"),
+                        Credits = decimal.Parse(c.Credits.ToString()),
                         IsAccredited = c.Accredited ?? false,
-                        RegisterForMIPS = ,
-                        LocationKnown = ,
-                        LocationName = ,
-                        LocationAddressLine1 = c.LocationAddress1,
-                        LocationAddressLine2 = c.LocationAddress2,
-                        LocationCity = c.LocationCity,
-                        LocationState = c.LocationState,
-                        LocationZipCode = c.LocationZip,
-                        Latitude = ,
-                        Longitude = ,
-                        Status = ,
-                        ContactName = ,
-                        ContactDepartment = ,
-                        ContactEmail = ,
-                        ContactPhone = ,
-                        MaxRegistrations = c.MaxRegistrations,
+                        LocationKnown = false,
+                        LearnerCompetence = c.ActivityGoalsChangeCompetence,
+                        LearnerCompetenceObjective = false,
+                        LearnerCompetenceSubjective = c.ToChangeCompetence,
+                        LearnerPerformance = c.ActivityGoalsChangePerformance,
+                        LearnerPerformanceObjective = false,
+                        LearnerPerformanceSubjective = c.ToChangePerformance,
+                        PatientHealth = c.ActivityGoalsChangePatientOutcomes,
+                        PatientHealthObjective = false,
+                        PatientHealthSubjective = c.ToChangePatientOutcomes,
+                        CommunityPopulationHealth = false,
+                        CommunityPopulationHealthObjective = false,
+                        CommunityPopulationHealthSubjective = false,
+                        ContactName = c.ContactName ?? "",
+                        ContactDepartment = c.ContactDepartment ?? "",
+                        ContactEmail = c.ContactEmail ?? "",
+                        ContactPhone = c.ContactPhone ?? "",
+                        ABMSPatientCareAndProceduralSkills = c.ABMSPatientCareAndProceduralSkills.Value,
+                        ABMSMedicalKnowledge = c.ABMSMedicalKnowledge.Value,
+                        ABMSPracticeBasedLearningAndImprovement = c.ABMSPracticeBasedLearningAndImprovement.Value,
+                        ABMSInterpersonalAndCommunicationSkills = c.ABMSInterpersonalAndCommunicationSkills.Value,
+                        ABMSProfessionalism = c.ABMSProfessionalism.Value,
+                        ABMSSystemsBasedPractice = c.ABMSSystemsBasedPractice.Value,
+                        IOMProvidePatientCenteredCare = c.IOMProvidePatientCenteredCare.Value,
+                        IOMWorkInInterdisciplinaryTeams = c.IOMWorkInInterdisciplinaryTeams.Value,
+                        IOMEmployEvidenceBasedPractice = c.IOMEmployEvidenceBasedPractice.Value,
+                        IOMApplyQualityImprovement = c.IOMApplyQualityImprovement.Value,
+                        IOMUtilizeInformatics = c.IOMUtilizeInformatics.Value,
+                        IECValueEthicsForInterprofessionalPractice = c.IECValuesEthicsForInterprofessionalPractice ?? false,
+                        IECRolesResponsibilities = c.IECRolesResponsibilities.Value,
+                        IECInterprofessionalCommunication = c.IECInterprofessionalCommunication.Value,
+                        IECTeamsAndTeamwork = c.IECTeamsAndTeamwork.Value,
+                        OCCompetenciesOtherThanThoseListedWereAddressed = c.OCCompetenciesOtherThanThoseListedWereAddressed.Value,
+                        MaxRegistrations = c.MaxRegistrations ?? 0,
                         WaitingListEnabled = c.WaitListEnabled ?? false,
+                        //ExternalRegistrationButtonEnabled = ,
                         PublicRegistrationEnabled = c.PublicRegistration ?? false,
                         RegistrationNoticeEmails = c.RegistrationNoticeEmail,
                         AdditionalInformation = c.AdditionalInfo,
                         SendCreditNotifications = c.SendCreditNotifications,
-                        CreatedOn = c.CreatedDate.Value,
+                        CreatedOn = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time")),
                         CreatedBy = c.CreatingUserID,
-                        LastUpdatedOn = DateTime.Now,
-                        LastUpdatedBy = ,
-                        IsDeleted = c.IsDeleted ?? false,
-                        ABMSPatientCareAndProceduralSkills = c.ABMSPatientCareAndProceduralSkills ?? false,
-                        ABMSMedicalKnowledge = c.ABMSMedicalKnowledge ?? false,
-                        ABMSPracticeBasedLearningAndImprovement = c.ABMSPracticeBasedLearningAndImprovement ?? false,
-                        ABMSInterpersonalAndCommunicationSkills = c.ABMSInterpersonalAndCommunicationSkills ?? false,
-                        ABMSProfessionalism = c.ABMSProfessionalism ?? false,
-                        ABMSSystemsBasedPractice = c.ABMSSystemsBasedPractice ?? false,
-                        IOMProvidePatientCenteredCare = c.IOMProvidePatientCenteredCare ?? false,
-                        IOMWorkInInterdisciplinaryTeams = c.IOMWorkInInterdisciplinaryTeams ?? false,
-                        IOMEmployEvidenceBasedPractice = c.IOMEmployEvidenceBasedPractice ?? false,
-                        IOMApplyQualityImprovement = c.IOMApplyQualityImprovement ?? false,
-                        IOMUtilizeInformatics = c.IOMUtilizeInformatics ?? false,
-                        IECValueEthicsForInterprofessionalPractice = c.IECValuesEthicsForInterprofessionalPractice ?? false,
-                        IECRolesResponsibilities = c.IECRolesResponsibilities ?? false,
-                        IECInterprofessionalCommunication = c.IECInterprofessionalCommunication ?? false,
-                        IECTeamsAndTeamwork = c.IECTeamsAndTeamwork ?? false,
-                        OCCompetenciesOtherThanThoseListedWereAddressed = c.OCCompetenciesOtherThanThoseListedWereAddressed ?? false,
-                        LocationCountry = ,
-                        LocationProvinceRegion = ,
-                        LocationPostalCode = c.LocationZip,
-                        ExternalRegistrationButtonEnabled = ,
-                        PublicRegistrationLinkText = ,
-                        PublicRegistrationLinkUrl = ,
                         ConferenceType = c.ConferenceType,
-                        MOCPoints = ,
-                        IsMOCEligible = ,
-                        ShowContactInformation = ,
-                        LearnerCompetence = ,
-                        LearnerCompetenceObjective = ,
-                        LearnerCompetenceSubjective = ,
-                        LearnerPerformance = ,
-                        LearnerPerformanceObjective = ,
-                        LearnerPerformanceSubjective = ,
-                        PatientHealth = ,
-                        PatientHealthObjective = ,
-                        PatientHealthSubjective = ,
-                        CommunityPopulationHealth = ,
-                        CommunityPopulationHealthObjective = ,
-                        CommunityPopulationHealthSubjective = ,
-
+                        IsDeleted = c.IsDeleted ?? false
                     };
-                    db.Conferences.Add(NewConference);
-                    db.SaveChanges();
 
+                    if (c.IsCancelled == true)
+                    {
+                        Conference.Status = "Canceled";
+                    }
+                    else if (c.PublicViewable == true)
+                    {
+                        Conference.Status = "Occurring";
+                    }
+                    else if (c.PublicViewable == false)
+                    {
+                        Conference.Status = "Hidden";
+                    }
+                    else if (c.IsCancelled == false && c.PublicViewable == null)
+                    {
+                        Conference.Status = "Unpublished";
+                    }
 
+                    if (c.isJointSponsor == true)
+                    {
+                        Conference.Providership = "Joint";
+                    }
+                    else
+                    {
+                        Conference.Providership = "Direct";
+                    }
+
+                    if (Conference.ExternalRegistrationButtonEnabled == true)
+                    {
+                        //Conference.PublicRegistrationLinkUrl = c.PublicRegistrationLinkUrl;
+                        //Conference.PublicRegistrationLinkText = c.PublicRegistrationLinkText;
+                    }
+                    else
+                    {
+                        Conference.PublicRegistrationLinkUrl = "";
+                        Conference.PublicRegistrationLinkText = "";
+                    }
+
+                    Conference.LocationName = c.Location ?? "";
+                    Conference.LocationAddressLine1 = c.LocationAddress1 ?? "";
+                    Conference.LocationAddressLine2 = c.LocationAddress2 ?? "";
+                    //Conference.LocationCountry = c.LocationCountry ?? "";
+                    Conference.LocationCity = c.LocationCity ?? "";
+                    Conference.LocationState = c.LocationState ?? "";
+                    Conference.LocationZipCode = c.LocationZip ?? "";
+
+                    db.Conferences.Add(Conference);
                 }
-                catch (Exception e)
-                {
-                    tw.WriteLine(e.Message);
-                }
-
-
+                db.SaveChanges();
             }
-        }
-
-        private static void SaveUserBoards(NewOSUCCMEEntities db, Users User)
-        {
-
-        }
-
-        private static int GetMappedSpecialtyID(NewOSUCCMEEntities db, Users User)
-        {
-
-        }
-
-        private static int GetMappedDegreeID(NewOSUCCMEEntities db, Users User)
-        {
-
-        }
-
-        private static int GetMappedProfessionID(NewOSUCCMEEntities db, Users User)
-        {
-
-        }
-
-        private static bool CheckIfSwitchbox(Users user)
-        {
-            if (user.Username.Contains("@switchboxinc"))
+            catch (Exception e)
             {
-                return false;
+                tw.WriteLine(e.Message);
             }
 
-            return true;
+            tw.Close();
+        }
+
+        private static void JointProviders()
+        {
+            var db = new NewOSUCCMEEntities();
+            var olddb = new OldOSUCCMEEntities();
+
+            try
+            {
+
+
+                var ConferencesWithJointProvidership = (from c in db.Conferences
+                                                        where c.Providership == "Joint"
+                                                        select c).ToList();
+
+                foreach (var c in ConferencesWithJointProvidership)
+                {
+                    var JointProviderToImport = (from j in olddb.Conferences
+                                                 where j.ID == c.ID
+                                                 select j.JointSponsor).FirstOrDefault();
+
+                    if (!string.IsNullOrWhiteSpace(JointProviderToImport))
+                    {
+                        var JointProviders = new ConferenceJointProviders()
+                        {
+                            ConferenceID = c.ID,
+                            Name = JointProviderToImport
+                        };
+                        db.ConferenceJointProviders.Add(JointProviders);
+
+                    }
+                }
+                db.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("");
+                Console.WriteLine(" - " + e.Message);
+            }
+        }
+
+        private static void ConferenceOptionGroup(string ImportUserID)
+        {
+            var db = new NewOSUCCMEEntities();
+            var olddb = new OldOSUCCMEEntities();
+
+            try
+            {
+                var ConferencesOptionGroupsToImport = (from c in olddb.ConferenceExtraGroups
+                                                       where c.IsDeleted == false
+                                                       select c).ToList();
+
+                foreach (var c in ConferencesOptionGroupsToImport)
+                {
+                    var Option = new ConferenceOptionsGroups()
+                    {
+                        ConferenceID = c.ID,
+                        Name = c.Title,
+                        Description = c.Description,
+                        Required = false,
+                        MaxOneSelection = c.SingularChoice ?? false,
+                        Rank = c.Order ?? 0,
+                        CreatedOn = DateTime.Now,
+                        CreatedBy = ImportUserID
+                    };
+                    db.ConferenceOptionsGroups.Add(Option);
+
+                }
+                db.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("");
+                Console.WriteLine(" - " + e.Message);
+            }
+        }
+
+        private static void ConferenceOptions(string ImportUserID)
+        {
+            var db = new NewOSUCCMEEntities();
+            var olddb = new OldOSUCCMEEntities();
+
+            try
+            {
+                var ConferencesOptionsGroups = (from c in olddb.ConferenceExtraGroups
+                                                where c.IsDeleted == false
+                                                select c).ToList();
+
+                foreach (var c in ConferencesOptionsGroups)
+                {
+                    var ConferenceOptionsToImport = (from ce in olddb.ConferenceExtras
+                                                     where ce.ConferenceID == c.ConferenceID
+                                                     select ce).ToList();
+                    foreach (var o in ConferenceOptionsToImport)
+                    {
+                        var Option = new ConferenceOptions()
+                        {
+                            GroupID = c.ID,
+                            Name = o.Title,
+                            Description = o.Description,
+                            Price = decimal.Parse(o.Price),
+                            Rank = o.Order ?? 1,
+                            CreatedOn = DateTime.Now,
+                            CreatedBy = ImportUserID
+                        };
+                        db.ConferenceOptions.Add(Option);
+
+                    }
+                    db.SaveChanges();
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("");
+                Console.WriteLine(" - " + e.Message);
+            }
+        }
+
+        private static void ConferencePrices(string ImportUserID)
+        {
+            var db = new NewOSUCCMEEntities();
+            var olddb = new OldOSUCCMEEntities();
+
+            try
+            {
+                var ConferencesPrices = (from c in olddb.ConferencePrices
+                                         where c.IsDeleted == false
+                                         select c).ToList();
+
+                foreach (var c in ConferencesPrices)
+                {
+                    if (c.ConfID != null)
+                    {
+                        var Price = new Models.ConferencePrices()
+                        {
+                            ConferenceID = c.ConfID ?? 0,
+                            Tier = c.Name,
+                            Price = decimal.Parse(c.Value),
+                            Rank = c.Order ?? 1,
+                            CreatedOn = DateTime.Now,
+                            CreatedBy = ImportUserID
+                        };
+                        db.ConferencePrices.Add(Price);
+
+                    }
+                }
+                db.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("");
+                Console.WriteLine(" - " + e.Message);
+            }
+        }
+
+        private static void ConferenceRegistrations(string ImportUserID)
+        {
+            var db = new NewOSUCCMEEntities();
+            var olddb = new OldOSUCCMEEntities();
+
+            try
+            {
+                var ConferenceRegistrationsToImport = (from c in olddb.ConferenceRegistrations
+                                                       where c.IsDeleted == false && c.ConferenceID != null
+                                                       select c).ToList();
+
+                foreach (var r in ConferenceRegistrationsToImport)
+                {
+                    if (r.ConferenceID != null)
+                    {
+                        var Registration = new Models.ConferenceRegistrations()
+                        {
+                            ConferenceID = r.ConferenceID ?? 0,
+                            UserID = r.UserID,
+                            PaymentMethod = r.PaymentType,
+                            PaymentAmount = decimal.Parse(r.PaymentAmount),
+                            IsCanceled = r.IsCancelled,
+                            IsDeleted = false,
+                            ConfirmationNumber = r.Confirmation,
+                            EvaluationSent = r.EvaluationSent ?? false,
+                            CreatedOn = DateTime.Now,
+                            CreatedBy = ImportUserID,
+                            FileAccessEnabled = true
+                        };
+                        db.ConferenceRegistrations.Add(Registration);
+                    }
+
+                }
+                db.SaveChanges();
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("");
+                Console.WriteLine(" - " + e.Message);
+            }
+        }
+
+        private static void ConferenceSpecialties(string ImportUserID)
+        {
+            var db = new NewOSUCCMEEntities();
+            var olddb = new OldOSUCCMEEntities();
+
+            try
+            {
+                //var ConferenceRegistrationsToImport = (from c in olddb.conference
+                //                                       where c.IsDeleted == false && c.ConferenceID != null
+                //                                       select c).ToList();
+
+                //foreach (var r in ConferenceRegistrationsToImport)
+                //{
+                //    if (r.ConferenceID != null)
+                //    {
+                //        var Registration = new Models.ConferenceRegistrations()
+                //        {
+                //            ConferenceID = r.ConferenceID ?? 0,
+                //            UserID = r.UserID,
+                //            PaymentMethod = r.PaymentType,
+                //            PaymentAmount = decimal.Parse(r.PaymentAmount),
+                //            IsCanceled = r.IsCancelled,
+                //            IsDeleted = false,
+                //            ConfirmationNumber = r.Confirmation,
+                //            EvaluationSent = r.EvaluationSent ?? false,
+                //            CreatedOn = DateTime.Now,
+                //            CreatedBy = ImportUserID,
+                //            FileAccessEnabled = true
+                //        };
+                //        db.ConferenceRegistrations.Add(Registration);
+                //    }
+
+                //}
+                //db.SaveChanges();
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("");
+                Console.WriteLine(" - " + e.Message);
+            }
+        }
+
+        private static void ConferenceStreams(string ImportUserID)
+        {
+            var db = new NewOSUCCMEEntities();
+            var olddb = new OldOSUCCMEEntities();
+
+            try
+            {
+                var ConferenceStreamsToImport = (from c in olddb.ConferenceStreams
+                                                 where c.IsDeleted == false
+                                                 select c).ToList();
+
+                foreach (var c in ConferenceStreamsToImport)
+                {
+
+                    var Stream = new Models.ConferenceStreams()
+                    {
+                        ID = c.ID,
+                        ConferenceID = c.ConferenceID,
+                        StreamTitle = c.StreamTitle,
+                        StreamDescription = c.StreamDescription,
+                        StreamURL = c.StreamURL,
+                        StartDateTime = c.StartDateTime,
+                        EndDateTime = c.EndDateTime,
+                        IsDeleted = false
+                    };
+                    db.ConferenceStreams.Add(Stream);
+
+                }
+                db.SaveChanges();
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("");
+                Console.WriteLine(" - " + e.Message);
+            }
+        }
+
+        private static void ConferenceStreamViews(string ImportUserID)
+        {
+            var db = new NewOSUCCMEEntities();
+            var olddb = new OldOSUCCMEEntities();
+
+            try
+            {
+                var ConferenceStreamViewToImport = (from c in olddb.ConferenceStreamViews
+                                                    select c).ToList();
+
+                foreach (var c in ConferenceStreamViewToImport)
+                {
+                    var View = new Models.ConferenceStreamViews()
+                    {
+                        ConferenceID = c.ConferenceID,
+                        ConferenceStreamID = c.ConferenceStreamID,
+                        UserID = c.UserID,
+                        TimeStamp = c.TimeStamp
+                    };
+                    db.ConferenceStreamViews.Add(View);
+
+                }
+                db.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("");
+                Console.WriteLine(" - " + e.Message);
+            }
         }
     }
 }
