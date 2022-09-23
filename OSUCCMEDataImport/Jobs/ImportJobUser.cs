@@ -25,7 +25,8 @@ namespace OSUCCMEDataImport.Jobs
                 TwoFactorEnabled = false,
                 LockoutEnabled = false,
                 AccessFailedCount = 0,
-                UserName = "ccmeadmin@osumc.edu"
+                UserName = "ccmeadmin@osumc.edu",
+                PasswordHashUpdated = false
             };
             db.AspNetUsers.Add(SystemUserLogin);
             db.SaveChanges();
@@ -124,7 +125,8 @@ namespace OSUCCMEDataImport.Jobs
                 OSUID = "",
                 NationalProviderIdentifier = "",
                 AnnualFacultyDisclosureOverrideEnabled = false,
-                AnnualFacultyDisclosureAccess = false
+                AnnualFacultyDisclosureAccess = false,
+                PasswordHashUpdated = false
             };
 
             db.UserProfiles.Add(ImportUser);
