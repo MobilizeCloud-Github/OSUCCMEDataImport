@@ -1567,7 +1567,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="None" />
           <Property Name="HospitalName" Type="nvarchar" MaxLength="256" Nullable="false" />
           <Property Name="MasterContactEmail" Type="nvarchar" MaxLength="256" />
           <Property Name="EmailContains" Type="nvarchar(max)" />
@@ -8770,7 +8770,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="None" />
           <Property Name="HospitalName" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="MasterContactEmail" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
           <Property Name="EmailContains" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
