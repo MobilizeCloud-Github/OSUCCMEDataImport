@@ -736,6 +736,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="FreshDB.sql" />
     <Content Include="Indentity Tables.txt" />
     <Content Include="Models\NewOSUCCMEModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

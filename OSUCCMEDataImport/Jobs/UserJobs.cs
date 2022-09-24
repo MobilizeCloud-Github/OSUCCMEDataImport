@@ -32,9 +32,50 @@ namespace OSUCCMEDataImport.Jobs
             var db = new NewOSUCCMEEntities();
             var olddb = new OldOSUCCMEEntities();
 
+            db.Configuration.AutoDetectChangesEnabled = false;
+            olddb.Configuration.AutoDetectChangesEnabled = false;
+
+            Console.WriteLine("Starting User Profile Import");
             var UsersToImport = (from u in olddb.Users
-                                 where u.IsDeleted == false
-                                 select u);
+                                 join m in olddb.aspnet_Membership
+                                 on u.UserID equals m.UserId.ToString()
+                                 where u.IsDeleted == false && m != null
+                                 select new
+                                 {
+                                     u.Username,
+                                     u.UserID,
+                                     u.FirstName,
+                                     u.LastName,
+                                     u.MiddleName,
+                                     u.ProfessionID,
+                                     u.UserDegreeID,
+                                     u.SpecialtyID,
+                                     u.PrefixID,
+                                     u.BusinessPhone,
+                                     u.BusinessPhoneExtension,
+                                     u.DateOfBirth,
+                                     u.IsABIM,
+                                     u.IsDeceased,
+                                     u.IsDeleted,
+                                     u.FaxNumber,
+                                     u.SpecialNeeds,
+                                     u.Department,
+                                     u.NameTag,
+                                     u.MailingAddress1,
+                                     u.MailingAddress2,
+                                     u.MailingCity,
+                                     u.MailingState,
+                                     u.MailingZip,
+                                     u.MailingCountry,
+                                     u.CreatedDate,
+                                     u.LastAccessed,
+                                     u.ABIMDiplomatNumber,
+                                     m.Password,
+                                     m.PasswordFormat,
+                                     m.PasswordSalt
+                                 }).ToList();
+
+            Console.WriteLine("Old User Prfoiles Selected");
 
             TextWriter tw = new StreamWriter("UsersToImportLog.txt");
 
@@ -50,43 +91,65 @@ namespace OSUCCMEDataImport.Jobs
                                  select x).ToList();
 
             var MappedTitle = (from x in db.TitleMapping
-                                 select x).ToList();
+                               select x).ToList();
 
             var MappedProfessions = (from x in db.ProfessionMapping
-                                 select x).ToList();
+                                     select x).ToList();
 
 
             foreach (var User in UsersToImport)
             {
-                Console.Write("Processing : " + User.Username + " (" + Index + "/" + Total + ") ");
-                Guid OldUserID = new Guid(User.UserID);
-                var OldUserLogin = (from u in olddb.aspnet_Membership
-                                    where u.UserId == OldUserID
-                                    select u).FirstOrDefault();
-
-                if (!CheckIfSwitchbox(User))
+                Console.Write("Processing : (" + Index + "/" + Total + ") " + User.Username + " ");
+                if (IsValidEmail(User.Username))
                 {
-
-                    if (OldUserLogin != null)
+                    if (!CheckIfSwitchbox(User.Username))
                     {
                         try
                         {
 
-                            var NewUserLogin = new AspNetUsers()
-                            {
-                                Id = User.UserID,
-                                Email = User.Username,
-                                EmailConfirmed = false,
-                                PasswordHash = OldUserLogin.Password + '|' + OldUserLogin.PasswordFormat + '|' + OldUserLogin.PasswordSalt,
-                                SecurityStamp = Guid.NewGuid().ToString(),
-                                PhoneNumberConfirmed = false,
-                                TwoFactorEnabled = false,
-                                LockoutEnabled = false,
-                                AccessFailedCount = 0,
-                                UserName = User.Username,
-                                PasswordHashUpdated = false
-                            };
-                            db.AspNetUsers.Add(NewUserLogin);                            
+                            //var NewUserLogin = new AspNetUsers()
+                            //{
+                            //    Id = User.UserID,
+                            //    Email = User.Username,
+                            //    EmailConfirmed = false,
+                            //    PasswordHash = OldUserLogin.Password + '|' + OldUserLogin.PasswordFormat + '|' + OldUserLogin.PasswordSalt,
+                            //    SecurityStamp = Guid.NewGuid().ToString(),
+                            //    PhoneNumberConfirmed = false,
+                            //    TwoFactorEnabled = false,
+                            //    LockoutEnabled = true,
+                            //    AccessFailedCount = 0,
+                            //    UserName = User.Username,
+                            //    PasswordHashUpdated = false
+                            //};
+                            //db.AspNetUsers.Add(NewUserLogin);
+
+                            var SQLNewUser = @"INSERT INTO [dbo].[AspNetUsers](
+                                [Id]
+                               ,[Email]
+                               ,[EmailConfirmed]
+                               ,[PasswordHash]
+                               ,[SecurityStamp]
+                               ,[PhoneNumberConfirmed]
+                               ,[TwoFactorEnabled]
+                               ,[LockoutEnabled]
+                               ,[AccessFailedCount]
+                               ,[UserName]
+                               ,[PasswordHashUpdated])
+                         VALUES
+                               ('" + User.UserID + @"'
+                               ,'" + User.Username + @"'
+                               , 0
+                               ,'" + User.Password + '|' + User.PasswordFormat + '|' + User.PasswordSalt + @"'
+                               ,'" + Guid.NewGuid().ToString() + @"'
+                               , 0
+                               , 0
+                               , 1
+                               , 0
+                               ,'" + User.Username + @"'
+                               ,0)";
+                            var Status = db.Database.ExecuteSqlCommand(SQLNewUser);
+
+
 
                             Console.Write(" - Login Created");
 
@@ -94,18 +157,18 @@ namespace OSUCCMEDataImport.Jobs
                             {
                                 UserID = User.UserID,
                                 Email = User.Username,
-                                TitleID = GetMappedTitleID(db, MappedTitle, User),
+                                TitleID = GetMappedTitleID(db, MappedTitle, User.PrefixID, User.UserID, User.Username),
                                 FirstName = User.FirstName ?? "",
                                 MiddleName = User.MiddleName ?? "",
                                 LastName = User.LastName ?? "",
-                                ProfessionID = GetMappedProfessionID(db, MappedProfessions,User),
-                                DegreeID = GetMappedDegreeID(db, MappedDegrees, User),
+                                ProfessionID = GetMappedProfessionID(db, MappedProfessions, User.ProfessionID, User.UserID, User.Username),
+                                DegreeID = GetMappedDegreeID(db, MappedDegrees, User.UserDegreeID, User.UserID, User.Username),
                                 TraineeType = "",
-                                SpecialtyID = GetMappedSpecialtyID(db, MappedSpecialties, User),
-                                Phone = User.BusinessPhone ?? "",
-                                PhoneExtension = User.BusinessPhoneExtension ?? "",
+                                SpecialtyID = GetMappedSpecialtyID(db, MappedSpecialties, User.SpecialtyID, User.UserID, User.Username),
+                                Phone = GetTrimedString(User.BusinessPhone, 50),
+                                PhoneExtension = GetTrimedString(User.BusinessPhoneExtension, 50),
                                 Fax = User.FaxNumber ?? "",
-                                SpecialNeeds = User.SpecialNeeds ?? "",
+                                SpecialNeeds = GetTrimedString(User.SpecialNeeds, 256),
                                 Department = User.Department ?? "",
                                 NameTag = User.NameTag ?? "",
                                 Address1 = User.MailingAddress1 ?? "",
@@ -123,30 +186,32 @@ namespace OSUCCMEDataImport.Jobs
                                 IsBoardCertifiedPhysician = User.IsABIM
                             };
 
-                            if(User.MailingCountry == "1")
+                            var MailingCountry = User.MailingCountry;
+
+                            if (MailingCountry == "1")
                             {
-                                User.MailingCountry = "US";
+                                MailingCountry = "US";
                             }
-                            if(User.MailingCountry == "")
+                            if (MailingCountry == "")
                             {
-                                User.MailingCountry = "PK";
+                                MailingCountry = "PK";
                             }
-                            if (User.MailingCountry == "None")
+                            if (MailingCountry == "None")
                             {
-                                User.MailingCountry = "PE";
+                                MailingCountry = "PE";
                             }
-                            if (User.MailingCountry == "United States")
+                            if (MailingCountry == "United States")
                             {
-                                User.MailingCountry = "US";
+                                MailingCountry = "US";
                             }
 
-                            if (User.MailingCountry != "US")
+                            if (MailingCountry != "US")
                             {
                                 NewUser.State = "";
                                 NewUser.ZipCode = "";
                                 NewUser.ProvinceRegion = User.MailingState;
                                 NewUser.PostalCode = User.MailingZip ?? "";
-                                NewUser.Country = User.MailingCountry;
+                                NewUser.Country = User.MailingCountry.Trim();
                             }
                             else
                             {
@@ -165,7 +230,7 @@ namespace OSUCCMEDataImport.Jobs
 
                             if (NewUser.IsBoardCertifiedPhysician == true)
                             {
-                                SaveUserBoards(db, User);
+                                SaveUserBoards(db, User.ABIMDiplomatNumber, User.UserID);
                                 Console.Write(" - Boards Saved");
                             }
 
@@ -180,19 +245,59 @@ namespace OSUCCMEDataImport.Jobs
                     }
                     else
                     {
-                        Console.WriteLine(" - No Membership Account");
-                        tw.WriteLineAsync(User.Email + " " + User.UserID + " Error Importing - No Membership Account");
+                        Console.WriteLine(" - Old Switchbox Account");
+                        tw.WriteLineAsync(User.Username + " " + User.UserID + " Error Importing - Old Switchbox Account");
+
                     }
                 }
                 else
                 {
-                    Console.WriteLine(" - Old Switchbox Account");
-                    tw.WriteLineAsync(User.Email + " " + User.UserID + " Error Importing - Old Switchbox Account");
-                    
+                    Console.WriteLine(" - Invalid Email");
+                    tw.WriteLineAsync(User.Username + " " + User.UserID + " Error Importing - Invalid Email");
                 }
                 Index++;
             }
             tw.Close();
+        }
+
+        private static bool IsValidEmail(string email)
+        {
+            var trimmedEmail = email.Trim();
+
+            if (trimmedEmail.Contains("'"))
+            {
+                return false;
+            }
+
+            if (trimmedEmail.EndsWith("."))
+            {
+                return false;
+            }
+            try
+            {
+                var addr = new System.Net.Mail.MailAddress(email);
+                return addr.Address == trimmedEmail;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        private static string GetTrimedString(string Content, int Length)
+        {
+            if(string.IsNullOrWhiteSpace(Content))
+            {
+                return "";
+            }
+            else if(Content.Length <= Length)
+            {
+                return Content.Trim();
+            }
+            else
+            {
+                return Content.Trim().Substring(0, Length).Trim();
+            }
         }
 
         private static void ImportUserEmailPreferences(string importUserID)
@@ -418,24 +523,24 @@ namespace OSUCCMEDataImport.Jobs
             }
         }
 
-        private static void SaveUserBoards(NewOSUCCMEEntities db, Users User)
+        private static void SaveUserBoards(NewOSUCCMEEntities db, string ABIMDiplomatNumber, string UserID)
         {
             var UserBoard = new UserBoardIdentificationNumbers()
             {
-                UserProfileID = User.UserID,
+                UserProfileID = UserID,
                 BoardID = 9,
-                IdentificationNumber = User.ABIMDiplomatNumber
+                IdentificationNumber = ABIMDiplomatNumber
             };
             db.UserBoardIdentificationNumbers.Add(UserBoard);
             db.SaveChanges();
         }
 
-        private static int GetMappedSpecialtyID(NewOSUCCMEEntities db, List<SpecialtyMapping> MappedSpecialties, Users User)
+        private static int GetMappedSpecialtyID(NewOSUCCMEEntities db, List<SpecialtyMapping> MappedSpecialties, int? SpecialtyID, string UserID, string Email)
         {
-            if (User.SpecialtyID != null)
+            if (SpecialtyID != null)
             {
                 var NewID = (from x in MappedSpecialties
-                             where x.OldID == User.SpecialtyID
+                             where x.OldID == SpecialtyID
                              select x.NewID).FirstOrDefault();
                 if (NewID != null)
                 {
@@ -443,7 +548,7 @@ namespace OSUCCMEDataImport.Jobs
                 }
                 else
                 {
-                    throw (new Exception(User.Email + " " + User.UserID + " Error Importing - Speciality ID No Match"));
+                    throw (new Exception(Email + " " + UserID + " Error Importing - Speciality ID No Match"));
                 }
             }
             else
@@ -452,12 +557,12 @@ namespace OSUCCMEDataImport.Jobs
             }
         }
 
-        private static int GetMappedDegreeID(NewOSUCCMEEntities db, List<DegreeMapping> MappedDegress, Users User)
+        private static int GetMappedDegreeID(NewOSUCCMEEntities db, List<DegreeMapping> MappedDegress, int? DegreeID, string UserID, string Email)
         {
-            if (User.UserDegreeID != null)
+            if (DegreeID != null)
             {
                 var NewID = (from x in MappedDegress
-                             where x.OldID == User.UserDegreeID
+                             where x.OldID == DegreeID
                              select x.NewID).FirstOrDefault();
                 if (NewID != null)
                 {
@@ -465,7 +570,7 @@ namespace OSUCCMEDataImport.Jobs
                 }
                 else
                 {
-                    throw (new Exception(User.Email + " " + User.UserID + " Error Importing - Degree ID No Match"));
+                    throw (new Exception(Email + " " + UserID + " Error Importing - Degree ID No Match"));
                 }
             }
             else
@@ -474,12 +579,12 @@ namespace OSUCCMEDataImport.Jobs
             }
         }
 
-        private static int GetMappedProfessionID(NewOSUCCMEEntities db, List<ProfessionMapping> MappedProfessions, Users User)
+        private static int GetMappedProfessionID(NewOSUCCMEEntities db, List<ProfessionMapping> MappedProfessions, int? ProfessionID, string UserID, string Email)
         {
-            if (User.ProfessionID != null)
+            if (ProfessionID != null)
             {
                 var NewID = (from x in MappedProfessions
-                             where x.OldID == User.ProfessionID
+                             where x.OldID == ProfessionID
                              select x.NewID).FirstOrDefault();
                 if (NewID != null)
                 {
@@ -487,7 +592,7 @@ namespace OSUCCMEDataImport.Jobs
                 }
                 else
                 {
-                    throw (new Exception(User.Email + " " + User.UserID + " Error Importing - Mapped ID No Match"));
+                    throw (new Exception(Email + " " + UserID + " Error Importing - Mapped ID No Match"));
                 }
             }
             else
@@ -496,12 +601,12 @@ namespace OSUCCMEDataImport.Jobs
             }
         }
 
-        private static int GetMappedTitleID(NewOSUCCMEEntities db, List<TitleMapping> MappedTitles, Users User)
+        private static int GetMappedTitleID(NewOSUCCMEEntities db, List<TitleMapping> MappedTitles, int? PrefixID, string UserID, string Email)
         {
-            if (User.PrefixID != null)
+            if (PrefixID != null)
             {
                 var NewID = (from x in MappedTitles
-                             where x.OldID == User.PrefixID
+                             where x.OldID == PrefixID
                              select x.NewID).FirstOrDefault();
                 if (NewID != null)
                 {
@@ -509,18 +614,18 @@ namespace OSUCCMEDataImport.Jobs
                 }
                 else
                 {
-                    throw (new Exception(User.Email + " " + User.UserID + " Error Importing - Prefix ID No Match"));
+                    throw (new Exception(Email + " " + UserID + " Error Importing - Prefix ID No Match"));
                 }
             }
             else
             {
-                throw (new Exception(User.Email + " " + User.UserID + " Error Importing - Prefix ID Blank"));
+                throw (new Exception(Email + " " + UserID + " Error Importing - Prefix ID Blank"));
             }
         }
 
-        private static bool CheckIfSwitchbox(Users user)
+        private static bool CheckIfSwitchbox(string Username)
         {
-            if (user.Username.Contains("@switchboxinc"))
+            if (Username.ToLower().Contains("switchboxinc"))
             {
                 return true;
             }

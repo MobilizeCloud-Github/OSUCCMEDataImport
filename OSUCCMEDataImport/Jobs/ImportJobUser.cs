@@ -13,6 +13,8 @@ namespace OSUCCMEDataImport.Jobs
         {
             var db = new NewOSUCCMEEntities();
 
+            db.Configuration.AutoDetectChangesEnabled = false;
+
             Console.WriteLine("Setting Up System and Import Users - Starting ");
             var SystemUserLogin = new AspNetUsers()
             {
