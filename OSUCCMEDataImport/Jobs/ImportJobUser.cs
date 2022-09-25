@@ -13,6 +13,8 @@ namespace OSUCCMEDataImport.Jobs
         {
             var db = new NewOSUCCMEEntities();
 
+            db.Configuration.AutoDetectChangesEnabled = false;
+
             Console.WriteLine("Setting Up System and Import Users - Starting ");
             var SystemUserLogin = new AspNetUsers()
             {
@@ -85,7 +87,8 @@ namespace OSUCCMEDataImport.Jobs
                 TwoFactorEnabled = false,
                 LockoutEnabled = false,
                 AccessFailedCount = 0,
-                UserName = "ccmeimport@osumc.edu"
+                UserName = "ccmeimport@osumc.edu",
+                PasswordHashUpdated = false
             };
             db.AspNetUsers.Add(ImportUserLogin);
             db.SaveChanges();
@@ -125,8 +128,7 @@ namespace OSUCCMEDataImport.Jobs
                 OSUID = "",
                 NationalProviderIdentifier = "",
                 AnnualFacultyDisclosureOverrideEnabled = false,
-                AnnualFacultyDisclosureAccess = false,
-                PasswordHashUpdated = false
+                AnnualFacultyDisclosureAccess = false
             };
 
             db.UserProfiles.Add(ImportUser);
