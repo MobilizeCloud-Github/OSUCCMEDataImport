@@ -384,33 +384,7 @@ namespace OSUCCMEDataImport.Jobs
 
             try
             {
-                //var ConferenceRegistrationsToImport = (from c in olddb.conference
-                //                                       where c.IsDeleted == false && c.ConferenceID != null
-                //                                       select c).ToList();
 
-                //foreach (var r in ConferenceRegistrationsToImport)
-                //{
-                //    if (r.ConferenceID != null)
-                //    {
-                //        var Registration = new Models.ConferenceRegistrations()
-                //        {
-                //            ConferenceID = r.ConferenceID ?? 0,
-                //            UserID = r.UserID,
-                //            PaymentMethod = r.PaymentType,
-                //            PaymentAmount = decimal.Parse(r.PaymentAmount),
-                //            IsCanceled = r.IsCancelled,
-                //            IsDeleted = false,
-                //            ConfirmationNumber = r.Confirmation,
-                //            EvaluationSent = r.EvaluationSent ?? false,
-                //            CreatedOn = DateTime.Now,
-                //            CreatedBy = ImportUserID,
-                //            FileAccessEnabled = true
-                //        };
-                //        db.ConferenceRegistrations.Add(Registration);
-                //    }
-
-                //}
-                //db.SaveChanges();
 
             }
             catch (Exception e)
