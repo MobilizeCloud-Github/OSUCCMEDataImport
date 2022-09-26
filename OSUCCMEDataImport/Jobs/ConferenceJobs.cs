@@ -52,7 +52,9 @@ namespace OSUCCMEDataImport.Jobs
         private static void Conferences(string ImportUserID)
         {
             var db = new NewOSUCCMEEntities();
+            db.Configuration.AutoDetectChangesEnabled = false;
             var olddb = new OldOSUCCMEEntities();
+            olddb.Configuration.AutoDetectChangesEnabled = false;
 
             TextWriter tw = new StreamWriter("ConferencesImportLog.txt");
             try
@@ -113,13 +115,12 @@ namespace OSUCCMEDataImport.Jobs
                         OCCompetenciesOtherThanThoseListedWereAddressed = c.OCCompetenciesOtherThanThoseListedWereAddressed.Value,
                         MaxRegistrations = c.MaxRegistrations ?? 0,
                         WaitingListEnabled = c.WaitListEnabled ?? false,
-                        //ExternalRegistrationButtonEnabled = ,
+                        ExternalRegistrationButtonEnabled = false,
                         PublicRegistrationEnabled = c.PublicRegistration ?? false,
                         RegistrationNoticeEmails = c.RegistrationNoticeEmail,
                         AdditionalInformation = c.AdditionalInfo,
                         SendCreditNotifications = c.SendCreditNotifications,
                         CreatedOn = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time")),
-                        CreatedBy = c.CreatingUserID,
                         ConferenceType = c.ConferenceType,
                         IsDeleted = c.IsDeleted ?? false
                     };
@@ -161,10 +162,18 @@ namespace OSUCCMEDataImport.Jobs
                         Conference.PublicRegistrationLinkText = "";
                     }
 
+                    if (CommonFunctions.DoesUserExist(c.CreatingUserID))
+                    {
+                        Conference.CreatedBy = c.CreatingUserID;
+                    }
+                    else
+                    {
+                        Conference.CreatedBy = ImportUserID;
+                    }
+
                     Conference.LocationName = c.Location ?? "";
                     Conference.LocationAddressLine1 = c.LocationAddress1 ?? "";
                     Conference.LocationAddressLine2 = c.LocationAddress2 ?? "";
-                    //Conference.LocationCountry = c.LocationCountry ?? "";
                     Conference.LocationCity = c.LocationCity ?? "";
                     Conference.LocationState = c.LocationState ?? "";
                     Conference.LocationZipCode = c.LocationZip ?? "";
@@ -184,7 +193,9 @@ namespace OSUCCMEDataImport.Jobs
         private static void JointProviders()
         {
             var db = new NewOSUCCMEEntities();
+            db.Configuration.AutoDetectChangesEnabled = false;
             var olddb = new OldOSUCCMEEntities();
+            olddb.Configuration.AutoDetectChangesEnabled = false;
 
             try
             {
@@ -223,7 +234,9 @@ namespace OSUCCMEDataImport.Jobs
         private static void ConferenceOptionGroup(string ImportUserID)
         {
             var db = new NewOSUCCMEEntities();
+            db.Configuration.AutoDetectChangesEnabled = false;
             var olddb = new OldOSUCCMEEntities();
+            olddb.Configuration.AutoDetectChangesEnabled = false;
 
             try
             {
@@ -259,7 +272,9 @@ namespace OSUCCMEDataImport.Jobs
         private static void ConferenceOptions(string ImportUserID)
         {
             var db = new NewOSUCCMEEntities();
+            db.Configuration.AutoDetectChangesEnabled = false;
             var olddb = new OldOSUCCMEEntities();
+            olddb.Configuration.AutoDetectChangesEnabled = false;
 
             try
             {
@@ -300,7 +315,9 @@ namespace OSUCCMEDataImport.Jobs
         private static void ConferencePrices(string ImportUserID)
         {
             var db = new NewOSUCCMEEntities();
+            db.Configuration.AutoDetectChangesEnabled = false;
             var olddb = new OldOSUCCMEEntities();
+            olddb.Configuration.AutoDetectChangesEnabled = false;
 
             try
             {
@@ -337,7 +354,9 @@ namespace OSUCCMEDataImport.Jobs
         private static void ConferenceRegistrations(string ImportUserID)
         {
             var db = new NewOSUCCMEEntities();
+            db.Configuration.AutoDetectChangesEnabled = false;
             var olddb = new OldOSUCCMEEntities();
+            olddb.Configuration.AutoDetectChangesEnabled = false;
 
             try
             {
@@ -349,21 +368,24 @@ namespace OSUCCMEDataImport.Jobs
                 {
                     if (r.ConferenceID != null)
                     {
-                        var Registration = new Models.ConferenceRegistrations()
+                        if (CommonFunctions.DoesUserExist(r.UserID))
                         {
-                            ConferenceID = r.ConferenceID ?? 0,
-                            UserID = r.UserID,
-                            PaymentMethod = r.PaymentType,
-                            PaymentAmount = decimal.Parse(r.PaymentAmount),
-                            IsCanceled = r.IsCancelled,
-                            IsDeleted = false,
-                            ConfirmationNumber = r.Confirmation,
-                            EvaluationSent = r.EvaluationSent ?? false,
-                            CreatedOn = DateTime.Now,
-                            CreatedBy = ImportUserID,
-                            FileAccessEnabled = true
-                        };
-                        db.ConferenceRegistrations.Add(Registration);
+                            var Registration = new Models.ConferenceRegistrations()
+                            {
+                                ConferenceID = r.ConferenceID ?? 0,
+                                UserID = r.UserID,
+                                PaymentMethod = r.PaymentType,
+                                PaymentAmount = decimal.Parse(r.PaymentAmount),
+                                IsCanceled = r.IsCancelled,
+                                IsDeleted = false,
+                                ConfirmationNumber = r.Confirmation,
+                                EvaluationSent = r.EvaluationSent ?? false,
+                                CreatedOn = DateTime.Now,
+                                CreatedBy = ImportUserID,
+                                FileAccessEnabled = true
+                            };
+                            db.ConferenceRegistrations.Add(Registration);
+                        }
                     }
 
                 }
@@ -397,7 +419,9 @@ namespace OSUCCMEDataImport.Jobs
         private static void ConferenceStreams(string ImportUserID)
         {
             var db = new NewOSUCCMEEntities();
+            db.Configuration.AutoDetectChangesEnabled = false;
             var olddb = new OldOSUCCMEEntities();
+            olddb.Configuration.AutoDetectChangesEnabled = false;
 
             try
             {
@@ -435,7 +459,9 @@ namespace OSUCCMEDataImport.Jobs
         private static void ConferenceStreamViews(string ImportUserID)
         {
             var db = new NewOSUCCMEEntities();
+            db.Configuration.AutoDetectChangesEnabled = false;
             var olddb = new OldOSUCCMEEntities();
+            olddb.Configuration.AutoDetectChangesEnabled = false;
 
             try
             {
@@ -444,15 +470,17 @@ namespace OSUCCMEDataImport.Jobs
 
                 foreach (var c in ConferenceStreamViewToImport)
                 {
-                    var View = new Models.ConferenceStreamViews()
+                    if (CommonFunctions.DoesUserExist(c.UserID))
                     {
-                        ConferenceID = c.ConferenceID,
-                        ConferenceStreamID = c.ConferenceStreamID,
-                        UserID = c.UserID,
-                        TimeStamp = c.TimeStamp
-                    };
-                    db.ConferenceStreamViews.Add(View);
-
+                        var View = new Models.ConferenceStreamViews()
+                        {
+                            ConferenceID = c.ConferenceID,
+                            ConferenceStreamID = c.ConferenceStreamID,
+                            UserID = c.UserID,
+                            TimeStamp = c.TimeStamp
+                        };
+                        db.ConferenceStreamViews.Add(View);
+                    }
                 }
                 db.SaveChanges();
             }

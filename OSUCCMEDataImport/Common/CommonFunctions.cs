@@ -1,4 +1,6 @@
-﻿using System.Text;
+﻿using OSUCCMEDataImport.Models;
+using System.Linq;
+using System.Text;
 
 namespace OSUCCMEDataImport.Common
 {
@@ -133,7 +135,22 @@ namespace OSUCCMEDataImport.Common
             }
         }
 
+        public static bool DoesUserExist(string UserIDToCheck)
+        {
+            var db = new NewOSUCCMEEntities();
+            db.Configuration.AutoDetectChangesEnabled = false;
 
+            var User = (from u in db.UserProfiles
+                        where u.UserID == UserIDToCheck && u.IsDeleted == false
+                        select u.UserID).FirstOrDefault();
+
+            if (!string.IsNullOrWhiteSpace(User))
+            {
+                return true;
+            }
+
+            return false;
+        }
 
     }
 }

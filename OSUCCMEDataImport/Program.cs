@@ -55,10 +55,12 @@ namespace OSUCCMEDataImport
                             }
                         case "5":
                             {
+                                WebcastJobs.Process(ImportUserID);
                                 break;
                             }
                         case "6":
                             {
+                                EnduringJobs.Process(ImportUserID);
                                 break;
                             }
                         case "7":
