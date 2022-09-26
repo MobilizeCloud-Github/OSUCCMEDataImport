@@ -25,10 +25,6 @@ namespace OSUCCMEDataImport.Jobs
             ImportHospitalAdmins(ImportUserID);
         }
 
-
-
-
-
         private static void CreateDefaultHospitalGroup(string ImportUserID)
         {
             var db = new NewOSUCCMEEntities();
