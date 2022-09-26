@@ -153,7 +153,6 @@
         <EntityTypeShape EntityType="NewOSUCCMEModel.Specialties" Width="1.5" PointX="0.75" PointY="154.625" IsExpanded="true" />
         <EntityTypeShape EntityType="NewOSUCCMEModel.SpecialtyMapping" Width="1.5" PointX="15.75" PointY="10.75" IsExpanded="true" />
         <EntityTypeShape EntityType="NewOSUCCMEModel.SubSpecialties" Width="1.5" PointX="3" PointY="160.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="NewOSUCCMEModel.sysdiagrams" Width="1.5" PointX="16.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="NewOSUCCMEModel.Testing" Width="1.5" PointX="11.25" PointY="118.625" IsExpanded="true" />
         <EntityTypeShape EntityType="NewOSUCCMEModel.TestingQuestions" Width="1.5" PointX="13.5" PointY="113.25" IsExpanded="true" />
         <EntityTypeShape EntityType="NewOSUCCMEModel.TestingQuestionsAnswers" Width="1.5" PointX="21.75" PointY="128.875" IsExpanded="true" />
@@ -446,6 +445,7 @@
         <EntityTypeShape EntityType="NewOSUCCMEModel.EmailFrequencies" Width="1.5" PointX="11.375" PointY="19.875" />
         <AssociationConnector Association="NewOSUCCMEModel.FK_CreditNotifications_EventTypes" />
         <AssociationConnector Association="NewOSUCCMEModel.FK_EmailPreferences_EmailFrequencies" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.CategoryMapping" Width="1.5" PointX="13.375" PointY="19.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

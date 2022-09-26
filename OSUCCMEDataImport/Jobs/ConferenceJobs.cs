@@ -11,42 +11,42 @@ namespace OSUCCMEDataImport.Jobs
     {
         public static void Process(string ImportUserID)
         {
-            Conferences(ImportUserID);
-            Console.WriteLine("");
-            Console.WriteLine("-----------------------------------");
-            Console.WriteLine("");
-            JointProviders();
-            Console.WriteLine("");
-            Console.WriteLine("-----------------------------------");
-            Console.WriteLine("");
-            ConferenceOptionGroup(ImportUserID);
-            Console.WriteLine("");
-            Console.WriteLine("-----------------------------------");
-            Console.WriteLine("");
-            ConferenceOptions(ImportUserID);
-            Console.WriteLine("");
-            Console.WriteLine("-----------------------------------");
-            Console.WriteLine("");
-            ConferencePrices(ImportUserID);
-            Console.WriteLine("");
-            Console.WriteLine("-----------------------------------");
-            Console.WriteLine("");
-            ConferenceRegistrations(ImportUserID);
-            Console.WriteLine("");
-            Console.WriteLine("-----------------------------------");
-            Console.WriteLine("");
+            //Conferences(ImportUserID);
+            //Console.WriteLine("");
+            //Console.WriteLine("-----------------------------------");
+            //Console.WriteLine("");
+            //JointProviders();
+            //Console.WriteLine("");
+            //Console.WriteLine("-----------------------------------");
+            //Console.WriteLine("");
+            //ConferenceOptionGroup(ImportUserID);
+            //Console.WriteLine("");
+            //Console.WriteLine("-----------------------------------");
+            //Console.WriteLine("");
+            //ConferenceOptions(ImportUserID);
+            //Console.WriteLine("");
+            //Console.WriteLine("-----------------------------------");
+            //Console.WriteLine("");
+            //ConferencePrices(ImportUserID);
+            //Console.WriteLine("");
+            //Console.WriteLine("-----------------------------------");
+            //Console.WriteLine("");
+            //ConferenceRegistrations(ImportUserID);
+            //Console.WriteLine("");
+            //Console.WriteLine("-----------------------------------");
+            //Console.WriteLine("");
             ConferenceSpecialties(ImportUserID);
-            Console.WriteLine("");
-            Console.WriteLine("-----------------------------------");
-            Console.WriteLine("");
-            ConferenceStreams(ImportUserID);
-            Console.WriteLine("");
-            Console.WriteLine("-----------------------------------");
-            Console.WriteLine("");
-            ConferenceStreamViews(ImportUserID);
-            Console.WriteLine("");
-            Console.WriteLine("-----------------------------------");
-            Console.WriteLine("");
+            //Console.WriteLine("");
+            //Console.WriteLine("-----------------------------------");
+            //Console.WriteLine("");
+            //ConferenceStreams(ImportUserID);
+            //Console.WriteLine("");
+            //Console.WriteLine("-----------------------------------");
+            //Console.WriteLine("");
+            //ConferenceStreamViews(ImportUserID);
+            //Console.WriteLine("");
+            //Console.WriteLine("-----------------------------------");
+            //Console.WriteLine("");
         }
 
         private static void Conferences(string ImportUserID)
@@ -63,10 +63,14 @@ namespace OSUCCMEDataImport.Jobs
                                            where c.IsDeleted == false
                                            select c).ToList();
 
+                var Total = ConferencesToImport.Count();
+                Console.Write("Importing Conferences - Starting ");
+                Console.WriteLine(Total + " to Process");
+                var Index = 1;
 
                 foreach (var c in ConferencesToImport)
                 {
-
+                    Console.Write("Processing : (" + Index + "/" + Total + ") " + c.ID + " ");
                     var Conference = new Models.Conferences()
                     {
                         ID = c.ID,
@@ -117,12 +121,16 @@ namespace OSUCCMEDataImport.Jobs
                         WaitingListEnabled = c.WaitListEnabled ?? false,
                         ExternalRegistrationButtonEnabled = false,
                         PublicRegistrationEnabled = c.PublicRegistration ?? false,
-                        RegistrationNoticeEmails = c.RegistrationNoticeEmail,
-                        AdditionalInformation = c.AdditionalInfo,
+                        RegistrationNoticeEmails = c.RegistrationNoticeEmail ?? "",
+                        AdditionalInformation = c.AdditionalInfo ?? "",
                         SendCreditNotifications = c.SendCreditNotifications,
-                        CreatedOn = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time")),
+                        CreatedOn = DateTime.Now,
                         ConferenceType = c.ConferenceType,
-                        IsDeleted = c.IsDeleted ?? false
+                        IsDeleted = c.IsDeleted ?? false,
+                        PublicRegistrationLinkUrl = "",
+                        PublicRegistrationLinkText = "",
+                        LastUpdatedBy = ImportUserID,
+                        LastUpdatedOn = DateTime.Now
                     };
 
                     if (c.IsCancelled == true)
@@ -151,17 +159,6 @@ namespace OSUCCMEDataImport.Jobs
                         Conference.Providership = "Direct";
                     }
 
-                    if (Conference.ExternalRegistrationButtonEnabled == true)
-                    {
-                        //Conference.PublicRegistrationLinkUrl = c.PublicRegistrationLinkUrl;
-                        //Conference.PublicRegistrationLinkText = c.PublicRegistrationLinkText;
-                    }
-                    else
-                    {
-                        Conference.PublicRegistrationLinkUrl = "";
-                        Conference.PublicRegistrationLinkText = "";
-                    }
-
                     if (CommonFunctions.DoesUserExist(c.CreatingUserID))
                     {
                         Conference.CreatedBy = c.CreatingUserID;
@@ -170,21 +167,45 @@ namespace OSUCCMEDataImport.Jobs
                     {
                         Conference.CreatedBy = ImportUserID;
                     }
-
-                    Conference.LocationName = c.Location ?? "";
-                    Conference.LocationAddressLine1 = c.LocationAddress1 ?? "";
-                    Conference.LocationAddressLine2 = c.LocationAddress2 ?? "";
-                    Conference.LocationCity = c.LocationCity ?? "";
-                    Conference.LocationState = c.LocationState ?? "";
-                    Conference.LocationZipCode = c.LocationZip ?? "";
+                    if (c.LocationState == "None" || string.IsNullOrWhiteSpace(c.LocationState))
+                    {
+                        Conference.LocationKnown = false;
+                        Conference.LocationName = "";
+                        Conference.LocationAddressLine1 = "";
+                        Conference.LocationAddressLine2 = "";
+                        Conference.LocationCity = "";
+                        Conference.LocationState = "";
+                        Conference.LocationZipCode = "";
+                        Conference.LocationPostalCode = "";
+                        Conference.LocationProvinceRegion = "";
+                        Conference.LocationCountry = "";
+                    }
+                    else
+                    {
+                        Conference.LocationKnown = true;
+                        Conference.LocationName = c.Location ?? "";
+                        Conference.LocationAddressLine1 = c.LocationAddress1 ?? "";
+                        Conference.LocationAddressLine2 = c.LocationAddress2 ?? "";
+                        Conference.LocationCity = c.LocationCity ?? "";
+                        Conference.LocationState = c.LocationState ?? "";
+                        Conference.LocationZipCode = CommonFunctions.GetTrimedString(c.LocationZip, 5);
+                        Conference.LocationPostalCode = "";
+                        Conference.LocationProvinceRegion = "";
+                        Conference.LocationCountry = "US";
+                    }
 
                     db.Conferences.Add(Conference);
+                    db.SaveChanges();
+                    Index++;
+                    Console.WriteLine(" - Saved");
                 }
-                db.SaveChanges();
+                Console.WriteLine(" - Complete");
             }
             catch (Exception e)
             {
-                tw.WriteLine(e.Message);
+                Console.WriteLine("");
+                Console.WriteLine(" - " + e.Message);
+                tw.WriteLineAsync(e.Message);
             }
 
             tw.Close();
@@ -199,30 +220,38 @@ namespace OSUCCMEDataImport.Jobs
 
             try
             {
-
-
                 var ConferencesWithJointProvidership = (from c in db.Conferences
                                                         where c.Providership == "Joint"
-                                                        select c).ToList();
+                                                        select c.ID).ToList();
+
+                var Total = ConferencesWithJointProvidership.Count();
+                Console.Write("Importing Conferences Joint Providers - Starting ");
+                Console.WriteLine(Total + " to Process");
+                var Index = 1;
 
                 foreach (var c in ConferencesWithJointProvidership)
                 {
+                    Console.Write("Processing : (" + Index + "/" + Total + ") " + c + " ");
                     var JointProviderToImport = (from j in olddb.Conferences
-                                                 where j.ID == c.ID
+                                                 where j.ID == c
                                                  select j.JointSponsor).FirstOrDefault();
 
                     if (!string.IsNullOrWhiteSpace(JointProviderToImport))
                     {
+
                         var JointProviders = new ConferenceJointProviders()
                         {
-                            ConferenceID = c.ID,
+                            ConferenceID = c,
                             Name = JointProviderToImport
                         };
                         db.ConferenceJointProviders.Add(JointProviders);
-
+                        db.SaveChanges();
+                        Index++;
+                        Console.WriteLine(" - Saved");
                     }
+                    Console.WriteLine(" - Complete");
                 }
-                db.SaveChanges();
+
             }
             catch (Exception e)
             {
@@ -244,23 +273,38 @@ namespace OSUCCMEDataImport.Jobs
                                                        where c.IsDeleted == false
                                                        select c).ToList();
 
+                var Total = ConferencesOptionGroupsToImport.Count();
+                Console.Write("Importing Conferences Option Groups - Starting ");
+                Console.WriteLine(Total + " to Process");
+                var Index = 1;
+
                 foreach (var c in ConferencesOptionGroupsToImport)
                 {
+                    Console.Write("Processing : (" + Index + "/" + Total + ") " + c + " ");
+
                     var Option = new ConferenceOptionsGroups()
                     {
-                        ConferenceID = c.ID,
+                        ID = c.ID,
+                        ConferenceID = int.Parse(c.ConferenceID),
                         Name = c.Title,
-                        Description = c.Description,
+                        Description = c.Description ?? "",
                         Required = false,
                         MaxOneSelection = c.SingularChoice ?? false,
                         Rank = c.Order ?? 0,
                         CreatedOn = DateTime.Now,
-                        CreatedBy = ImportUserID
+                        CreatedBy = ImportUserID,
+                        LastUpdatedBy = ImportUserID,
+                        LastUpdatedOn = DateTime.Now
                     };
                     db.ConferenceOptionsGroups.Add(Option);
+                    db.SaveChanges();
 
+                    Index++;
+                    Console.WriteLine(" - Saved");
                 }
-                db.SaveChanges();
+
+                Console.WriteLine(" - Complete");
+
             }
             catch (Exception e)
             {
@@ -278,31 +322,46 @@ namespace OSUCCMEDataImport.Jobs
 
             try
             {
-                var ConferencesOptionsGroups = (from c in olddb.ConferenceExtraGroups
-                                                where c.IsDeleted == false
-                                                select c).ToList();
+                var ConferencesOptions = (from c in db.ConferenceOptionsGroups
+                                          where c.IsDeleted == false
+                                          select new { c.ID, c.ConferenceID }).ToList();
 
-                foreach (var c in ConferencesOptionsGroups)
+                var Total = ConferencesOptions.Count();
+                Console.Write("Importing Conferences Options - Starting ");
+                Console.WriteLine(Total + " to Process");
+                var Index = 1;
+
+                foreach (var c in ConferencesOptions)
                 {
+                    Console.Write("Processing : (" + Index + "/" + Total + ") " + c.ID + " ");
+
                     var ConferenceOptionsToImport = (from ce in olddb.ConferenceExtras
-                                                     where ce.ConferenceID == c.ConferenceID
+                                                     where ce.ConferenceID == c.ConferenceID.ToString() && ce.GroupBy == c.ID
                                                      select ce).ToList();
                     foreach (var o in ConferenceOptionsToImport)
                     {
                         var Option = new ConferenceOptions()
                         {
                             GroupID = c.ID,
-                            Name = o.Title,
-                            Description = o.Description,
+                            Name = CommonFunctions.GetTrimedString(o.Title, 128),
+                            Description = CommonFunctions.GetTrimedString(o.Description, 512),
                             Price = decimal.Parse(o.Price),
                             Rank = o.Order ?? 1,
                             CreatedOn = DateTime.Now,
-                            CreatedBy = ImportUserID
+                            CreatedBy = ImportUserID,
+                            LastUpdatedBy = ImportUserID,
+                            LastUpdatedOn = DateTime.Now,
+
                         };
                         db.ConferenceOptions.Add(Option);
+                        db.SaveChanges();
+
+
+                        Console.WriteLine(" - Saved - " + o.ID);
 
                     }
-                    db.SaveChanges();
+                    Index++;
+                    Console.WriteLine(" - Complete");
                 }
             }
             catch (Exception e)
@@ -325,8 +384,15 @@ namespace OSUCCMEDataImport.Jobs
                                          where c.IsDeleted == false
                                          select c).ToList();
 
+                var Total = ConferencesPrices.Count();
+                Console.Write("Importing Conferences Prices - Starting ");
+                Console.WriteLine(Total + " to Process");
+                var Index = 1;
+
                 foreach (var c in ConferencesPrices)
                 {
+                    Console.Write("Processing : (" + Index + "/" + Total + ") " + c.ID + " ");
+
                     if (c.ConfID != null)
                     {
                         var Price = new Models.ConferencePrices()
@@ -336,13 +402,20 @@ namespace OSUCCMEDataImport.Jobs
                             Price = decimal.Parse(c.Value),
                             Rank = c.Order ?? 1,
                             CreatedOn = DateTime.Now,
-                            CreatedBy = ImportUserID
+                            CreatedBy = ImportUserID,
+                            LastUpdatedBy = ImportUserID,
+                            LastUpdatedOn = DateTime.Now
                         };
                         db.ConferencePrices.Add(Price);
+                        db.SaveChanges();
 
+                        Index++;
+                        Console.WriteLine(" - Saved");
                     }
                 }
-                db.SaveChanges();
+                Index++;
+                Console.WriteLine(" - Complete");
+
             }
             catch (Exception e)
             {
@@ -364,32 +437,104 @@ namespace OSUCCMEDataImport.Jobs
                                                        where c.IsDeleted == false && c.ConferenceID != null
                                                        select c).ToList();
 
+                var Total = ConferenceRegistrationsToImport.Count();
+                Console.Write("Importing Conferences Prices - Starting ");
+                Console.WriteLine(Total + " to Process");
+                var Index = 1;
+
                 foreach (var r in ConferenceRegistrationsToImport)
                 {
                     if (r.ConferenceID != null)
                     {
                         if (CommonFunctions.DoesUserExist(r.UserID))
                         {
-                            var Registration = new Models.ConferenceRegistrations()
+                            if (r.PaymentType != "N/A" && r.Confirmation != "Speaker")
                             {
-                                ConferenceID = r.ConferenceID ?? 0,
-                                UserID = r.UserID,
-                                PaymentMethod = r.PaymentType,
-                                PaymentAmount = decimal.Parse(r.PaymentAmount),
-                                IsCanceled = r.IsCancelled,
-                                IsDeleted = false,
-                                ConfirmationNumber = r.Confirmation,
-                                EvaluationSent = r.EvaluationSent ?? false,
-                                CreatedOn = DateTime.Now,
-                                CreatedBy = ImportUserID,
-                                FileAccessEnabled = true
-                            };
-                            db.ConferenceRegistrations.Add(Registration);
+                                Console.Write("Processing : (" + Index + "/" + Total + ") " + r.ID + " ");
+
+                                var Registration = new Models.ConferenceRegistrations()
+                                {
+                                    ConferenceID = r.ConferenceID ?? 0,
+                                    UserID = r.UserID,
+                                    IsCanceled = r.IsCancelled,
+                                    IsDeleted = false,
+                                    ConfirmationNumber = r.Confirmation ?? "",
+                                    EvaluationSent = r.EvaluationSent ?? false,
+                                    CreatedOn = DateTime.Now,
+                                    CreatedBy = ImportUserID,
+                                    FileAccessEnabled = true,
+                                    LastUpdatedOn = DateTime.Now,
+                                    LastUpdatedBy = ImportUserID
+                                };
+                                db.ConferenceRegistrations.Add(Registration);
+
+                                if (r.PaymentAmount != null)
+                                {
+                                    decimal OutPaymentAmount = 0.0m;
+                                    decimal.TryParse(r.PaymentAmount, out OutPaymentAmount);
+
+                                    Registration.PaymentAmount = OutPaymentAmount;
+                                }
+                                else
+                                {
+                                    Registration.PaymentAmount = 0.0m;
+                                }
+
+                                if (r.PaymentType == "Check")
+                                {
+                                    Registration.PaymentMethod = r.PaymentType;
+                                }
+                                if (r.PaymentType == "Free")
+                                {
+                                    Registration.PaymentMethod = r.PaymentType;
+                                }
+                                if (r.PaymentType.ToLower() == "credit")
+                                {
+                                    Registration.PaymentMethod = "Credit Card - Manual";
+                                }
+                                if (r.PaymentType == "None")
+                                {
+                                    Registration.PaymentMethod = "Free";
+                                }
+                                if (r.PaymentType == "Scholarship")
+                                {
+                                    Registration.PaymentMethod = "Waived";
+                                }
+                                if (r.PaymentType == "Waived")
+                                {
+                                    Registration.PaymentMethod = r.PaymentType;
+                                }
+                                if (r.PaymentType == "Attendance Only")
+                                {
+                                    Registration.PaymentMethod = "Free";
+                                }
+                                if (r.PaymentType == "Cash")
+                                {
+                                    Registration.PaymentMethod = "Other";
+                                }
+                                if (r.PaymentType == "Other")
+                                {
+                                    Registration.PaymentMethod = r.PaymentType;
+                                }
+                                if (r.PaymentType == "Credit Card")
+                                {
+                                    Registration.PaymentMethod = "Credit Card - Auto";
+                                }
+                                if (r.PaymentType == "eRequest")
+                                {
+                                    Registration.PaymentMethod = r.PaymentType;
+                                }
+
+                                db.SaveChanges();
+                                Index++;
+                                Console.WriteLine(" - Saved");
+                            }
                         }
                     }
 
+                    Console.WriteLine(" - Complete");
+
                 }
-                db.SaveChanges();
 
             }
             catch (Exception e)
@@ -402,18 +547,50 @@ namespace OSUCCMEDataImport.Jobs
         private static void ConferenceSpecialties(string ImportUserID)
         {
             var db = new NewOSUCCMEEntities();
+            db.Configuration.AutoDetectChangesEnabled = false;
             var olddb = new OldOSUCCMEEntities();
+            olddb.Configuration.AutoDetectChangesEnabled = false;
+
+
 
             try
             {
+                var ConferenceSpecialtiesToImport = (from cs in olddb.ConferenceSearchCategories
+                                                     select cs).ToList();
 
+                var Total = ConferenceSpecialtiesToImport.Count();
+                Console.Write("Importing Conferences Specialties - Starting ");
+                Console.WriteLine(Total + " to Process");
+                var Index = 1;
 
+                foreach (var c in ConferenceSpecialtiesToImport)
+                {
+                    Console.Write("Processing : (" + Index + "/" + Total + ") " + c.ConferenceID + " " + c.CategoryID);
+
+                    var NewSpecialtyID = (from v in db.CategoryMapping
+                                          where v.OldID == c.CategoryID
+                                          select v.NewID).FirstOrDefault();
+
+                    var Specialty = new Models.ConferenceSpecialties()
+                    {
+                        ConferenceID = c.ConferenceID ?? 0,
+                        SpecialtyID = NewSpecialtyID ?? 0
+                    };
+                    db.ConferenceSpecialties.Add(Specialty);
+                    db.SaveChanges();
+
+                    Console.WriteLine(" - Saved");
+
+                    Index++;
+                }
+                Console.WriteLine(" - Complete");
             }
             catch (Exception e)
             {
                 Console.WriteLine("");
                 Console.WriteLine(" - " + e.Message);
             }
+
         }
 
         private static void ConferenceStreams(string ImportUserID)
@@ -429,8 +606,14 @@ namespace OSUCCMEDataImport.Jobs
                                                  where c.IsDeleted == false
                                                  select c).ToList();
 
+                var Total = ConferenceStreamsToImport.Count();
+                Console.Write("Importing Conferences Streams - Starting ");
+                Console.WriteLine(Total + " to Process");
+                var Index = 1;
+
                 foreach (var c in ConferenceStreamsToImport)
                 {
+                    Console.Write("Processing : (" + Index + "/" + Total + ") " + c.ID + " ");
 
                     var Stream = new Models.ConferenceStreams()
                     {
@@ -445,8 +628,26 @@ namespace OSUCCMEDataImport.Jobs
                     };
                     db.ConferenceStreams.Add(Stream);
 
+                    if (c.StreamURL.Contains("zoom"))
+                    {
+                        Stream.StreamType = "Zoom";
+                    }
+                    else if (c.StreamURL.Contains("teams"))
+                    {
+                        Stream.StreamType = "Teams";
+                    }
+                    else
+                    {
+                        Stream.StreamType = "Other";
+                    }
+
+                    db.SaveChanges();
+
+                    Index++;
+                    Console.WriteLine(" - Saved");
                 }
-                db.SaveChanges();
+
+                Console.WriteLine(" - Complete");
 
             }
             catch (Exception e)
@@ -463,32 +664,66 @@ namespace OSUCCMEDataImport.Jobs
             var olddb = new OldOSUCCMEEntities();
             olddb.Configuration.AutoDetectChangesEnabled = false;
 
+            TextWriter tw = new StreamWriter("ConferenceStreamViewsLog.txt");
+
             try
             {
-                var ConferenceStreamViewToImport = (from c in olddb.ConferenceStreamViews
-                                                    select c).ToList();
+                var ConferenceStreams = (from cs in db.ConferenceStreams
+                                         select cs.ID).ToList();
 
-                foreach (var c in ConferenceStreamViewToImport)
+                var Total = ConferenceStreams.Count();
+                Console.Write("Importing Conferences Stream Views - Starting ");
+                Console.WriteLine(Total + " to Process");
+                var Index = 1;
+
+                foreach (var c in ConferenceStreams)
                 {
-                    if (CommonFunctions.DoesUserExist(c.UserID))
+                    Console.Write("Processing : (" + Index + "/" + Total + ") " + c + " ");
+
+                    var ConferenceStreamViewToImport = (from v in olddb.ConferenceStreamViews
+                                                        where v.ConferenceStreamID == c
+                                                        select v).ToList();
+
+                    var TotalUser = ConferenceStreams.Count();
+                    Console.WriteLine(TotalUser + " to Process");
+                    var UserIndex = 1;
+
+                    foreach (var v in ConferenceStreamViewToImport)
                     {
-                        var View = new Models.ConferenceStreamViews()
+                        Console.Write("Processing : (" + Index + "/" + Total + ") " + c + " ");
+                        Console.Write("Stream Users : (" + UserIndex + "/" + TotalUser + ") " + c + " ");
+                        if (CommonFunctions.DoesUserExist(v.UserID))
                         {
-                            ConferenceID = c.ConferenceID,
-                            ConferenceStreamID = c.ConferenceStreamID,
-                            UserID = c.UserID,
-                            TimeStamp = c.TimeStamp
-                        };
-                        db.ConferenceStreamViews.Add(View);
+                            var View = new Models.ConferenceStreamViews()
+                            {
+                                ConferenceID = v.ConferenceID,
+                                ConferenceStreamID = c,
+                                UserID = v.UserID,
+                                TimeStamp = v.TimeStamp
+                            };
+                            db.ConferenceStreamViews.Add(View);
+                            db.SaveChanges();
+
+                            Console.WriteLine(" - Saved");
+                        }
+                        else
+                        {
+                            Console.WriteLine(" - User Doesn't Exist");
+                            tw.WriteLineAsync(v.UserID + " - User Doesn't Exist");
+                        }
+                        UserIndex++;
                     }
+                    Index++;
                 }
-                db.SaveChanges();
+                Console.WriteLine(" - Complete");
             }
             catch (Exception e)
             {
                 Console.WriteLine("");
                 Console.WriteLine(" - " + e.Message);
             }
+
+            tw.Close();
         }
     }
 }

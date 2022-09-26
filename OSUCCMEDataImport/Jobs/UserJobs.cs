@@ -1,9 +1,10 @@
-﻿using OSUCCMEDataImport.Models;
-using OldOSUDatabase.Models;
+﻿using OldOSUDatabase.Models;
+using OSUCCMEDataImport.Common;
+using OSUCCMEDataImport.Models;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Collections.Generic;
 
 namespace OSUCCMEDataImport.Jobs
 {
@@ -165,15 +166,15 @@ namespace OSUCCMEDataImport.Jobs
                                 DegreeID = GetMappedDegreeID(db, MappedDegrees, User.UserDegreeID, User.UserID, User.Username),
                                 TraineeType = "",
                                 SpecialtyID = GetMappedSpecialtyID(db, MappedSpecialties, User.SpecialtyID, User.UserID, User.Username),
-                                Phone = GetTrimedString(User.BusinessPhone, 50),
-                                PhoneExtension = GetTrimedString(User.BusinessPhoneExtension, 50),
-                                Fax = GetTrimedString(User.FaxNumber, 50),
-                                SpecialNeeds = GetTrimedString(User.SpecialNeeds, 256),
-                                Department = GetTrimedString(User.Department, 128),
-                                NameTag = GetTrimedString(User.NameTag, 128),
-                                Address1 = GetTrimedString(User.MailingAddress1, 256),
-                                Address2 = GetTrimedString(User.MailingAddress2, 256),
-                                City = GetTrimedString(User.SpecialNeeds, 256),
+                                Phone = CommonFunctions.GetTrimedString(User.BusinessPhone, 50),
+                                PhoneExtension = CommonFunctions.GetTrimedString(User.BusinessPhoneExtension, 50),
+                                Fax = CommonFunctions.GetTrimedString(User.FaxNumber, 50),
+                                SpecialNeeds = CommonFunctions.GetTrimedString(User.SpecialNeeds, 256),
+                                Department = CommonFunctions.GetTrimedString(User.Department, 128),
+                                NameTag = CommonFunctions.GetTrimedString(User.NameTag, 128),
+                                Address1 = CommonFunctions.GetTrimedString(User.MailingAddress1, 256),
+                                Address2 = CommonFunctions.GetTrimedString(User.MailingAddress2, 256),
+                                City = CommonFunctions.GetTrimedString(User.SpecialNeeds, 256),
                                 CreatedBy = importUserID,
                                 CreatedOn = User.CreatedDate ?? DateTime.Now,
                                 LastAccessedOn = User.LastAccessed,
@@ -196,7 +197,7 @@ namespace OSUCCMEDataImport.Jobs
                             {
                                 MailingCountry = "PK";
                             }
-                            if (MailingCountry == "None") 
+                            if (MailingCountry == "None")
                             {
                                 MailingCountry = "PE";
                             }
@@ -209,16 +210,16 @@ namespace OSUCCMEDataImport.Jobs
                             {
                                 NewUser.State = "";
                                 NewUser.ZipCode = "";
-                                NewUser.ProvinceRegion = GetTrimedString(User.MailingState, 256);
-                                NewUser.PostalCode = GetTrimedString(User.MailingZip, 25);
+                                NewUser.ProvinceRegion = CommonFunctions.GetTrimedString(User.MailingState, 256);
+                                NewUser.PostalCode = CommonFunctions.GetTrimedString(User.MailingZip, 25);
                                 NewUser.Country = MailingCountry.Trim();
                             }
                             else
                             {
                                 NewUser.ProvinceRegion = "";
                                 NewUser.PostalCode = "";
-                                NewUser.State = GetTrimedString(User.MailingState, 256);
-                                NewUser.ZipCode = GetTrimedString(User.MailingZip, 25);
+                                NewUser.State = CommonFunctions.GetTrimedString(User.MailingState, 256);
+                                NewUser.ZipCode = CommonFunctions.GetTrimedString(User.MailingZip, 25);
                                 NewUser.Country = "US";
 
                             }
@@ -284,21 +285,7 @@ namespace OSUCCMEDataImport.Jobs
             }
         }
 
-        private static string GetTrimedString(string Content, int Length)
-        {
-            if(string.IsNullOrWhiteSpace(Content))
-            {
-                return "";
-            }
-            else if(Content.Length <= Length)
-            {
-                return Content.Trim();
-            }
-            else
-            {
-                return Content.Trim().Substring(0, Length).Trim();
-            }
-        }
+
 
         private static void ImportUserEmailPreferences(string importUserID)
         {

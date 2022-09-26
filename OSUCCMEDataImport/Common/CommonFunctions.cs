@@ -152,5 +152,20 @@ namespace OSUCCMEDataImport.Common
             return false;
         }
 
+        public static string GetTrimedString(string Content, int Length)
+        {
+            if (string.IsNullOrWhiteSpace(Content))
+            {
+                return "";
+            }
+            else if (Content.Length <= Length)
+            {
+                return Content.Trim();
+            }
+            else
+            {
+                return Content.Trim().Substring(0, Length).Trim();
+            }
+        }
     }
 }
