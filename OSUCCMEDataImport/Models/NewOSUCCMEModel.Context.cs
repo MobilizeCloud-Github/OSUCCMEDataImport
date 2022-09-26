@@ -173,7 +173,6 @@ namespace OSUCCMEDataImport.Models
         public virtual DbSet<Specialties> Specialties { get; set; }
         public virtual DbSet<SpecialtyMapping> SpecialtyMapping { get; set; }
         public virtual DbSet<SubSpecialties> SubSpecialties { get; set; }
-        public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
         public virtual DbSet<Testing> Testing { get; set; }
         public virtual DbSet<TestingQuestions> TestingQuestions { get; set; }
         public virtual DbSet<TestingQuestionsAnswers> TestingQuestionsAnswers { get; set; }
@@ -240,5 +239,6 @@ namespace OSUCCMEDataImport.Models
         public virtual DbSet<State> State { get; set; }
         public virtual DbSet<CreditNotifications> CreditNotifications { get; set; }
         public virtual DbSet<EmailFrequencies> EmailFrequencies { get; set; }
+        public virtual DbSet<CategoryMapping> CategoryMapping { get; set; }
     }
 }
