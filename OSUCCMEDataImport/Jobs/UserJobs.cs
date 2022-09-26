@@ -11,7 +11,7 @@ namespace OSUCCMEDataImport.Jobs
     {
         public static void Process(string ImportUserID)
         {
-            ImportUserProfiles(ImportUserID);
+            //ImportUserProfiles(ImportUserID);
             Console.WriteLine("");
             Console.WriteLine("-----------------------------------");
             Console.WriteLine("");
@@ -19,7 +19,7 @@ namespace OSUCCMEDataImport.Jobs
             Console.WriteLine("");
             Console.WriteLine("-----------------------------------");
             Console.WriteLine("");
-            ImportUserRoles(ImportUserID);
+            //ImportUserRoles(ImportUserID);
             Console.WriteLine("");
             Console.WriteLine("-----------------------------------");
             Console.WriteLine("");
@@ -167,13 +167,13 @@ namespace OSUCCMEDataImport.Jobs
                                 SpecialtyID = GetMappedSpecialtyID(db, MappedSpecialties, User.SpecialtyID, User.UserID, User.Username),
                                 Phone = GetTrimedString(User.BusinessPhone, 50),
                                 PhoneExtension = GetTrimedString(User.BusinessPhoneExtension, 50),
-                                Fax = User.FaxNumber ?? "",
+                                Fax = GetTrimedString(User.FaxNumber, 50),
                                 SpecialNeeds = GetTrimedString(User.SpecialNeeds, 256),
-                                Department = User.Department ?? "",
-                                NameTag = User.NameTag ?? "",
-                                Address1 = User.MailingAddress1 ?? "",
-                                Address2 = User.MailingAddress2 ?? "",
-                                City = User.MailingCity ?? "",
+                                Department = GetTrimedString(User.Department, 128),
+                                NameTag = GetTrimedString(User.NameTag, 128),
+                                Address1 = GetTrimedString(User.MailingAddress1, 256),
+                                Address2 = GetTrimedString(User.MailingAddress2, 256),
+                                City = GetTrimedString(User.SpecialNeeds, 256),
                                 CreatedBy = importUserID,
                                 CreatedOn = User.CreatedDate ?? DateTime.Now,
                                 LastAccessedOn = User.LastAccessed,
@@ -196,7 +196,7 @@ namespace OSUCCMEDataImport.Jobs
                             {
                                 MailingCountry = "PK";
                             }
-                            if (MailingCountry == "None")
+                            if (MailingCountry == "None") 
                             {
                                 MailingCountry = "PE";
                             }
@@ -209,16 +209,16 @@ namespace OSUCCMEDataImport.Jobs
                             {
                                 NewUser.State = "";
                                 NewUser.ZipCode = "";
-                                NewUser.ProvinceRegion = User.MailingState;
-                                NewUser.PostalCode = User.MailingZip ?? "";
-                                NewUser.Country = User.MailingCountry.Trim();
+                                NewUser.ProvinceRegion = GetTrimedString(User.MailingState, 256);
+                                NewUser.PostalCode = GetTrimedString(User.MailingZip, 25);
+                                NewUser.Country = MailingCountry.Trim();
                             }
                             else
                             {
                                 NewUser.ProvinceRegion = "";
                                 NewUser.PostalCode = "";
-                                NewUser.State = User.MailingState ?? "";
-                                NewUser.ZipCode = User.MailingZip ?? "";
+                                NewUser.State = GetTrimedString(User.MailingState, 256);
+                                NewUser.ZipCode = GetTrimedString(User.MailingZip, 25);
                                 NewUser.Country = "US";
 
                             }
@@ -304,9 +304,14 @@ namespace OSUCCMEDataImport.Jobs
         {
             var db = new NewOSUCCMEEntities();
             var olddb = new OldOSUCCMEEntities();
+
+            db.Configuration.AutoDetectChangesEnabled = false;
+            olddb.Configuration.AutoDetectChangesEnabled = false;
+
+
             var UserIDs = (from u in db.UserProfiles
-                           where u.Email == "rob@mobilizecloud.com" && u.IsDeleted == false && u.IsDeceased == false
-                           select u.UserID);
+                           where u.IsDeleted == false && u.IsDeceased == false
+                           select u.UserID).ToList();
 
 
             TextWriter tw = new StreamWriter("UserEmailPreferencesLog.txt");
@@ -322,7 +327,11 @@ namespace OSUCCMEDataImport.Jobs
                     Console.Write("Processing : " + UserID + " (" + Index + "/" + Total + ") ");
                     var Preferences = (from u in olddb.EmailPreferences
                                        where u.UserID == UserID
-                                       select u);
+                                       select new
+                                       {
+                                           u.Type,
+                                           u.FrequencyID
+                                       }).ToList();
                     foreach (var Preference in Preferences)
                     {
                         var NewEmailPreference = new Models.EmailPreferences()
@@ -333,7 +342,6 @@ namespace OSUCCMEDataImport.Jobs
                             LastUpdated = DateTime.Now
                         };
                         db.EmailPreferences.Add(NewEmailPreference);
-                        db.SaveChanges();
 
                         Console.Write(" - " + NewEmailPreference.EmailType + " saved");
                     }
@@ -346,7 +354,6 @@ namespace OSUCCMEDataImport.Jobs
                         LastUpdated = DateTime.Now
                     };
                     db.EmailPreferences.Add(GeneralPreference);
-                    db.SaveChanges();
 
                     Console.Write(" - GeneralAnnouncements saved");
 
@@ -358,6 +365,8 @@ namespace OSUCCMEDataImport.Jobs
                         LastUpdated = DateTime.Now
                     };
                     db.EmailPreferences.Add(RSSeriesPreference);
+
+
                     db.SaveChanges();
 
                     Console.Write(" - GrandRoundsNewsletters saved");
@@ -379,6 +388,10 @@ namespace OSUCCMEDataImport.Jobs
         {
             var db = new NewOSUCCMEEntities();
             var olddb = new OldOSUCCMEEntities();
+
+            db.Configuration.AutoDetectChangesEnabled = false;
+            olddb.Configuration.AutoDetectChangesEnabled = false;
+
             var Roles = (from u in olddb.aspnet_Roles
                          select u);
 
