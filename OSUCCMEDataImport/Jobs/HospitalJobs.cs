@@ -25,24 +25,33 @@ namespace OSUCCMEDataImport.Jobs
             ImportHospitalAdmins(ImportUserID);
         }
 
-        
-       
-        
+
+
+
 
         private static void CreateDefaultHospitalGroup(string ImportUserID)
         {
             var db = new NewOSUCCMEEntities();
+            db.Configuration.AutoDetectChangesEnabled = false;
 
-            var DefaultHospitalGroup = new HospitalGroups()
+            try
             {
-                HospitalGroupName = "Individual Hospitals",
-                CreatedOn = System.DateTime.Now,
-                CreatedBy = ImportUserID,
-                IsDeleted = false,
-                IsDefault = true
-            };
-            db.HospitalGroups.Add(DefaultHospitalGroup);
-            db.SaveChanges();
+                var DefaultHospitalGroup = new HospitalGroups()
+                {
+                    HospitalGroupName = "Individual Hospitals",
+                    CreatedOn = System.DateTime.Now,
+                    CreatedBy = ImportUserID,
+                    IsDeleted = false,
+                    IsDefault = true
+                };
+                db.HospitalGroups.Add(DefaultHospitalGroup);
+                db.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("");
+                Console.WriteLine(" - " + e.Message);
+            }
         }
 
         private static void ImportHospitals(string importUserID)
@@ -50,9 +59,12 @@ namespace OSUCCMEDataImport.Jobs
             var db = new NewOSUCCMEEntities();
             var olddb = new OldOSUCCMEEntities();
 
+            db.Configuration.AutoDetectChangesEnabled = false;
+            olddb.Configuration.AutoDetectChangesEnabled = false;
+
             var Hospitals = (from h in olddb.Hospitals
                              where h.IsDeleted == false
-                             select h);
+                             select h).ToList();
 
             TextWriter tw = new StreamWriter("ImportHospitalsLog.txt");
 
@@ -65,7 +77,7 @@ namespace OSUCCMEDataImport.Jobs
             {
                 try
                 {
-                    Console.Write("Processing : " + Hospital.HospitalName + " (" + Index + "/" + Total + ") ");
+                    Console.Write("Processing : (" + Index + "/" + Total + ") " + Hospital.HospitalName);
                     var NewHospital = new Models.Hospitals()
                     {
                         ID = Hospital.ID,
@@ -105,9 +117,19 @@ namespace OSUCCMEDataImport.Jobs
             var db = new NewOSUCCMEEntities();
             var olddb = new OldOSUCCMEEntities();
 
+            db.Configuration.AutoDetectChangesEnabled = false;
+            olddb.Configuration.AutoDetectChangesEnabled = false;
+
             var HospitalUsers = (from h in olddb.HospitalUsers
-                             where h.IsDeleted == false
-                             select h);
+                                 where h.IsDeleted == false
+                                 select new
+                                 {
+                                     h.HospitalID,
+                                     h.UserID,
+                                     h.IsApproved,
+                                     h.ReviewedTimeStamp,
+                                     h.RequestTimeStamp
+                                 });
 
             TextWriter tw = new StreamWriter("ImportHospitalUsersLog.txt");
 
@@ -129,7 +151,7 @@ namespace OSUCCMEDataImport.Jobs
                     var NewHospital = (from h in db.Hospitals
                                        where h.ID == HospitalUser.HospitalID && h.IsDeleted == false
                                        select h).FirstOrDefault();
-                    if(NewUser != null && NewHospital != null)
+                    if (NewUser != null && NewHospital != null)
                     {
                         var NewHospitalUser = new Models.HospitalUsers()
                         {
@@ -164,9 +186,15 @@ namespace OSUCCMEDataImport.Jobs
             var db = new NewOSUCCMEEntities();
             var olddb = new OldOSUCCMEEntities();
 
+            db.Configuration.AutoDetectChangesEnabled = false;
+            olddb.Configuration.AutoDetectChangesEnabled = false;
+
             var HospitalAdmins = (from h in olddb.HospitalAdminCategories
-                                 where h.IsDeleted == false
-                                 select h);
+                                  where h.IsDeleted == false
+                                  select new { 
+                                  h.HospitalID,
+                                  h.UserID
+                                  }).ToList();
 
             TextWriter tw = new StreamWriter("ImportHospitalAdminsLog.txt");
 
@@ -194,7 +222,7 @@ namespace OSUCCMEDataImport.Jobs
                         {
                             UserID = NewUser.UserID,
                             HospitalID = NewHospital.ID,
-                            IsDeleted = false,                            
+                            IsDeleted = false,
                             CreatedOn = DateTime.Now,
                             CreatedBy = importUserID
                         };
