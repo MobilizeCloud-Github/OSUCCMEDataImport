@@ -6,3 +6,4 @@ RSSeriesSeries
 EnduringMaterials
 ConferenceStreams
 ConverenceOptionGroups
+EnduringMaterialsSeries

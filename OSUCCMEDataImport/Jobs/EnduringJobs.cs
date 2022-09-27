@@ -11,48 +11,105 @@ namespace OSUCCMEDataImport.Jobs
     {
         public static void Process(string ImportUserID)
         {
-            EnduringMaterials(ImportUserID);
-            Console.WriteLine("");
-            Console.WriteLine("-----------------------------------");
-            Console.WriteLine("");
-            JointProviders();
-            Console.WriteLine("");
-            Console.WriteLine("-----------------------------------");
-            Console.WriteLine("");
-            EnduringRegistrations(ImportUserID);
-            Console.WriteLine("");
-            Console.WriteLine("-----------------------------------");
-            Console.WriteLine("");
-            Enduringspecialties(ImportUserID);
-            Console.WriteLine("");
-            Console.WriteLine("-----------------------------------");
-            Console.WriteLine("");
+            //EnduringMaterialsSeries(ImportUserID);
+            //Console.WriteLine("");
+            //Console.WriteLine("-----------------------------------");
+            //Console.WriteLine("");
+            //EnduringMaterials(ImportUserID);
+            //Console.WriteLine("");
+            //Console.WriteLine("-----------------------------------");
+            //Console.WriteLine("");
+            //JointProviders();
+            //Console.WriteLine("");
+            //Console.WriteLine("-----------------------------------");
+            //Console.WriteLine("");
+            EnduringMaterialRegistrations(ImportUserID);
+            //Console.WriteLine("");
+            //Console.WriteLine("-----------------------------------");
+            //Console.WriteLine("");
+            //EnduringMaterialspecialties(ImportUserID);
+
+        }
+
+        private static void EnduringMaterialsSeries(string ImportUserID)
+        {
+            var db = new NewOSUCCMEEntities();
+            db.Configuration.AutoDetectChangesEnabled = false;
+            var olddb = new OldOSUCCMEEntities();
+            olddb.Configuration.AutoDetectChangesEnabled = false;
+
+            try
+            {
+                var EnduringMaterialsSeriesToImport = (from c in olddb.EnduringMaterialSeries
+                                                       where c.IsDeleted == false
+                                                       select c).ToList();
+
+                var Total = EnduringMaterialsSeriesToImport.Count();
+                Console.Write("Importing EnduringMaterials - Starting ");
+                Console.WriteLine(Total + " to Process");
+                var Index = 1;
+
+                foreach (var c in EnduringMaterialsSeriesToImport)
+                {
+                    Console.Write("Processing : (" + Index + "/" + Total + ") " + c.ID + " ");
+                    var EnduringMaterialSeries = new Models.EnduringMaterialSeries()
+                    {
+                        ID = c.ID,
+                        Name = c.Name,
+                        URL = CommonFunctions.URLFriendly(c.Name),
+                        CreatedBy = ImportUserID,
+                        CreatedOn = DateTime.Now,
+                        LastUpdatedOn = DateTime.Now,
+                        LastUpdatedBy = ImportUserID,
+
+                    };
+
+                    db.EnduringMaterialSeries.Add(EnduringMaterialSeries);
+                    db.SaveChanges();
+                    Index++;
+                    Console.WriteLine(" - Saved");
+                }
+                Console.WriteLine(" - Complete");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("");
+                Console.WriteLine(" - " + e.Message);
+
+            }
+
 
         }
 
         private static void EnduringMaterials(string ImportUserID)
         {
             var db = new NewOSUCCMEEntities();
+            db.Configuration.AutoDetectChangesEnabled = false;
             var olddb = new OldOSUCCMEEntities();
+            olddb.Configuration.AutoDetectChangesEnabled = false;
 
-            TextWriter tw = new StreamWriter("EnduringImportLog.txt");
+            TextWriter tw = new StreamWriter("EnduringMaterialsImportLog.txt");
             try
             {
                 var EnduringMaterialsToImport = (from c in olddb.EnduringMaterials
                                                  where c.IsDeleted == false
                                                  select c).ToList();
 
+                var Total = EnduringMaterialsToImport.Count();
+                Console.Write("Importing EnduringMaterials - Starting ");
+                Console.WriteLine(Total + " to Process");
+                var Index = 1;
 
                 foreach (var c in EnduringMaterialsToImport)
                 {
-
-                    var Enduring = new Models.EnduringMaterials()
+                    Console.Write("Processing : (" + Index + "/" + Total + ") " + c.ID + " ");
+                    var EnduringMaterial = new Models.EnduringMaterials()
                     {
                         ID = c.ID,
                         Title = c.Title,
                         URL = CommonFunctions.URLFriendly(c.Title),
                         Description = c.Description ?? "",
-                        Objectives = c.Objectives,
+                        Objectives = c.Objectives ?? "",
                         StartDate = c.ReleaseDate ?? DateTime.Now,
                         EndDate = c.ExpirationDate ?? DateTime.Now,
                         Credits = decimal.Parse(c.Credits.ToString()),
@@ -94,54 +151,71 @@ namespace OSUCCMEDataImport.Jobs
                         RegistrationNoticeEmails = "",
                         AdditionalInformation = "",
                         SendCreditNotifications = c.SendCreditNotifications,
-                        CreatedOn = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time")),
-                        CreatedBy = c.CreatingUserID,
-                        IsDeleted = c.IsDeleted ?? false
+                        CreatedOn = DateTime.Now,
+                        IsDeleted = c.IsDeleted ?? false,
+                        PublicRegistrationLinkUrl = "",
+                        PublicRegistrationLinkText = "",
+                        LastUpdatedBy = ImportUserID,
+                        LastUpdatedOn = DateTime.Now
                     };
+
+                    if (c.SeriesID == 0 || c.SeriesID == null)
+                    {
+                        EnduringMaterial.EnduringMaterialSeriesID = 9;
+                    }
+                    else
+                    {
+                        EnduringMaterial.EnduringMaterialSeriesID = c.SeriesID ?? 9;
+                    }
+
 
                     if (c.IsCancelled == true)
                     {
-                        Enduring.Status = "Canceled";
+                        EnduringMaterial.Status = "Canceled";
                     }
                     else if (c.PublicViewable == true)
                     {
-                        Enduring.Status = "Occurring";
+                        EnduringMaterial.Status = "Occurring";
                     }
                     else if (c.PublicViewable == false)
                     {
-                        Enduring.Status = "Hidden";
+                        EnduringMaterial.Status = "Hidden";
                     }
                     else if (c.IsCancelled == false && c.PublicViewable == null)
                     {
-                        Enduring.Status = "Unpublished";
+                        EnduringMaterial.Status = "Unpublished";
                     }
+
                     if (c.isJointSponsor == true)
                     {
-                        Enduring.Providership = "Joint";
+                        EnduringMaterial.Providership = "Joint";
                     }
                     else
                     {
-                        Enduring.Providership = "Direct";
+                        EnduringMaterial.Providership = "Direct";
                     }
 
-                    if (Enduring.ExternalRegistrationButtonEnabled == true)
+                    if (CommonFunctions.DoesUserExist(c.CreatingUserID))
                     {
-                        //Conference.PublicRegistrationLinkUrl = c.PublicRegistrationLinkUrl;
-                        //Conference.PublicRegistrationLinkText = c.PublicRegistrationLinkText;
+                        EnduringMaterial.CreatedBy = c.CreatingUserID;
                     }
                     else
                     {
-                        Enduring.PublicRegistrationLinkUrl = "";
-                        Enduring.PublicRegistrationLinkText = "";
+                        EnduringMaterial.CreatedBy = ImportUserID;
                     }
 
-                    db.EnduringMaterials.Add(Enduring);
+                    db.EnduringMaterials.Add(EnduringMaterial);
+                    db.SaveChanges();
+                    Index++;
+                    Console.WriteLine(" - Saved");
                 }
-                db.SaveChanges();
+                Console.WriteLine(" - Complete");
             }
             catch (Exception e)
             {
-                tw.WriteLine(e.Message);
+                Console.WriteLine("");
+                Console.WriteLine(" - " + e.Message);
+                tw.WriteLineAsync(e.Message);
             }
 
             tw.Close();
@@ -150,34 +224,44 @@ namespace OSUCCMEDataImport.Jobs
         private static void JointProviders()
         {
             var db = new NewOSUCCMEEntities();
+            db.Configuration.AutoDetectChangesEnabled = false;
             var olddb = new OldOSUCCMEEntities();
+            olddb.Configuration.AutoDetectChangesEnabled = false;
 
             try
             {
+                var EnduringMaterialsWithJointProvidership = (from c in db.EnduringMaterials
+                                                              where c.Providership == "Joint"
+                                                              select c.ID).ToList();
 
+                var Total = EnduringMaterialsWithJointProvidership.Count();
+                Console.Write("Importing EnduringMaterials Joint Providers - Starting ");
+                Console.WriteLine(Total + " to Process");
+                var Index = 1;
 
-                var WebcastsWithJointProvidership = (from c in db.Webcasts
-                                                     where c.Providership == "Joint"
-                                                     select c).ToList();
-
-                foreach (var c in WebcastsWithJointProvidership)
+                foreach (var c in EnduringMaterialsWithJointProvidership)
                 {
-                    var JointProviderToImport = (from j in olddb.Webcasts
-                                                 where j.ID == c.ID
+                    Console.Write("Processing : (" + Index + "/" + Total + ") " + c + " ");
+                    var JointProviderToImport = (from j in olddb.EnduringMaterials
+                                                 where j.ID == c
                                                  select j.JointSponsor).FirstOrDefault();
 
                     if (!string.IsNullOrWhiteSpace(JointProviderToImport))
                     {
-                        var JointProviders = new WebcastJointProviders()
+
+                        var JointProviders = new EnduringMaterialJointProviders()
                         {
-                            WebcastID = c.ID,
+                            EnduringMaterialID = c,
                             Name = JointProviderToImport
                         };
-                        db.WebcastJointProviders.Add(JointProviders);
-
+                        db.EnduringMaterialJointProviders.Add(JointProviders);
+                        db.SaveChanges();
+                        Index++;
+                        Console.WriteLine(" - Saved");
                     }
+                    Console.WriteLine(" - Complete");
                 }
-                db.SaveChanges();
+
             }
             catch (Exception e)
             {
@@ -186,40 +270,131 @@ namespace OSUCCMEDataImport.Jobs
             }
         }
 
-        private static void EnduringRegistrations(string ImportUserID)
+        private static void EnduringMaterialRegistrations(string ImportUserID)
         {
             var db = new NewOSUCCMEEntities();
+            db.Configuration.AutoDetectChangesEnabled = false;
             var olddb = new OldOSUCCMEEntities();
+            olddb.Configuration.AutoDetectChangesEnabled = false;
 
             try
             {
-                var WebcastRegistrationsToImport = (from c in olddb.WebcastRegistrations
-                                                    where c.IsDeleted == false && c.WebCastID != null
-                                                    select c).ToList();
+                var EnduringMaterialRegistrationsToImport = (from c in olddb.EnduringMaterialRegistrations
+                                                             where c.IsDeleted == false && c.EnduringID != null
+                                                             select c).ToList();
 
-                foreach (var r in WebcastRegistrationsToImport)
+                var Total = EnduringMaterialRegistrationsToImport.Count();
+                Console.Write("Importing EnduringMaterials Prices - Starting ");
+                Console.WriteLine(Total + " to Process");
+                var Index = 1;
+
+                foreach (var r in EnduringMaterialRegistrationsToImport)
                 {
-                    if (r.WebCastID != null)
+                    if (r.EnduringID != null)
                     {
-                        var Registration = new Models.WebcastRegistrations()
+                        Console.Write("Processing : EnduringMaterialID exist.");
+                        if (CommonFunctions.DoesUserExist(r.UserID))
                         {
-                            WebcastID = r.WebCastID ?? 0,
-                            UserID = r.UserID,
-                            PaymentMethod = r.PaymentType,
-                            PaymentAmount = decimal.Parse(r.PaymentAmount),
-                            IsCanceled = r.IsCancelled,
-                            IsDeleted = false,
-                            ConfirmationNumber = r.Confirmation,
-                            EvaluationSent = r.EvaluationSent ?? false,
-                            CreatedOn = DateTime.Now,
-                            CreatedBy = ImportUserID,
-                            FileAccessEnabled = true
-                        };
-                        db.WebcastRegistrations.Add(Registration);
+                            Console.Write("Processing : User Does Exist.");
+                            if (r.Confirmation != "Speaker")
+                            {
+                                Console.Write("Processing : (" + Index + "/" + Total + ") " + r.ID + " ");
+
+                                var Registration = new Models.EnduringMaterialRegistrations()
+                                {
+                                    EnduringMaterialID = r.EnduringID ?? 0,
+                                    UserID = r.UserID,
+                                    IsDeleted = false,
+                                    ConfirmationNumber = r.Confirmation ?? "",
+                                    EvaluationSent = r.EvaluationSent ?? false,
+                                    CreatedOn = DateTime.Now,
+                                    CreatedBy = ImportUserID,
+                                    FileAccessEnabled = true,
+                                    LastUpdatedOn = DateTime.Now,
+                                    LastUpdatedBy = ImportUserID
+                                };
+                                db.EnduringMaterialRegistrations.Add(Registration);
+
+                                if (r.PaymentAmount != null)
+                                {
+                                    decimal OutPaymentAmount = 0.0m;
+                                    decimal.TryParse(r.PaymentAmount, out OutPaymentAmount);
+
+                                    Registration.PaymentAmount = OutPaymentAmount;
+                                }
+                                else
+                                {
+                                    Registration.PaymentAmount = 0.0m;
+                                }
+
+                                if (r.PaymentType == "Check")
+                                {
+                                    Registration.PaymentMethod = r.PaymentType;
+                                }
+                                if (r.PaymentType == "Free")
+                                {
+                                    Registration.PaymentMethod = r.PaymentType;
+                                }
+                                if (r.PaymentType.ToLower() == "credit")
+                                {
+                                    Registration.PaymentMethod = "Credit Card - Manual";
+                                }
+                                if (r.PaymentType == "None")
+                                {
+                                    Registration.PaymentMethod = "Free";
+                                }
+                                if (r.PaymentType == "Scholarship")
+                                {
+                                    Registration.PaymentMethod = "Waived";
+                                }
+                                if (r.PaymentType == "Waived")
+                                {
+                                    Registration.PaymentMethod = r.PaymentType;
+                                }
+                                if (r.PaymentType == "Attendance Only")
+                                {
+                                    Registration.PaymentMethod = "Free";
+                                }
+                                if (r.PaymentType == "Cash")
+                                {
+                                    Registration.PaymentMethod = "Other";
+                                }
+                                if (r.PaymentType == "Other")
+                                {
+                                    Registration.PaymentMethod = r.PaymentType;
+                                }
+                                if (r.PaymentType == "Credit Card")
+                                {
+                                    Registration.PaymentMethod = "Credit Card - Auto";
+                                }
+                                if (r.PaymentType == "eRequest")
+                                {
+                                    Registration.PaymentMethod = r.PaymentType;
+                                }
+                                if (r.PaymentType == "N/A")
+                                {
+                                    Registration.PaymentMethod = "Free";
+                                }
+                                if (r.PaymentType.Contains("HA:"))
+                                {
+                                    Registration.PaymentMethod = "Hospital Assigned";
+                                }
+
+                                if (Registration.PaymentMethod == null)
+                                {
+                                    Registration.PaymentMethod = "Null";
+                                }
+
+                                db.SaveChanges();
+                                Index++;
+                                Console.WriteLine(" - Saved");
+                            }
+                        }
                     }
 
+                    Console.WriteLine(" - Complete");
+
                 }
-                db.SaveChanges();
 
             }
             catch (Exception e)
@@ -229,21 +404,51 @@ namespace OSUCCMEDataImport.Jobs
             }
         }
 
-        private static void Enduringspecialties(string ImportUserID)
+        private static void EnduringMaterialspecialties(string ImportUserID)
         {
             var db = new NewOSUCCMEEntities();
+            db.Configuration.AutoDetectChangesEnabled = false;
             var olddb = new OldOSUCCMEEntities();
+            olddb.Configuration.AutoDetectChangesEnabled = false;
 
             try
             {
+                var EnduringMaterialspecialtiesToImport = (from cs in olddb.EnduringMaterialsSearchCategories
+                                                           select cs).ToList();
 
+                var Total = EnduringMaterialspecialtiesToImport.Count();
+                Console.Write("Importing EnduringMaterials Specialties - Starting ");
+                Console.WriteLine(Total + " to Process");
+                var Index = 1;
 
+                foreach (var c in EnduringMaterialspecialtiesToImport)
+                {
+                    Console.Write("Processing : (" + Index + "/" + Total + ") " + c.EnduringID + " " + c.CategoryID);
+
+                    var NewSpecialtyID = (from v in db.CategoryMapping
+                                          where v.OldID == c.CategoryID
+                                          select v.NewID).FirstOrDefault();
+
+                    var Specialty = new Models.EnduringMaterialSpecialties()
+                    {
+                        EnduringMaterialID = c.EnduringID ?? 0,
+                        SpecialtyID = NewSpecialtyID ?? 0
+                    };
+                    db.EnduringMaterialSpecialties.Add(Specialty);
+                    db.SaveChanges();
+
+                    Console.WriteLine(" - Saved");
+
+                    Index++;
+                }
+                Console.WriteLine(" - Complete");
             }
             catch (Exception e)
             {
                 Console.WriteLine("");
                 Console.WriteLine(" - " + e.Message);
             }
+
         }
 
 
