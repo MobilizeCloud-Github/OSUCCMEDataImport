@@ -65,6 +65,7 @@ namespace OSUCCMEDataImport
                             }
                         case "7":
                             {
+                                RSSeriesJobs.Process(ImportUserID);
                                 break;
                             }
                         case "8":
@@ -74,6 +75,7 @@ namespace OSUCCMEDataImport
                             }
                         case "9":
                             {
+                                CreditJobs.Process(ImportUserID);
                                 break;
                             }
                     }

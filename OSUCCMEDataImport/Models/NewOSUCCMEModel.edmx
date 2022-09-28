@@ -1677,7 +1677,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="None" />
           <Property Name="SeriesID" Type="int" Nullable="false" />
           <Property Name="Title" Type="nvarchar" MaxLength="256" Nullable="false" />
           <Property Name="URL" Type="nvarchar" MaxLength="300" Nullable="false" />
@@ -1934,7 +1934,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="None" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="URL" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="AttendanceOverrideExpiration" Type="datetime" />
@@ -8882,7 +8882,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="None" />
           <Property Name="SeriesID" Type="Int32" Nullable="false" />
           <Property Name="Title" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="URL" Type="String" MaxLength="300" FixedLength="false" Unicode="true" Nullable="false" />
@@ -9176,7 +9176,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="None" />
           <Property Name="Name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="URL" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="AttendanceOverrideExpiration" Type="DateTime" Precision="3" />

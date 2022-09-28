@@ -23,11 +23,11 @@ namespace OSUCCMEDataImport.Jobs
             //Console.WriteLine("");
             //Console.WriteLine("-----------------------------------");
             //Console.WriteLine("");
-            EnduringMaterialRegistrations(ImportUserID);
+            //EnduringMaterialRegistrations(ImportUserID);
             //Console.WriteLine("");
             //Console.WriteLine("-----------------------------------");
             //Console.WriteLine("");
-            //EnduringMaterialspecialties(ImportUserID);
+            EnduringMaterialspecialties(ImportUserID);
 
         }
 
@@ -429,16 +429,22 @@ namespace OSUCCMEDataImport.Jobs
                                           where v.OldID == c.CategoryID
                                           select v.NewID).FirstOrDefault();
 
-                    var Specialty = new Models.EnduringMaterialSpecialties()
+                    var EnduringMaterial = (from v in db.EnduringMaterials
+                                            where v.ID == c.EnduringID
+                                            select v.ID).FirstOrDefault();
+
+                    if (EnduringMaterial > 0)
                     {
-                        EnduringMaterialID = c.EnduringID ?? 0,
-                        SpecialtyID = NewSpecialtyID ?? 0
-                    };
-                    db.EnduringMaterialSpecialties.Add(Specialty);
-                    db.SaveChanges();
+                        var Specialty = new Models.EnduringMaterialSpecialties()
+                        {
+                            EnduringMaterialID = c.EnduringID ?? 0,
+                            SpecialtyID = NewSpecialtyID ?? 0
+                        };
+                        db.EnduringMaterialSpecialties.Add(Specialty);
+                        db.SaveChanges();
 
-                    Console.WriteLine(" - Saved");
-
+                        Console.WriteLine(" - Saved");
+                    }
                     Index++;
                 }
                 Console.WriteLine(" - Complete");
