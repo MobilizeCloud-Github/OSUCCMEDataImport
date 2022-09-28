@@ -35,7 +35,7 @@ namespace OSUCCMEDataImport.Jobs
             //Console.WriteLine("");
             //Console.WriteLine("-----------------------------------");
             //Console.WriteLine("");
-            ConferenceSpecialties(ImportUserID);
+            //ConferenceSpecialties(ImportUserID);
             //Console.WriteLine("");
             //Console.WriteLine("-----------------------------------");
             //Console.WriteLine("");
@@ -550,8 +550,6 @@ namespace OSUCCMEDataImport.Jobs
             db.Configuration.AutoDetectChangesEnabled = false;
             var olddb = new OldOSUCCMEEntities();
             olddb.Configuration.AutoDetectChangesEnabled = false;
-
-
 
             try
             {
