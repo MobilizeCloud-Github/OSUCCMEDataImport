@@ -56,8 +56,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\CommonFunctions.cs" />
-    <Compile Include="Jobs\EnduringJobs.cs" />
-    <Compile Include="Jobs\WebcastJobs.cs" />
     <Compile Include="Jobs\HospitalJobs.cs" />
     <Compile Include="Jobs\ImportJobUser.cs" />
     <Compile Include="Jobs\TruncateJobs.cs" />
@@ -79,9 +77,6 @@
       <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Boards.cs">
-      <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\CategoryMapping.cs">
       <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ConferenceCreditImportErrors.cs">
@@ -562,6 +557,9 @@
       <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\SubSpecialties.cs">
+      <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\sysdiagrams.cs">
       <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Testing.cs">
