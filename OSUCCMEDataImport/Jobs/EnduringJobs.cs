@@ -195,7 +195,7 @@ namespace OSUCCMEDataImport.Jobs
                         EnduringMaterial.Providership = "Direct";
                     }
 
-                    if (CommonFunctions.DoesUserExist(c.CreatingUserID))
+                    if (CommonFunctions.DoesUserExist(db, c.CreatingUserID))
                     {
                         EnduringMaterial.CreatedBy = c.CreatingUserID;
                     }
@@ -293,7 +293,7 @@ namespace OSUCCMEDataImport.Jobs
                     if (r.EnduringID != null)
                     {
                         Console.Write("Processing : EnduringMaterialID exist.");
-                        if (CommonFunctions.DoesUserExist(r.UserID))
+                        if (CommonFunctions.DoesUserExist(db, r.UserID))
                         {
                             Console.Write("Processing : User Does Exist.");
                             if (r.Confirmation != "Speaker")

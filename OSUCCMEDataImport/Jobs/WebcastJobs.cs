@@ -131,7 +131,7 @@ namespace OSUCCMEDataImport.Jobs
                         Webcast.Providership = "Direct";
                     }
 
-                    if (CommonFunctions.DoesUserExist(c.CreatingUserID))
+                    if (CommonFunctions.DoesUserExist(db, c.CreatingUserID))
                     {
                         Webcast.CreatedBy = c.CreatingUserID;
                     }
@@ -229,7 +229,7 @@ namespace OSUCCMEDataImport.Jobs
                     if (r.WebCastID != null)
                     {
                         Console.Write("Processing : WebcastID exist.");
-                        if (CommonFunctions.DoesUserExist(r.UserID))
+                        if (CommonFunctions.DoesUserExist(db, r.UserID))
                         {
                             Console.Write("Processing : User Does Exist.");
                             if (r.PaymentType != "N/A" && r.Confirmation != "Speaker")

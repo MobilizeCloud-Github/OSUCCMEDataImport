@@ -2,6 +2,7 @@
 using OSUCCMEDataImport.Common;
 using OSUCCMEDataImport.Models;
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 
@@ -11,7 +12,10 @@ namespace OSUCCMEDataImport.Jobs
     {
         public static void Process(string ImportUserID)
         {
-            //Conferences(ImportUserID);
+            Stopwatch stopWatch = new Stopwatch();
+            stopWatch.Start();
+
+            Conferences(ImportUserID);
             //Console.WriteLine("");
             //Console.WriteLine("-----------------------------------");
             //Console.WriteLine("");
@@ -47,10 +51,16 @@ namespace OSUCCMEDataImport.Jobs
             //Console.WriteLine("");
             //Console.WriteLine("-----------------------------------");
             //Console.WriteLine("");
+
+            TimeSpan ts = stopWatch.Elapsed;
+            string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
+            ts.Hours, ts.Minutes, ts.Seconds,
+            ts.Milliseconds / 10);
+            Console.WriteLine("RunTime " + elapsedTime);
         }
 
         private static void Conferences(string ImportUserID)
-        {
+        {            
             var db = new NewOSUCCMEEntities();
             db.Configuration.AutoDetectChangesEnabled = false;
             var olddb = new OldOSUCCMEEntities();
@@ -159,7 +169,7 @@ namespace OSUCCMEDataImport.Jobs
                         Conference.Providership = "Direct";
                     }
 
-                    if (CommonFunctions.DoesUserExist(c.CreatingUserID))
+                    if (CommonFunctions.DoesUserExist(db, c.CreatingUserID))
                     {
                         Conference.CreatedBy = c.CreatingUserID;
                     }
@@ -195,9 +205,16 @@ namespace OSUCCMEDataImport.Jobs
                     }
 
                     db.Conferences.Add(Conference);
-                    db.SaveChanges();
+                    if (Index % 5 == 0)
+                    {
+                        db.SaveChanges();                        
+                        Console.WriteLine(" - Saved");
+                    }
+                    else
+                    {
+                        Console.WriteLine(" - Pending");
+                    }
                     Index++;
-                    Console.WriteLine(" - Saved");
                 }
                 Console.WriteLine(" - Complete");
             }
@@ -221,7 +238,7 @@ namespace OSUCCMEDataImport.Jobs
             try
             {
                 var ConferencesWithJointProvidership = (from c in db.Conferences
-                                                        where c.Providership == "Joint"
+                                                        where c.Providership == "Joint" && c.IsDeleted == false
                                                         select c.ID).ToList();
 
                 var Total = ConferencesWithJointProvidership.Count();
@@ -233,7 +250,7 @@ namespace OSUCCMEDataImport.Jobs
                 {
                     Console.Write("Processing : (" + Index + "/" + Total + ") " + c + " ");
                     var JointProviderToImport = (from j in olddb.Conferences
-                                                 where j.ID == c
+                                                 where j.ID == c && j.JointSponsor != null && j.JointSponsor != ""
                                                  select j.JointSponsor).FirstOrDefault();
 
                     if (!string.IsNullOrWhiteSpace(JointProviderToImport))
@@ -271,7 +288,15 @@ namespace OSUCCMEDataImport.Jobs
             {
                 var ConferencesOptionGroupsToImport = (from c in olddb.ConferenceExtraGroups
                                                        where c.IsDeleted == false
-                                                       select c).ToList();
+                                                       select new
+                                                       {
+                                                           c.ID,
+                                                           c.ConferenceID,
+                                                           c.Title,
+                                                           c.Description,
+                                                           c.SingularChoice,
+                                                           c.Order
+                                                       }).ToList();
 
                 var Total = ConferencesOptionGroupsToImport.Count();
                 Console.Write("Importing Conferences Option Groups - Starting ");
@@ -297,10 +322,16 @@ namespace OSUCCMEDataImport.Jobs
                         LastUpdatedOn = DateTime.Now
                     };
                     db.ConferenceOptionsGroups.Add(Option);
-                    db.SaveChanges();
-
+                    if (Index % 5 == 0)
+                    {
+                        db.SaveChanges();
+                        Console.WriteLine(" - Saved");
+                    }
+                    else
+                    {
+                        Console.WriteLine(" - Pending");
+                    }
                     Index++;
-                    Console.WriteLine(" - Saved");
                 }
 
                 Console.WriteLine(" - Complete");
@@ -337,7 +368,14 @@ namespace OSUCCMEDataImport.Jobs
 
                     var ConferenceOptionsToImport = (from ce in olddb.ConferenceExtras
                                                      where ce.ConferenceID == c.ConferenceID.ToString() && ce.GroupBy == c.ID
-                                                     select ce).ToList();
+                                                     select new
+                                                     {
+                                                         ce.ID,
+                                                         ce.Title,
+                                                         ce.Description,
+                                                         ce.Price,
+                                                         ce.Order
+                                                     }).ToList();
                     foreach (var o in ConferenceOptionsToImport)
                     {
                         var Option = new ConferenceOptions()
@@ -354,12 +392,10 @@ namespace OSUCCMEDataImport.Jobs
 
                         };
                         db.ConferenceOptions.Add(Option);
-                        db.SaveChanges();
-
 
                         Console.WriteLine(" - Saved - " + o.ID);
-
                     }
+                    db.SaveChanges();
                     Index++;
                     Console.WriteLine(" - Complete");
                 }
@@ -407,13 +443,19 @@ namespace OSUCCMEDataImport.Jobs
                             LastUpdatedOn = DateTime.Now
                         };
                         db.ConferencePrices.Add(Price);
-                        db.SaveChanges();
+                        if (Index % 5 == 0)
+                        {
+                            db.SaveChanges();
+                            Console.WriteLine(" - Saved");
+                        }
+                        else
+                        {
+                            Console.WriteLine(" - Pending");
+                        }
 
                         Index++;
-                        Console.WriteLine(" - Saved");
                     }
                 }
-                Index++;
                 Console.WriteLine(" - Complete");
 
             }
@@ -446,7 +488,7 @@ namespace OSUCCMEDataImport.Jobs
                 {
                     if (r.ConferenceID != null)
                     {
-                        if (CommonFunctions.DoesUserExist(r.UserID))
+                        if (CommonFunctions.DoesUserExist(db, r.UserID))
                         {
                             if (r.PaymentType != "N/A" && r.Confirmation != "Speaker")
                             {
@@ -690,7 +732,7 @@ namespace OSUCCMEDataImport.Jobs
                     {
                         Console.Write("Processing : (" + Index + "/" + Total + ") " + c + " ");
                         Console.Write("Stream Users : (" + UserIndex + "/" + TotalUser + ") " + c + " ");
-                        if (CommonFunctions.DoesUserExist(v.UserID))
+                        if (CommonFunctions.DoesUserExist(db, v.UserID))
                         {
                             var View = new Models.ConferenceStreamViews()
                             {

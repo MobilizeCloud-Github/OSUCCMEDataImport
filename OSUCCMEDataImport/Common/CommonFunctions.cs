@@ -135,21 +135,11 @@ namespace OSUCCMEDataImport.Common
             }
         }
 
-        public static bool DoesUserExist(string UserIDToCheck)
-        {
-            var db = new NewOSUCCMEEntities();
-            db.Configuration.AutoDetectChangesEnabled = false;
-
-            var User = (from u in db.UserProfiles
-                        where u.UserID == UserIDToCheck && u.IsDeleted == false
-                        select u.UserID).FirstOrDefault();
-
-            if (!string.IsNullOrWhiteSpace(User))
-            {
-                return true;
-            }
-
-            return false;
+        public static bool DoesUserExist(NewOSUCCMEEntities db, string UserID)
+        {            
+            return (from u in db.UserProfiles
+                        where u.UserID == UserID && u.IsDeleted == false
+                        select u.UserID).Any();           
         }
 
         public static string GetTrimedString(string Content, int Length)

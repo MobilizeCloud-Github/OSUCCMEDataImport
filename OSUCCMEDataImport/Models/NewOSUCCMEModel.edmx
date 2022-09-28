@@ -232,7 +232,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ConferenceID" Type="int" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="Description" Type="nvarchar" MaxLength="512" Nullable="false" />
@@ -1124,7 +1124,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="None" />
+          <Property Name="ID" Type="int" Nullable="false" />
           <Property Name="EnduringMaterialSeriesID" Type="int" Nullable="false" />
           <Property Name="Title" Type="nvarchar" MaxLength="256" Nullable="false" />
           <Property Name="URL" Type="nvarchar" MaxLength="300" Nullable="false" />
@@ -1196,7 +1196,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="int" StoreGeneratedPattern="None" Nullable="false" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="URL" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="AttendanceOverrideExpiration" Type="datetime" />
@@ -2802,7 +2802,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="None" />
+          <Property Name="ID" Type="int" Nullable="false" />
           <Property Name="Title" Type="nvarchar" MaxLength="256" Nullable="false" />
           <Property Name="URL" Type="nvarchar" MaxLength="300" Nullable="false" />
           <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
