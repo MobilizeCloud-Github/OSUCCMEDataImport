@@ -82,9 +82,6 @@
     <Compile Include="Models\Boards.cs">
       <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\CategoryMapping.cs">
-      <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\ConferenceCreditImportErrors.cs">
       <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
     </Compile>
@@ -563,6 +560,9 @@
       <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\SubSpecialties.cs">
+      <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\sysdiagrams.cs">
       <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Testing.cs">
