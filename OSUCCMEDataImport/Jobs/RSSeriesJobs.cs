@@ -194,7 +194,7 @@ namespace OSUCCMEDataImport.Jobs
                         RSSerie.Providership = "Direct";
                     }
 
-                    if (CommonFunctions.DoesUserExist(c.CreatingUserID))
+                    if (CommonFunctions.DoesUserExist(db, c.CreatingUserID))
                     {
                         RSSerie.CreatedBy = c.CreatingUserID;
                     }
@@ -321,7 +321,7 @@ namespace OSUCCMEDataImport.Jobs
                         if (RSSeriesExist)
                         {
                             Console.Write("Processing : RSSeries exist.");
-                            if (CommonFunctions.DoesUserExist(r.UserID))
+                            if (CommonFunctions.DoesUserExist(db, r.UserID))
                             {
                                 Console.Write("Processing : User Does Exist.");
                                 if (r.Confirmation != "Speaker")

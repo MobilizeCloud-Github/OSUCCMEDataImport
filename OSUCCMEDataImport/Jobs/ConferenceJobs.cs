@@ -60,7 +60,7 @@ namespace OSUCCMEDataImport.Jobs
         }
 
         private static void Conferences(string ImportUserID)
-        {            
+        {
             var db = new NewOSUCCMEEntities();
             db.Configuration.AutoDetectChangesEnabled = false;
             var olddb = new OldOSUCCMEEntities();
@@ -207,7 +207,7 @@ namespace OSUCCMEDataImport.Jobs
                     db.Conferences.Add(Conference);
                     if (Index % 5 == 0)
                     {
-                        db.SaveChanges();                        
+                        db.SaveChanges();
                         Console.WriteLine(" - Saved");
                     }
                     else
@@ -508,7 +508,6 @@ namespace OSUCCMEDataImport.Jobs
                                     LastUpdatedOn = DateTime.Now,
                                     LastUpdatedBy = ImportUserID
                                 };
-                                db.ConferenceRegistrations.Add(Registration);
 
                                 if (r.PaymentAmount != null)
                                 {
@@ -522,50 +521,50 @@ namespace OSUCCMEDataImport.Jobs
                                     Registration.PaymentAmount = 0.0m;
                                 }
 
-                                if (r.PaymentType == "Check")
+                                switch (r.PaymentType.ToLower())
                                 {
-                                    Registration.PaymentMethod = r.PaymentType;
+                                    case "check":
+                                    case "free":
+                                    case "waived":
+                                    case "other":
+                                    case "erequest":
+                                        {
+                                            Registration.PaymentMethod = r.PaymentType;
+                                            break;
+                                        }
+                                    case "credit":
+                                        {
+                                            Registration.PaymentMethod = "Credit Card - Manual";
+                                            break;
+                                        }
+                                    case "none":
+                                        {
+                                            Registration.PaymentMethod = "Free";
+                                            break;
+                                        }
+                                    case "scholarship":
+                                        {
+                                            Registration.PaymentMethod = "Waived";
+                                            break;
+                                        }
+                                    case "attendance only":
+                                        {
+                                            Registration.PaymentMethod = "Free";
+                                            break;
+                                        }
+                                    case "cash":
+                                        {
+                                            Registration.PaymentMethod = "Other";
+                                            break;
+                                        }
+                                    case "credit card":
+                                        {
+                                            Registration.PaymentMethod = "Credit Card - Auto";
+                                            break;
+                                        }
                                 }
-                                if (r.PaymentType == "Free")
-                                {
-                                    Registration.PaymentMethod = r.PaymentType;
-                                }
-                                if (r.PaymentType.ToLower() == "credit")
-                                {
-                                    Registration.PaymentMethod = "Credit Card - Manual";
-                                }
-                                if (r.PaymentType == "None")
-                                {
-                                    Registration.PaymentMethod = "Free";
-                                }
-                                if (r.PaymentType == "Scholarship")
-                                {
-                                    Registration.PaymentMethod = "Waived";
-                                }
-                                if (r.PaymentType == "Waived")
-                                {
-                                    Registration.PaymentMethod = r.PaymentType;
-                                }
-                                if (r.PaymentType == "Attendance Only")
-                                {
-                                    Registration.PaymentMethod = "Free";
-                                }
-                                if (r.PaymentType == "Cash")
-                                {
-                                    Registration.PaymentMethod = "Other";
-                                }
-                                if (r.PaymentType == "Other")
-                                {
-                                    Registration.PaymentMethod = r.PaymentType;
-                                }
-                                if (r.PaymentType == "Credit Card")
-                                {
-                                    Registration.PaymentMethod = "Credit Card - Auto";
-                                }
-                                if (r.PaymentType == "eRequest")
-                                {
-                                    Registration.PaymentMethod = r.PaymentType;
-                                }
+
+                                db.ConferenceRegistrations.Add(Registration);
 
                                 db.SaveChanges();
                                 Index++;
