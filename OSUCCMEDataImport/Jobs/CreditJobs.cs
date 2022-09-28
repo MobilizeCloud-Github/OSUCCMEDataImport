@@ -37,7 +37,7 @@ namespace OSUCCMEDataImport.Jobs
 
                 foreach (var sd in SpeakerDisclosureToImport)
                 {
-                    if (CommonFunctions.DoesUserExist(sd.UserID))
+                    if (CommonFunctions.DoesUserExist(db, sd.UserID))
                     {
                         var NewFacultyDisclosure = new FacultyDisclosures()
                         {
@@ -134,7 +134,7 @@ namespace OSUCCMEDataImport.Jobs
                 {
                     Console.Write("Processing : (" + Index + "/" + Total + ") " + u.ID);
 
-                    if (CommonFunctions.DoesUserExist(u.UserID))
+                    if (CommonFunctions.DoesUserExist(db, u.UserID))
                     {
                         switch (u.EventType)
                         {
@@ -162,7 +162,7 @@ namespace OSUCCMEDataImport.Jobs
                                                 SpeakerCheckListOnFile = false
                                             };
 
-                                            if (CommonFunctions.DoesUserExist(u.UserID))
+                                            if (CommonFunctions.DoesUserExist(db, u.UserID))
                                             {
                                                 NewConferenceSpeaker.SpeakerHoursAssignedBy = u.AssignedBy;
                                                 NewConferenceSpeaker.CreatedBy = u.AssignedBy;
@@ -203,7 +203,7 @@ namespace OSUCCMEDataImport.Jobs
 
                                                 Registration.MOCPoints = OutMOCPoints;
                                                 Registration.MOCPointsAssignedOn = u.AssignedOn;
-                                                if (CommonFunctions.DoesUserExist(u.UserID))
+                                                if (CommonFunctions.DoesUserExist(db, u.UserID))
                                                 {
                                                     Registration.MOCPointsAssignedBy = u.AssignedBy;
                                                 }
@@ -220,7 +220,7 @@ namespace OSUCCMEDataImport.Jobs
 
                                                 Registration.CreditHours = OutCreditHours;
                                                 Registration.CreditAssignedOn = u.AssignedOn;
-                                                if (CommonFunctions.DoesUserExist(u.UserID))
+                                                if (CommonFunctions.DoesUserExist(db, u.UserID))
                                                 {
                                                     Registration.CreditAssignedBy = u.AssignedBy;
                                                 }
