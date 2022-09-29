@@ -2,6 +2,7 @@
 using OSUCCMEDataImport.Common;
 using OSUCCMEDataImport.Models;
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 
@@ -11,6 +12,9 @@ namespace OSUCCMEDataImport.Jobs
     {
         public static void Process(string ImportUserID)
         {
+            Stopwatch stopWatch = new Stopwatch();
+            stopWatch.Start();
+
             //RSSeriesSeries(ImportUserID);
             //Console.WriteLine("");
             //Console.WriteLine("-----------------------------------");
@@ -29,6 +33,11 @@ namespace OSUCCMEDataImport.Jobs
             //Console.WriteLine("");
             //RSSeriespecialties(ImportUserID);
 
+            TimeSpan ts = stopWatch.Elapsed;
+            string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
+            ts.Hours, ts.Minutes, ts.Seconds,
+            ts.Milliseconds / 10);
+            Console.WriteLine("RunTime " + elapsedTime);
         }
 
         private static void RSSeriesSeries(string ImportUserID)
@@ -51,8 +60,8 @@ namespace OSUCCMEDataImport.Jobs
 
                 foreach (var c in RSSeriesSeriesToImport)
                 {
-                    Console.Write("Processing : (" + Index + "/" + Total + ") " + c.ID + " ");
-                    var RSSeriesSeries = new Models.RSSeriesSeries()
+                    Console.Write("Processing RSSeries Series: (" + Index + "/" + Total + ") " + c.ID + " ");
+                    var RSSeriesSeries = new RSSeriesSeries()
                     {
                         ID = c.ID,
                         Name = c.Title,
@@ -66,10 +75,33 @@ namespace OSUCCMEDataImport.Jobs
                     };
 
                     db.RSSeriesSeries.Add(RSSeriesSeries);
-                    db.SaveChanges();
+                    if (Index % 5 == 0)
+                    {
+                        db.SaveChanges();
+                        Console.WriteLine(" - Saved");
+                    }
+                    else
+                    {
+                        Console.WriteLine(" - Pending");
+                    }
                     Index++;
-                    Console.WriteLine(" - Saved");
                 }
+
+                var ArchivedSeries = new RSSeriesSeries()
+                {
+                    ID = 340,
+                    Name = "ARCH",
+                    URL = CommonFunctions.URLFriendly("ARCH"),
+                    AttendanceOverrideExpiration = null,
+                    CreatedBy = ImportUserID,
+                    CreatedOn = DateTime.Now,
+                    LastUpdatedOn = DateTime.Now,
+                    LastUpdatedBy = ImportUserID,
+
+                };
+                db.RSSeriesSeries.Add(ArchivedSeries);
+
+                db.SaveChanges();
                 Console.WriteLine(" - Complete");
             }
             catch (Exception e)
@@ -90,8 +122,9 @@ namespace OSUCCMEDataImport.Jobs
             TextWriter tw = new StreamWriter("RSSeriesImportLog.txt");
             try
             {
+                var TransferStartDate = new DateTime(2012, 1, 1);
                 var RSSeriesToImport = (from c in olddb.RSSeries
-                                        where c.IsDeleted == false
+                                        where c.IsDeleted == false && c.EventDateTime >= TransferStartDate
                                         select c).ToList();
 
                 var Total = RSSeriesToImport.Count();
@@ -105,7 +138,7 @@ namespace OSUCCMEDataImport.Jobs
 
                 foreach (var c in RSSeriesToImport)
                 {
-                    Console.Write("Processing : (" + Index + "/" + Total + ") " + c.ID + " ");
+                    Console.Write("Processing RSSeries: (" + Index + "/" + Total + ") " + c.ID + " ");
                     var RSSerie = new Models.RSSeries()
                     {
                         ID = c.ID,
@@ -227,9 +260,16 @@ namespace OSUCCMEDataImport.Jobs
                     }
 
                     db.RSSeries.Add(RSSerie);
-                    db.SaveChanges();
+                    if (Index % 5 == 0)
+                    {
+                        db.SaveChanges();
+                        Console.WriteLine(" - Saved");
+                    }
+                    else
+                    {
+                        Console.WriteLine(" - Pending");
+                    }
                     Index++;
-                    Console.WriteLine(" - Saved");
                 }
                 Console.WriteLine(" - Complete");
             }
@@ -253,7 +293,7 @@ namespace OSUCCMEDataImport.Jobs
             try
             {
                 var RSSeriesWithJointProvidership = (from c in db.RSSeries
-                                                     where c.Providership == "Joint"
+                                                     where c.Providership == "Joint" && c.IsDeleted == false
                                                      select c.ID).ToList();
 
                 var Total = RSSeriesWithJointProvidership.Count();
@@ -263,9 +303,9 @@ namespace OSUCCMEDataImport.Jobs
 
                 foreach (var c in RSSeriesWithJointProvidership)
                 {
-                    Console.Write("Processing : (" + Index + "/" + Total + ") " + c + " ");
+                    Console.Write("Processing RSSeries Joint Providers: (" + Index + "/" + Total + ") " + c + " ");
                     var JointProviderToImport = (from j in olddb.RSSeries
-                                                 where j.ID == c
+                                                 where j.ID == c && j.JointSponsor != null && j.JointSponsor != ""
                                                  select j.JointSponsor).FirstOrDefault();
 
                     if (!string.IsNullOrWhiteSpace(JointProviderToImport))
@@ -277,13 +317,24 @@ namespace OSUCCMEDataImport.Jobs
                             Name = JointProviderToImport
                         };
                         db.RSSeriesJointProviders.Add(JointProviders);
-                        db.SaveChanges();
-                        Index++;
-                        Console.WriteLine(" - Saved");
+                        if (Index % 5 == 0)
+                        {
+                            db.SaveChanges();
+                            Console.WriteLine(" - Saved");
+                        }
+                        else
+                        {
+                            Console.WriteLine(" - Pending");
+                        }
                     }
-                    Console.WriteLine(" - Complete");
+                    else
+                    {
+                        Console.WriteLine(" - Skipped");
+                    }
+                    Index++;
                 }
-
+                db.SaveChanges();
+                Console.WriteLine(" - Complete");
             }
             catch (Exception e)
             {
@@ -301,36 +352,43 @@ namespace OSUCCMEDataImport.Jobs
 
             try
             {
-                var RSSerieRegistrationsToImport = (from c in olddb.RSSeriesRegistrations
-                                                    where c.IsDeleted == false && c.RSSeriesID != null
-                                                    select c).ToList();
+                var UserToImport = (from c in olddb.RSSeriesRegistrations
+                                    where c.IsDeleted == false && c.RSSeriesID != null && c.Confirmation != "Speaker"
+                                    group c by c.UserID into cg
+                                    select new
+                                    {
+                                        UserID = cg.Key,
+                                        Registrations = cg
+                                    }).ToList();
 
-                var Total = RSSerieRegistrationsToImport.Count();
+                var Total = UserToImport.Count();
                 Console.Write("Importing RSSeries Prices - Starting ");
                 Console.WriteLine(Total + " to Process");
                 var Index = 1;
 
-                foreach (var r in RSSerieRegistrationsToImport)
-                {
-                    if (r.RSSeriesID != null)
-                    {
-                        Console.Write("Processing : RSSerieID exist.");
-                        var RSSeriesExist = (from s in db.RSSeries
-                                             where s.ID == r.RSSeriesID
-                                             select s.ID).Any();
-                        if (RSSeriesExist)
-                        {
-                            Console.Write("Processing : RSSeries exist.");
-                            if (CommonFunctions.DoesUserExist(db, r.UserID))
-                            {
-                                Console.Write("Processing : User Does Exist.");
-                                if (r.Confirmation != "Speaker")
-                                {
-                                    Console.Write("Processing : (" + Index + "/" + Total + ") " + r.ID + " ");
+                var RSSeriesIDs = (from c in db.RSSeries
+                                   where c.IsDeleted == false
+                                   select c.ID).ToList();
 
+                foreach (var u in UserToImport)
+                {
+                    Console.WriteLine("Processing RSSeries Registrations : (" + Index + "/" + Total + ") " + u.UserID + " ");
+
+                    if (CommonFunctions.DoesUserExist(db, u.UserID))
+                    {
+                        var TotalRegistrations = u.Registrations.Count();
+                        var RegistrationIndex = 1;
+                        foreach (var r in u.Registrations)
+                        {
+                            Console.Write("User Registrations : (" + Index + "/" + Total + ") (" + RegistrationIndex + "/" + TotalRegistrations + ") " + r.ID + " ");
+                            if (r.RSSeriesID != null)
+                            {
+                                var RSSeriesID = r.RSSeriesID;
+                                if (RSSeriesIDs.Contains(RSSeriesID.Value))
+                                {
                                     var Registration = new Models.RSSeriesRegistrations()
                                     {
-                                        RSSeriesID = r.RSSeriesID ?? 0,
+                                        RSSeriesID = r.RSSeriesID.Value,
                                         UserID = r.UserID,
                                         IsDeleted = false,
                                         EvaluationSent = r.EvaluationSent ?? false,
@@ -341,18 +399,30 @@ namespace OSUCCMEDataImport.Jobs
                                         LastUpdatedBy = ImportUserID
                                     };
                                     db.RSSeriesRegistrations.Add(Registration);
-
-                                    db.SaveChanges();
-                                    Index++;
-                                    Console.WriteLine(" - Saved");
+                                    Console.WriteLine(" - Pending");
+                                }
+                                else
+                                {
+                                    Console.WriteLine(" - Skipped");
                                 }
                             }
+                            else
+                            {
+                                Console.WriteLine(" - Skipped");
+                            }
+                            RegistrationIndex++;
                         }
+                        db.SaveChanges();
+                        Console.WriteLine(" - Saved");
                     }
-
-                    Console.WriteLine(" - Complete");
-
+                    else
+                    {
+                        Console.WriteLine(" - User Skipped");
+                    }
+                    Index++;
                 }
+                db.SaveChanges();
+                Console.WriteLine(" - Complete");
 
             }
             catch (Exception e)
@@ -379,32 +449,58 @@ namespace OSUCCMEDataImport.Jobs
                 Console.WriteLine(Total + " to Process");
                 var Index = 1;
 
+                var CategoryMappings = (from v in db.CategoryMapping
+                                        select new
+                                        {
+                                            v.OldID,
+                                            v.NewID
+                                        }).ToList();
+
+                var RSSeriesIDs = (from c in db.RSSeries
+                                   where c.IsDeleted == false
+                                   select c.ID).ToList();
+
+
                 foreach (var c in RSSeriespecialtiesToImport)
                 {
-                    Console.Write("Processing : (" + Index + "/" + Total + ") " + c.RSSeriesID + " " + c.CategoryID);
-
-                    var NewSpecialtyID = (from v in db.CategoryMapping
-                                          where v.OldID == c.CategoryID
-                                          select v.NewID).FirstOrDefault();
-
-                    var RSSerie = (from v in db.RSSeries
-                                   where v.ID == c.RSSeriesID
-                                   select v.ID).FirstOrDefault();
-
-                    if (RSSerie > 0)
+                    Console.Write("Processing Specialties: (" + Index + "/" + Total + ") " + c.RSSeriesID + " " + c.CategoryID);
+                    var RSSeriesID = c.RSSeriesID;
+                    if (RSSeriesIDs.Contains(RSSeriesID.Value))
                     {
+                        var NewSpecialtyID = (from v in CategoryMappings
+                                              where v.OldID == c.CategoryID
+                                              select v.NewID).FirstOrDefault();
+
+                        var RSSerie = (from v in db.RSSeries
+                                       where v.ID == c.RSSeriesID
+                                       select v.ID).FirstOrDefault();
+
+
                         var Specialty = new Models.RSSeriesSpecialties()
                         {
                             RSSeriesID = c.RSSeriesID ?? 0,
                             SpecialtyID = NewSpecialtyID ?? 0
                         };
                         db.RSSeriesSpecialties.Add(Specialty);
-                        db.SaveChanges();
+                        if (Index % 10 == 0)
+                        {
+                            db.SaveChanges();
+                            Console.WriteLine(" - Saved");
+                        }
+                        else
+                        {
+                            Console.WriteLine(" - Pending");
+                        }
 
-                        Console.WriteLine(" - Saved");
                     }
+                    else
+                    {
+                        Console.WriteLine(" - Skipped");
+                    }
+
                     Index++;
                 }
+                db.SaveChanges();
                 Console.WriteLine(" - Complete");
             }
             catch (Exception e)

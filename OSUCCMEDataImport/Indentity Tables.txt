@@ -7,3 +7,12 @@ EnduringMaterials
 ConferenceStreams
 ConverenceOptionGroups
 EnduringMaterialsSeries
+
+
+Make Sure Tables are updated
+Payment Methods
+Category Mappings
+Speciality Mappings
+Asp.net Roles
+
+ARCH RSSeries Series

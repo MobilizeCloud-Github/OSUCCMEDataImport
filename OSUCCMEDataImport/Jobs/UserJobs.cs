@@ -12,11 +12,11 @@ namespace OSUCCMEDataImport.Jobs
     {
         public static void Process(string ImportUserID)
         {
-            //ImportUserProfiles(ImportUserID);
+            ImportUserProfiles(ImportUserID);
             Console.WriteLine("");
             Console.WriteLine("-----------------------------------");
             Console.WriteLine("");
-            ImportUserEmailPreferences(ImportUserID);
+            //ImportUserEmailPreferences(ImportUserID);
             Console.WriteLine("");
             Console.WriteLine("-----------------------------------");
             Console.WriteLine("");
@@ -108,47 +108,47 @@ namespace OSUCCMEDataImport.Jobs
                         try
                         {
 
-                            //var NewUserLogin = new AspNetUsers()
-                            //{
-                            //    Id = User.UserID,
-                            //    Email = User.Username,
-                            //    EmailConfirmed = false,
-                            //    PasswordHash = OldUserLogin.Password + '|' + OldUserLogin.PasswordFormat + '|' + OldUserLogin.PasswordSalt,
-                            //    SecurityStamp = Guid.NewGuid().ToString(),
-                            //    PhoneNumberConfirmed = false,
-                            //    TwoFactorEnabled = false,
-                            //    LockoutEnabled = true,
-                            //    AccessFailedCount = 0,
-                            //    UserName = User.Username,
-                            //    PasswordHashUpdated = false
-                            //};
-                            //db.AspNetUsers.Add(NewUserLogin);
+                            var NewUserLogin = new AspNetUsers()
+                            {
+                                Id = User.UserID,
+                                Email = User.Username,
+                                EmailConfirmed = false,
+                                PasswordHash = User.Password + '|' + User.PasswordFormat + '|' + User.PasswordSalt,
+                                SecurityStamp = Guid.NewGuid().ToString(),
+                                PhoneNumberConfirmed = false,
+                                TwoFactorEnabled = false,
+                                LockoutEnabled = true,
+                                AccessFailedCount = 0,
+                                UserName = User.Username,
+                                PasswordHashUpdated = false
+                            };
+                            db.AspNetUsers.Add(NewUserLogin);
 
-                            var SQLNewUser = @"INSERT INTO [dbo].[AspNetUsers](
-                                [Id]
-                               ,[Email]
-                               ,[EmailConfirmed]
-                               ,[PasswordHash]
-                               ,[SecurityStamp]
-                               ,[PhoneNumberConfirmed]
-                               ,[TwoFactorEnabled]
-                               ,[LockoutEnabled]
-                               ,[AccessFailedCount]
-                               ,[UserName]
-                               ,[PasswordHashUpdated])
-                         VALUES
-                               ('" + User.UserID + @"'
-                               ,'" + User.Username + @"'
-                               , 0
-                               ,'" + User.Password + '|' + User.PasswordFormat + '|' + User.PasswordSalt + @"'
-                               ,'" + Guid.NewGuid().ToString() + @"'
-                               , 0
-                               , 0
-                               , 1
-                               , 0
-                               ,'" + User.Username + @"'
-                               ,0)";
-                            var Status = db.Database.ExecuteSqlCommand(SQLNewUser);
+                            //   var SQLNewUser = @"INSERT INTO [dbo].[AspNetUsers](
+                            //       [Id]
+                            //      ,[Email]
+                            //      ,[EmailConfirmed]
+                            //      ,[PasswordHash]
+                            //      ,[SecurityStamp]
+                            //      ,[PhoneNumberConfirmed]
+                            //      ,[TwoFactorEnabled]
+                            //      ,[LockoutEnabled]
+                            //      ,[AccessFailedCount]
+                            //      ,[UserName]
+                            //      ,[PasswordHashUpdated])
+                            //VALUES
+                            //      ('" + User.UserID + @"'
+                            //      ,'" + User.Username + @"'
+                            //      , 0
+                            //      ,'" + User.Password + '|' + User.PasswordFormat + '|' + User.PasswordSalt + @"'
+                            //      ,'" + Guid.NewGuid().ToString() + @"'
+                            //      , 0
+                            //      , 0
+                            //      , 1
+                            //      , 0
+                            //      ,'" + User.Username + @"'
+                            //      ,0)";
+                            //   var Status = db.Database.ExecuteSqlCommand(SQLNewUser);
 
 
 
@@ -264,11 +264,6 @@ namespace OSUCCMEDataImport.Jobs
         private static bool IsValidEmail(string email)
         {
             var trimmedEmail = email.Trim();
-
-            if (trimmedEmail.Contains("'"))
-            {
-                return false;
-            }
 
             if (trimmedEmail.EndsWith("."))
             {
