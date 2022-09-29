@@ -10,11 +10,11 @@ namespace OSUCCMEDataImport.Jobs
     {
         public static void Process(string ImportUserID)
         {
-            FacultyDisclosures(ImportUserID);
+            //FacultyDisclosures(ImportUserID);
             //Console.WriteLine("");
             //Console.WriteLine("-----------------------------------");
             //Console.WriteLine("");
-            //Credits(ImportUserID);
+            Credits(ImportUserID);
             //Console.WriteLine("");
             //Console.WriteLine("-----------------------------------");
             //Console.WriteLine("");
@@ -35,14 +35,19 @@ namespace OSUCCMEDataImport.Jobs
                                                  where s.IsDeleted == false
                                                  select s).ToList();
 
+                var Total = SpeakerDisclosureToImport.Count();
+                Console.Write("Importing User Credits - Starting ");
+                Console.WriteLine(Total + " to Process");
+                var Index = 1;
+
                 foreach (var sd in SpeakerDisclosureToImport)
                 {
+                    Console.Write("Processing : (" + Index + "/" + Total + ") " + sd.ID);
                     if (CommonFunctions.DoesUserExist(db, sd.UserID))
                     {
                         var NewFacultyDisclosure = new FacultyDisclosures()
                         {
                             Type = sd.EventType,
-                            EventType = "",
                             UserID = sd.UserID,
                             ResolutionOfConflictPlannersActivityDirectors = "",
                             ResolutionOfConflictPresentersAuthors = "",
@@ -57,6 +62,39 @@ namespace OSUCCMEDataImport.Jobs
                         };
 
                         NewFacultyDisclosure.Disclosure = false;
+
+                        if (sd.EventType != "Annual" && sd.EventType != null && sd.EventType != "")
+                        {
+                            switch (sd.EventType)
+                            {
+                                case "WebCast":
+                                    {
+                                        NewFacultyDisclosure.EventType = "Webcasts";
+                                        break;
+                                    }
+                                case "Conference":
+                                    {
+                                        NewFacultyDisclosure.EventType = "Conference";
+                                        break;
+                                    }
+                                case "Enduring":
+                                    {
+                                        NewFacultyDisclosure.EventType = "EnduringMaterial";
+                                        break;
+                                    }
+                                case "RSSeries":
+                                    {
+                                        NewFacultyDisclosure.EventType = "RSSeries";
+                                        break;
+                                    }
+
+                            }
+
+                        }
+                        else
+                        {
+                            NewFacultyDisclosure.EventType = null;
+                        }
 
                         if (sd.EventID != 0)
                         {
@@ -102,8 +140,13 @@ namespace OSUCCMEDataImport.Jobs
                         }
 
                         db.SaveChanges();
+                        Console.WriteLine(" - Saved");
                     }
+
+                    Index++;
                 }
+                Console.WriteLine(" - Complete");
+
             }
             catch (Exception e)
             {
@@ -184,7 +227,7 @@ namespace OSUCCMEDataImport.Jobs
                                             db.ConferenceSpeakers.Add(NewConferenceSpeaker);
                                             db.SaveChanges();
                                         }
-
+                                        Console.WriteLine(" - Saved");
 
                                     }
                                     else
@@ -229,7 +272,110 @@ namespace OSUCCMEDataImport.Jobs
                                                     Registration.CreditAssignedBy = ImportUserID;
                                                 }
                                             }
+
+                                            db.SaveChanges();
                                         }
+                                        Console.WriteLine(" - Saved");
+                                    }
+
+                                    break;
+                                }
+                            case "WebCast-Live":
+                            case "WebCast-VOD":
+                                {
+                                    if (u.IsSpeaker == true)
+                                    {
+                                        var WebcastExist = (from ce in db.Webcasts
+                                                            where ce.ID == u.EventID && ce.IsDeleted == false
+                                                            select ce.ID).FirstOrDefault();
+
+                                        if (WebcastExist > 0)
+                                        {
+                                            decimal OutSpeakerHours = 0.0m;
+                                            decimal.TryParse(u.CreditHours.ToString(), out OutSpeakerHours);
+
+                                            var NewWebcastSpeaker = new WebcastSpeakers()
+                                            {
+                                                WebcastID = u.EventID ?? 0,
+                                                UserID = u.UserID,
+                                                SpeakerHours = OutSpeakerHours,
+                                                SpeakerHoursAssignedOn = u.AssignedOn,
+                                                CreatedOn = u.AssignedOn ?? DateTime.Now,
+                                                LastUpdatedOn = u.AssignedOn ?? DateTime.Now,
+                                                SpeakerCheckListOnFile = false
+                                            };
+
+                                            if (CommonFunctions.DoesUserExist(db, u.UserID))
+                                            {
+                                                NewWebcastSpeaker.SpeakerHoursAssignedBy = u.AssignedBy;
+                                                NewWebcastSpeaker.CreatedBy = u.AssignedBy;
+                                                NewWebcastSpeaker.LastUpdatedBy = u.AssignedBy;
+                                            }
+                                            else
+                                            {
+                                                NewWebcastSpeaker.SpeakerHoursAssignedBy = ImportUserID;
+                                                NewWebcastSpeaker.CreatedBy = ImportUserID;
+                                                NewWebcastSpeaker.LastUpdatedBy = ImportUserID;
+                                            }
+
+                                            var FDOnFile = (from f in db.FacultyDisclosures
+                                                            where f.UserID == u.UserID && f.EventType == "Conference" && f.EventID == u.EventID
+                                                            select f).Any();
+
+                                            NewWebcastSpeaker.FacultyDisclosureOnFile = FDOnFile;
+
+                                            db.WebcastSpeakers.Add(NewWebcastSpeaker);
+                                            db.SaveChanges();
+                                        }
+                                        Console.WriteLine(" - Saved");
+
+                                    }
+                                    else
+                                    {
+                                        var Registration = (from c in db.WebcastRegistrations
+                                                            where c.WebcastID == u.EventID && c.UserID == u.UserID
+                                                            select c).FirstOrDefault();
+
+                                        if (Registration != null)
+                                        {
+
+                                            if (u.IsMOC == true)
+                                            {
+                                                decimal OutMOCPoints = 0.0m;
+                                                decimal.TryParse(u.CreditHours.ToString(), out OutMOCPoints);
+
+                                                Registration.MOCPoints = OutMOCPoints;
+                                                Registration.MOCPointsAssignedOn = u.AssignedOn;
+                                                if (CommonFunctions.DoesUserExist(db, u.UserID))
+                                                {
+                                                    Registration.MOCPointsAssignedBy = u.AssignedBy;
+                                                }
+                                                else
+                                                {
+                                                    Registration.MOCPointsAssignedBy = ImportUserID;
+                                                }
+
+                                            }
+                                            else
+                                            {
+                                                decimal OutCreditHours = 0.0m;
+                                                decimal.TryParse(u.CreditHours.ToString(), out OutCreditHours);
+
+                                                Registration.CreditHours = OutCreditHours;
+                                                Registration.CreditAssignedOn = u.AssignedOn;
+                                                if (CommonFunctions.DoesUserExist(db, u.UserID))
+                                                {
+                                                    Registration.CreditAssignedBy = u.AssignedBy;
+                                                }
+                                                else
+                                                {
+                                                    Registration.CreditAssignedBy = ImportUserID;
+                                                }
+                                            }
+
+                                            db.SaveChanges();
+                                        }
+                                        Console.WriteLine(" - Saved");
                                     }
 
                                     break;
