@@ -11,7 +11,7 @@ namespace OSUCCMEDataImport.Jobs
     {
         public static void Process(string ImportUserID)
         {
-            //Webcasts(ImportUserID);
+            Webcasts(ImportUserID);
             //Console.WriteLine("");
             //Console.WriteLine("-----------------------------------");
             //Console.WriteLine("");
@@ -23,7 +23,7 @@ namespace OSUCCMEDataImport.Jobs
             //Console.WriteLine("");
             //Console.WriteLine("-----------------------------------");
             //Console.WriteLine("");
-            Webcastspecialties(ImportUserID);
+            //Webcastspecialties(ImportUserID);
 
         }
 

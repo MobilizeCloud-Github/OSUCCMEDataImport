@@ -18,13 +18,17 @@ namespace OSUCCMEDataImport
             Console.WriteLine(" 6. Enduring");
             Console.WriteLine(" 7. RSSeries");
             Console.WriteLine(" 8. Hospitals");
-            Console.WriteLine(" 9. Credits, Speaker Hours, & MOC");
+            Console.WriteLine(" 9. FacultyDisclosures");
+            Console.WriteLine(" 10. Conference Credits & MOC");
+            Console.WriteLine(" 11. Conference Speakers");
+            Console.WriteLine(" 12. Webcasts Credits & MOC");
+            Console.WriteLine(" 13. Webcasts Speakers");
             Console.WriteLine("");
-            Console.WriteLine("Please select 1-9 and hit enter.");
+            Console.WriteLine("Please select 1-11 and hit enter.");
 
             var JobNumber = Console.ReadLine();
             var ImportUserID = "b942c30a-575c-4263-8028-28fad69beacf";
-            var ApprovedJobs = new List<string> { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+            var ApprovedJobs = new List<string> { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13" };
             try
             {
 
@@ -75,7 +79,27 @@ namespace OSUCCMEDataImport
                             }
                         case "9":
                             {
-                                CreditJobs.Process(ImportUserID);
+                                FacultyDisclosureJobs.Process(ImportUserID);
+                                break;
+                            }
+                        case "10":
+                            {
+                                ConferenceCreditJobs.Process(ImportUserID);
+                                break;
+                            }
+                        case "11":
+                            {
+                                ConferenceSpeakerJobs.Process(ImportUserID);
+                                break;
+                            }
+                        case "12":
+                            {
+                                WebcastsCreditJobs.Process(ImportUserID);
+                                break;
+                            }
+                        case "13":
+                            {
+                                WebcastsSpeakerJobs.Process(ImportUserID);
                                 break;
                             }
                     }

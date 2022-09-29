@@ -56,7 +56,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\CommonFunctions.cs" />
-    <Compile Include="Jobs\CreditJobs.cs" />
+    <Compile Include="Jobs\WebcastsSpeakerJobs.cs" />
+    <Compile Include="Jobs\ConferenceSpeakerJobs.cs" />
+    <Compile Include="Jobs\ConferenceCreditJobs.cs" />
+    <Compile Include="Jobs\FacultyDisclosureJobs.cs" />
+    <Compile Include="Jobs\WebcastsCreditJobs.cs" />
     <Compile Include="Jobs\RSSeriesJobs.cs" />
     <Compile Include="Jobs\EnduringJobs.cs" />
     <Compile Include="Jobs\WebcastJobs.cs" />

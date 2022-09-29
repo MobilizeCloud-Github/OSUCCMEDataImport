@@ -362,7 +362,7 @@ namespace OSUCCMEDataImport.Jobs
                                     }).ToList();
 
                 var Total = UserToImport.Count();
-                Console.Write("Importing RSSeries Prices - Starting ");
+                Console.Write("Importing RSSeries Registrations - Starting ");
                 Console.WriteLine(Total + " to Process");
                 var Index = 1;
 

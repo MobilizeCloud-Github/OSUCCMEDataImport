@@ -15,42 +15,42 @@ namespace OSUCCMEDataImport.Jobs
             Stopwatch stopWatch = new Stopwatch();
             stopWatch.Start();
 
-            Conferences(ImportUserID);
-            Console.WriteLine("");
-            Console.WriteLine("-----------------------------------");
-            Console.WriteLine("");
-            JointProviders();
-            Console.WriteLine("");
-            Console.WriteLine("-----------------------------------");
-            Console.WriteLine("");
-            ConferenceOptionGroup(ImportUserID);
-            Console.WriteLine("");
-            Console.WriteLine("-----------------------------------");
-            Console.WriteLine("");
-            ConferenceOptions(ImportUserID);
-            Console.WriteLine("");
-            Console.WriteLine("-----------------------------------");
-            Console.WriteLine("");
-            ConferencePrices(ImportUserID);
-            Console.WriteLine("");
-            Console.WriteLine("-----------------------------------");
-            Console.WriteLine("");
+            //Conferences(ImportUserID);
+            //Console.WriteLine("");
+            //Console.WriteLine("-----------------------------------");
+            //Console.WriteLine("");
+            //JointProviders();
+            //Console.WriteLine("");
+            //Console.WriteLine("-----------------------------------");
+            //Console.WriteLine("");
+            //ConferenceOptionGroup(ImportUserID);
+            //Console.WriteLine("");
+            //Console.WriteLine("-----------------------------------");
+            //Console.WriteLine("");
+            //ConferenceOptions(ImportUserID);
+            //Console.WriteLine("");
+            //Console.WriteLine("-----------------------------------");
+            //Console.WriteLine("");
+            //ConferencePrices(ImportUserID);
+            //Console.WriteLine("");
+            //Console.WriteLine("-----------------------------------");
+            //Console.WriteLine("");
             ConferenceRegistrations(ImportUserID);
-            Console.WriteLine("");
-            Console.WriteLine("-----------------------------------");
-            Console.WriteLine("");
-            ConferenceSpecialties(ImportUserID);
-            Console.WriteLine("");
-            Console.WriteLine("-----------------------------------");
-            Console.WriteLine("");
-            ConferenceStreams(ImportUserID);
-            Console.WriteLine("");
-            Console.WriteLine("-----------------------------------");
-            Console.WriteLine("");
-            ConferenceStreamViews(ImportUserID);
-            Console.WriteLine("");
-            Console.WriteLine("-----------------------------------");
-            Console.WriteLine("");
+            //Console.WriteLine("");
+            //Console.WriteLine("-----------------------------------");
+            //Console.WriteLine("");
+            //ConferenceSpecialties(ImportUserID);
+            //Console.WriteLine("");
+            //Console.WriteLine("-----------------------------------");
+            //Console.WriteLine("");
+            //ConferenceStreams(ImportUserID);
+            //Console.WriteLine("");
+            //Console.WriteLine("-----------------------------------");
+            //Console.WriteLine("");
+            //ConferenceStreamViews(ImportUserID);
+            //Console.WriteLine("");
+            //Console.WriteLine("-----------------------------------");
+            //Console.WriteLine("");
 
             TimeSpan ts = stopWatch.Elapsed;
             string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
@@ -272,7 +272,7 @@ namespace OSUCCMEDataImport.Jobs
                         {
                             Console.WriteLine(" - Pending");
                         }
-                        
+
                     }
                     else
                     {
@@ -498,7 +498,7 @@ namespace OSUCCMEDataImport.Jobs
                         else
                         {
                             Console.WriteLine(" - Skipped");
-                        }                       
+                        }
                     }
                     else
                     {
@@ -551,7 +551,7 @@ namespace OSUCCMEDataImport.Jobs
                             {
                                 if (r.PaymentType != "N/A" && r.Confirmation != "Speaker")
                                 {
-                                    
+
 
                                     var Registration = new Models.ConferenceRegistrations()
                                     {
