@@ -15,23 +15,23 @@ namespace OSUCCMEDataImport.Jobs
             Stopwatch stopWatch = new Stopwatch();
             stopWatch.Start();
 
-            //RSSeriesSeries(ImportUserID);
-            //Console.WriteLine("");
-            //Console.WriteLine("-----------------------------------");
-            //Console.WriteLine("");
-            //RSSeries(ImportUserID);
-            //Console.WriteLine("");
-            //Console.WriteLine("-----------------------------------");
-            //Console.WriteLine("");
-            //JointProviders();
-            //Console.WriteLine("");
-            //Console.WriteLine("-----------------------------------");
-            //Console.WriteLine("");
+            RSSeriesSeries(ImportUserID);
+            Console.WriteLine("");
+            Console.WriteLine("-----------------------------------");
+            Console.WriteLine("");
+            RSSeries(ImportUserID);
+            Console.WriteLine("");
+            Console.WriteLine("-----------------------------------");
+            Console.WriteLine("");
+            JointProviders();
+            Console.WriteLine("");
+            Console.WriteLine("-----------------------------------");
+            Console.WriteLine("");
             RSSeriesRegistrations(ImportUserID);
-            //Console.WriteLine("");
-            //Console.WriteLine("-----------------------------------");
-            //Console.WriteLine("");
-            //RSSeriespecialties(ImportUserID);
+            Console.WriteLine("");
+            Console.WriteLine("-----------------------------------");
+            Console.WriteLine("");
+            RSSeriespecialties(ImportUserID);
 
             TimeSpan ts = stopWatch.Elapsed;
             string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
@@ -97,6 +97,7 @@ namespace OSUCCMEDataImport.Jobs
                     CreatedOn = DateTime.Now,
                     LastUpdatedOn = DateTime.Now,
                     LastUpdatedBy = ImportUserID,
+                    IsDeleted = false
 
                 };
                 db.RSSeriesSeries.Add(ArchivedSeries);

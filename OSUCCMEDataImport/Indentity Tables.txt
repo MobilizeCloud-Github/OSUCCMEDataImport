@@ -3,6 +3,7 @@ Hospitals
 Webcasts
 RSSeries
 RSSeriesSeries
+EnduringMaterialSeries
 EnduringMaterials
 ConferenceStreams
 ConverenceOptionGroups
