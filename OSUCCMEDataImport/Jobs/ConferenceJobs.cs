@@ -19,38 +19,38 @@ namespace OSUCCMEDataImport.Jobs
             Console.WriteLine("");
             Console.WriteLine("-----------------------------------");
             Console.WriteLine("");
-            //JointProviders();
-            //Console.WriteLine("");
-            //Console.WriteLine("-----------------------------------");
-            //Console.WriteLine("");
-            //ConferenceOptionGroup(ImportUserID);
-            //Console.WriteLine("");
-            //Console.WriteLine("-----------------------------------");
-            //Console.WriteLine("");
-            //ConferenceOptions(ImportUserID);
-            //Console.WriteLine("");
-            //Console.WriteLine("-----------------------------------");
-            //Console.WriteLine("");
-            //ConferencePrices(ImportUserID);
-            //Console.WriteLine("");
-            //Console.WriteLine("-----------------------------------");
-            //Console.WriteLine("");
+            JointProviders();
+            Console.WriteLine("");
+            Console.WriteLine("-----------------------------------");
+            Console.WriteLine("");
+            ConferenceOptionGroup(ImportUserID);
+            Console.WriteLine("");
+            Console.WriteLine("-----------------------------------");
+            Console.WriteLine("");
+            ConferenceOptions(ImportUserID);
+            Console.WriteLine("");
+            Console.WriteLine("-----------------------------------");
+            Console.WriteLine("");
+            ConferencePrices(ImportUserID);
+            Console.WriteLine("");
+            Console.WriteLine("-----------------------------------");
+            Console.WriteLine("");
             ConferenceRegistrations(ImportUserID);
-            //Console.WriteLine("");
-            //Console.WriteLine("-----------------------------------");
-            //Console.WriteLine("");
-            //ConferenceSpecialties(ImportUserID);
-            //Console.WriteLine("");
-            //Console.WriteLine("-----------------------------------");
-            //Console.WriteLine("");
-            //ConferenceStreams(ImportUserID);
-            //Console.WriteLine("");
-            //Console.WriteLine("-----------------------------------");
-            //Console.WriteLine("");
-            //ConferenceStreamViews(ImportUserID);
-            //Console.WriteLine("");
-            //Console.WriteLine("-----------------------------------");
-            //Console.WriteLine("");
+            Console.WriteLine("");
+            Console.WriteLine("-----------------------------------");
+            Console.WriteLine("");
+            ConferenceSpecialties(ImportUserID);
+            Console.WriteLine("");
+            Console.WriteLine("-----------------------------------");
+            Console.WriteLine("");
+            ConferenceStreams(ImportUserID);
+            Console.WriteLine("");
+            Console.WriteLine("-----------------------------------");
+            Console.WriteLine("");
+            ConferenceStreamViews(ImportUserID);
+            Console.WriteLine("");
+            Console.WriteLine("-----------------------------------");
+            Console.WriteLine("");
 
             TimeSpan ts = stopWatch.Elapsed;
             string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
@@ -81,7 +81,7 @@ namespace OSUCCMEDataImport.Jobs
 
                 foreach (var c in ConferencesToImport)
                 {
-                    Console.Write("Processing : (" + Index + "/" + Total + ") " + c.ID + " ");
+                    Console.Write("Processing Conferences: (" + Index + "/" + Total + ") " + c.ID + " ");
                     var Conference = new Models.Conferences()
                     {
                         ID = c.ID,
@@ -694,7 +694,7 @@ namespace OSUCCMEDataImport.Jobs
 
                 foreach (var c in ConferenceSpecialtiesToImport)
                 {
-                    Console.Write("Processing : (" + Index + "/" + Total + ") " + c.ConferenceID + " " + c.CategoryID);
+                    Console.Write("Processing Specialties : (" + Index + "/" + Total + ") " + c.ConferenceID + " " + c.CategoryID);
 
                     var ConferenceID = c.ConferenceID;
                     if (ConferenceIDs.Contains(ConferenceID.Value))
@@ -709,7 +709,7 @@ namespace OSUCCMEDataImport.Jobs
                             SpecialtyID = NewSpecialtyID ?? 0
                         };
                         db.ConferenceSpecialties.Add(Specialty);
-                        if (Index % 5 == 0)
+                        if (Index % 10 == 0)
                         {
                             db.SaveChanges();
                             Console.WriteLine(" - Saved");
@@ -762,7 +762,7 @@ namespace OSUCCMEDataImport.Jobs
 
                 foreach (var c in ConferenceStreamsToImport)
                 {
-                    Console.Write("Processing : (" + Index + "/" + Total + ") " + c.ID + " ");
+                    Console.Write("Processing Streams: (" + Index + "/" + Total + ") " + c.ID + " ");
 
                     var ConferenceID = c.ConferenceID;
                     if (ConferenceIDs.Contains(ConferenceID))
@@ -844,20 +844,19 @@ namespace OSUCCMEDataImport.Jobs
 
                 foreach (var c in ConferenceStreams)
                 {
-                    Console.Write("Processing : (" + Index + "/" + Total + ") " + c + " ");
+                    Console.Write("Processing Stream Views : (" + Index + "/" + Total + ") " + c + " ");
 
                     var ConferenceStreamViewToImport = (from v in olddb.ConferenceStreamViews
                                                         where v.ConferenceStreamID == c
                                                         select v).ToList();
 
-                    var TotalUser = ConferenceStreams.Count();
+                    var TotalUser = ConferenceStreamViewToImport.Count();
                     Console.WriteLine(TotalUser + " to Process");
                     var UserIndex = 1;
 
                     foreach (var v in ConferenceStreamViewToImport)
                     {
-                        Console.Write("Processing : (" + Index + "/" + Total + ") " + c + " ");
-                        Console.Write("Stream Users : (" + UserIndex + "/" + TotalUser + ") " + c + " ");
+                        Console.Write("Stream Users : (" + Index + "/" + Total + ") (" + UserIndex + "/" + TotalUser + ") " + c + " ");
                         if (CommonFunctions.DoesUserExist(db, v.UserID))
                         {
                             var View = new Models.ConferenceStreamViews()
