@@ -147,11 +147,9 @@ namespace OSUCCMEDataImport.Common
             var db = new NewOSUCCMEEntities();
             db.Configuration.AutoDetectChangesEnabled = false;
 
-            var UserFullName = (from u in db.UserProfiles
+            return (from u in db.UserProfiles
                                 where u.UserID == UserID && u.IsDeleted == false
                                 select u.FullName).FirstOrDefault();
-
-            return UserFullName;
         }
 
         public static string GetTrimedString(string Content, int Length)
@@ -170,11 +168,8 @@ namespace OSUCCMEDataImport.Common
             }
         }
 
-        public static void SaveCommercialInterest(int FacultyDisclosureID, string CompanyName, string Relationship)
+        public static void SaveCommercialInterest(NewOSUCCMEEntities db, int FacultyDisclosureID, string CompanyName, string Relationship)
         {
-            var db = new NewOSUCCMEEntities();
-            db.Configuration.AutoDetectChangesEnabled = false;
-
             var CommercialInterest = new FacultyDisclosureCommercialInterests()
             {
                 FacultyDisclosureID = FacultyDisclosureID,
@@ -183,7 +178,6 @@ namespace OSUCCMEDataImport.Common
                 RelationshipEnded = false
             };
             db.FacultyDisclosureCommercialInterests.Add(CommercialInterest);
-            db.SaveChanges();
         }
     }
 }

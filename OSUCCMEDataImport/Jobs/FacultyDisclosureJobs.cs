@@ -2,6 +2,7 @@
 using OSUCCMEDataImport.Common;
 using OSUCCMEDataImport.Models;
 using System;
+using System.Diagnostics;
 using System.Linq;
 
 namespace OSUCCMEDataImport.Jobs
@@ -10,10 +11,19 @@ namespace OSUCCMEDataImport.Jobs
     {
         public static void Process(string ImportUserID)
         {
-            //FacultyDisclosures(ImportUserID);
-            //Console.WriteLine("");
-            //Console.WriteLine("-----------------------------------");
-            //Console.WriteLine("");
+            Stopwatch stopWatch = new Stopwatch();
+            stopWatch.Start();
+
+            FacultyDisclosures(ImportUserID);
+            Console.WriteLine("");
+            Console.WriteLine("-----------------------------------");
+            Console.WriteLine("");
+
+            TimeSpan ts = stopWatch.Elapsed;
+            string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
+            ts.Hours, ts.Minutes, ts.Seconds,
+            ts.Milliseconds / 10);
+            Console.WriteLine("RunTime " + elapsedTime);
         }
 
         private static void FacultyDisclosures(string ImportUserID)
@@ -36,18 +46,17 @@ namespace OSUCCMEDataImport.Jobs
 
                 foreach (var sd in SpeakerDisclosureToImport)
                 {
-                    Console.Write("Processing : (" + Index + "/" + Total + ") " + sd.ID);
+                    Console.Write("Processing Faculty Disclosure : (" + Index + "/" + Total + ") " + sd.ID);
                     if (CommonFunctions.DoesUserExist(db, sd.UserID))
                     {
                         var NewFacultyDisclosure = new FacultyDisclosures()
                         {
-                            Type = sd.EventType,
                             UserID = sd.UserID,
                             ResolutionOfConflictPlannersActivityDirectors = "",
                             ResolutionOfConflictPresentersAuthors = "",
                             NonConflictedCoDirector = "",
                             FullName = CommonFunctions.GetUserFullName(sd.UserID),
-                            Expires = sd.Expire ?? DateTime.Now,
+                            Expires = sd.Expire.Value,
                             IsDeleted = false,
                             CreatedOn = sd.Submitted ?? DateTime.Now,
                             CreatedBy = ImportUserID,
@@ -81,12 +90,20 @@ namespace OSUCCMEDataImport.Jobs
                                         NewFacultyDisclosure.EventType = "RSSeries";
                                         break;
                                     }
-
                             }
 
+                            if (sd.GrantsName == "Paper Copy Submitted")
+                            {
+                                NewFacultyDisclosure.Type = "Paper";
+                            }
+                            else
+                            {
+                                NewFacultyDisclosure.Type = "Single Event";
+                            }
                         }
                         else
                         {
+                            NewFacultyDisclosure.Type = "Annual";
                             NewFacultyDisclosure.EventType = null;
                         }
 
@@ -94,53 +111,60 @@ namespace OSUCCMEDataImport.Jobs
                         {
                             NewFacultyDisclosure.EventID = sd.EventID;
                         }
+
                         db.FacultyDisclosures.Add(NewFacultyDisclosure);
                         db.SaveChanges();
 
-                        if (sd.Grants == true)
+                        if (NewFacultyDisclosure.Type != "Paper")
                         {
-                            NewFacultyDisclosure.Disclosure = true;
-                            CommonFunctions.SaveCommercialInterest(NewFacultyDisclosure.ID, sd.GrantsName, "Grants");
-                        }
-                        if (sd.Consultant == true)
-                        {
-                            NewFacultyDisclosure.Disclosure = true;
-                            CommonFunctions.SaveCommercialInterest(NewFacultyDisclosure.ID, sd.ConsultantName, "Consultant");
-                        }
-                        if (sd.Advisory == true)
-                        {
-                            NewFacultyDisclosure.Disclosure = true;
-                            CommonFunctions.SaveCommercialInterest(NewFacultyDisclosure.ID, sd.AdvisoryName, "Advisory");
-                        }
-                        if (sd.Stockholder == true)
-                        {
-                            NewFacultyDisclosure.Disclosure = true;
-                            CommonFunctions.SaveCommercialInterest(NewFacultyDisclosure.ID, sd.StockholderName, "Stockholder");
-                        }
-                        if (sd.Honararium == true)
-                        {
-                            NewFacultyDisclosure.Disclosure = true;
-                            CommonFunctions.SaveCommercialInterest(NewFacultyDisclosure.ID, sd.HonarariumName, "Honararium");
-                        }
-                        if (sd.Editorial == true)
-                        {
-                            NewFacultyDisclosure.Disclosure = true;
-                            CommonFunctions.SaveCommercialInterest(NewFacultyDisclosure.ID, sd.EditorialName, "Editorial");
-                        }
-                        if (sd.Other == true)
-                        {
-                            NewFacultyDisclosure.Disclosure = true;
-                            CommonFunctions.SaveCommercialInterest(NewFacultyDisclosure.ID, sd.OtherName, "Other");
-                        }
+                            if (sd.Grants == true)
+                            {
+                                NewFacultyDisclosure.Disclosure = true;
+                                CommonFunctions.SaveCommercialInterest(db, NewFacultyDisclosure.ID, sd.GrantsName, "Grants");
+                            }
+                            if (sd.Consultant == true)
+                            {
+                                NewFacultyDisclosure.Disclosure = true;
+                                CommonFunctions.SaveCommercialInterest(db, NewFacultyDisclosure.ID, sd.ConsultantName, "Consultant");
+                            }
+                            if (sd.Advisory == true)
+                            {
+                                NewFacultyDisclosure.Disclosure = true;
+                                CommonFunctions.SaveCommercialInterest(db, NewFacultyDisclosure.ID, sd.AdvisoryName, "Advisory");
+                            }
+                            if (sd.Stockholder == true)
+                            {
+                                NewFacultyDisclosure.Disclosure = true;
+                                CommonFunctions.SaveCommercialInterest(db, NewFacultyDisclosure.ID, sd.StockholderName, "Stockholder");
+                            }
+                            if (sd.Honararium == true)
+                            {
+                                NewFacultyDisclosure.Disclosure = true;
+                                CommonFunctions.SaveCommercialInterest(db, NewFacultyDisclosure.ID, sd.HonarariumName, "Honararium");
+                            }
+                            if (sd.Editorial == true)
+                            {
+                                NewFacultyDisclosure.Disclosure = true;
+                                CommonFunctions.SaveCommercialInterest(db, NewFacultyDisclosure.ID, sd.EditorialName, "Editorial");
+                            }
+                            if (sd.Other == true)
+                            {
+                                NewFacultyDisclosure.Disclosure = true;
+                                CommonFunctions.SaveCommercialInterest(db, NewFacultyDisclosure.ID, sd.OtherName, "Other");
+                            }
 
-                        db.SaveChanges();
+                            db.SaveChanges();
+                        }
                         Console.WriteLine(" - Saved");
+                    }
+                    else
+                    {
+                        Console.WriteLine(" - Skipped");
                     }
 
                     Index++;
                 }
                 Console.WriteLine(" - Complete");
-
             }
             catch (Exception e)
             {

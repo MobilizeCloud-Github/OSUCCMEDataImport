@@ -23,12 +23,13 @@ namespace OSUCCMEDataImport
             Console.WriteLine(" 11. Conference Speakers");
             Console.WriteLine(" 12. Webcasts Credits & MOC");
             Console.WriteLine(" 13. Webcasts Speakers");
+            Console.WriteLine(" 14. Files");
             Console.WriteLine("");
             Console.WriteLine("Please select 1-11 and hit enter.");
 
             var JobNumber = Console.ReadLine();
             var ImportUserID = "b942c30a-575c-4263-8028-28fad69beacf";
-            var ApprovedJobs = new List<string> { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13" };
+            var ApprovedJobs = new List<string> { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14" };
             try
             {
 
@@ -100,6 +101,11 @@ namespace OSUCCMEDataImport
                         case "13":
                             {
                                 WebcastsSpeakerJobs.Process(ImportUserID);
+                                break;
+                            }
+                        case "14":
+                            {
+                                FileJobs.Process(ImportUserID);
                                 break;
                             }
                     }
