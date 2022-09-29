@@ -136,10 +136,10 @@ namespace OSUCCMEDataImport.Common
         }
 
         public static bool DoesUserExist(NewOSUCCMEEntities db, string UserID)
-        {            
+        {
             return (from u in db.UserProfiles
-                        where u.UserID == UserID && u.IsDeleted == false
-                        select u.UserID).Any();           
+                    where u.UserID == UserID && u.IsDeleted == false
+                    select u.UserID).Any();
         }
 
         public static string GetUserFullName(string UserID)
@@ -178,7 +178,7 @@ namespace OSUCCMEDataImport.Common
             var CommercialInterest = new FacultyDisclosureCommercialInterests()
             {
                 FacultyDisclosureID = FacultyDisclosureID,
-                CompanyName = CompanyName,
+                CompanyName = CommonFunctions.GetTrimedString(CompanyName, 256),
                 Relationship = Relationship,
                 RelationshipEnded = false
             };
