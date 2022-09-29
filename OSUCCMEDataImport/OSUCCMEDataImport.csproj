@@ -56,6 +56,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\CommonFunctions.cs" />
+    <Compile Include="Common\FileFunctions.cs" />
+    <Compile Include="Jobs\FileJobs.cs" />
     <Compile Include="Jobs\WebcastsSpeakerJobs.cs" />
     <Compile Include="Jobs\ConferenceSpeakerJobs.cs" />
     <Compile Include="Jobs\ConferenceCreditJobs.cs" />
