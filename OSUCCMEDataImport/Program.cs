@@ -23,13 +23,17 @@ namespace OSUCCMEDataImport
             Console.WriteLine(" 11. Conference Speakers");
             Console.WriteLine(" 12. Webcasts Credits & MOC");
             Console.WriteLine(" 13. Webcasts Speakers");
-            Console.WriteLine(" 14. Files");
+            Console.WriteLine(" 14. RSSeries Credits & MOC");
+            Console.WriteLine(" 15. RSSeries Speakers");
+            Console.WriteLine(" 16. Enduring Credits & MOC");
+            Console.WriteLine(" 17. Enduring Speakers");
+            Console.WriteLine(" 18. Files");
             Console.WriteLine("");
             Console.WriteLine("Please select 1-11 and hit enter.");
 
             var JobNumber = Console.ReadLine();
             var ImportUserID = "b942c30a-575c-4263-8028-28fad69beacf";
-            var ApprovedJobs = new List<string> { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14" };
+            var ApprovedJobs = new List<string> { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18" };
             try
             {
 
@@ -104,6 +108,26 @@ namespace OSUCCMEDataImport
                                 break;
                             }
                         case "14":
+                            {
+                                RSSeriesCreditJobs.Process(ImportUserID);
+                                break;
+                            }
+                        case "15":
+                            {
+                                RSSeriesSpeakerJobs.Process(ImportUserID);
+                                break;
+                            }
+                        case "16":
+                            {
+                                EnduringCreditJobs.Process(ImportUserID);
+                                break;
+                            }
+                        case "17":
+                            {
+                                EnduringSpeakerJobs.Process(ImportUserID);
+                                break;
+                            }
+                        case "18":
                             {
                                 FileJobs.Process(ImportUserID);
                                 break;

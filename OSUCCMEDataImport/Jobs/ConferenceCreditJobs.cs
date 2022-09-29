@@ -2,6 +2,7 @@
 using OSUCCMEDataImport.Common;
 using OSUCCMEDataImport.Models;
 using System;
+using System.Diagnostics;
 using System.Linq;
 
 namespace OSUCCMEDataImport.Jobs
@@ -10,11 +11,19 @@ namespace OSUCCMEDataImport.Jobs
     {
         public static void Process(string ImportUserID)
         {
-            ConferenceCredits(ImportUserID);
-            //Console.WriteLine("");
-            //Console.WriteLine("-----------------------------------");
-            //Console.WriteLine("");
+            Stopwatch stopWatch = new Stopwatch();
+            stopWatch.Start();
 
+            ConferenceCredits(ImportUserID);
+            Console.WriteLine("");
+            Console.WriteLine("-----------------------------------");
+            Console.WriteLine("");
+
+            TimeSpan ts = stopWatch.Elapsed;
+            string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
+            ts.Hours, ts.Minutes, ts.Seconds,
+            ts.Milliseconds / 10);
+            Console.WriteLine("RunTime " + elapsedTime);
         }
 
         private static void ConferenceCredits(string ImportUserID)
@@ -41,7 +50,7 @@ namespace OSUCCMEDataImport.Jobs
 
                 foreach (var u in UserCreditsToImport)
                 {
-                    Console.Write("Processing Conference User Credits : (" + Index + "/" + Total + ") " + u.UserID);
+                    Console.WriteLine("Processing Conference User Credits : (" + Index + "/" + Total + ") " + u.UserID);
 
                     if (CommonFunctions.DoesUserExist(db, u.UserID))
                     {
@@ -51,14 +60,17 @@ namespace OSUCCMEDataImport.Jobs
                         foreach (var uc in u.UserCredits)
                         {
                             Console.Write("User Credits : (" + Index + "/" + Total + ") (" + CreditsIndex + "/" + TotalCredits + ") " + uc.ID + " ");
-
-
                             var Registration = (from c in db.ConferenceRegistrations
                                                 where c.ConferenceID == uc.EventID && c.UserID == uc.UserID
                                                 select c).FirstOrDefault();
 
                             if (Registration != null)
                             {
+                                var AssignedByUserID = ImportUserID;
+                                if (CommonFunctions.DoesUserExist(db, uc.AssignedBy))
+                                {
+                                    AssignedByUserID = uc.AssignedBy;
+                                }
 
                                 if (uc.IsMOC == true)
                                 {
@@ -67,14 +79,7 @@ namespace OSUCCMEDataImport.Jobs
 
                                     Registration.MOCPoints = OutMOCPoints;
                                     Registration.MOCPointsAssignedOn = uc.AssignedOn;
-                                    if (CommonFunctions.DoesUserExist(db, uc.UserID))
-                                    {
-                                        Registration.MOCPointsAssignedBy = uc.AssignedBy;
-                                    }
-                                    else
-                                    {
-                                        Registration.MOCPointsAssignedBy = ImportUserID;
-                                    }
+                                    Registration.MOCPointsAssignedBy = AssignedByUserID;
 
                                 }
 
@@ -83,15 +88,7 @@ namespace OSUCCMEDataImport.Jobs
 
                                 Registration.CreditHours = OutCreditHours;
                                 Registration.CreditAssignedOn = uc.AssignedOn;
-                                if (CommonFunctions.DoesUserExist(db, uc.UserID))
-                                {
-                                    Registration.CreditAssignedBy = uc.AssignedBy;
-                                }
-                                else
-                                {
-                                    Registration.CreditAssignedBy = ImportUserID;
-                                }
-                                //db.SaveChanges();
+                                Registration.CreditAssignedBy = AssignedByUserID;
                                 Console.WriteLine(" - Pending");
                             }
                             else
