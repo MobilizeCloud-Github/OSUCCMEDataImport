@@ -2,6 +2,7 @@
 using OSUCCMEDataImport.Common;
 using OSUCCMEDataImport.Models;
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 
@@ -11,19 +12,28 @@ namespace OSUCCMEDataImport.Jobs
     {
         public static void Process(string ImportUserID)
         {
+            Stopwatch stopWatch = new Stopwatch();
+            stopWatch.Start();
+
             Webcasts(ImportUserID);
-            //Console.WriteLine("");
-            //Console.WriteLine("-----------------------------------");
-            //Console.WriteLine("");
-            //JointProviders();
-            //Console.WriteLine("");
-            //Console.WriteLine("-----------------------------------");
-            //Console.WriteLine("");
-            //WebcastRegistrations(ImportUserID);
-            //Console.WriteLine("");
-            //Console.WriteLine("-----------------------------------");
-            //Console.WriteLine("");
-            //Webcastspecialties(ImportUserID);
+            Console.WriteLine("");
+            Console.WriteLine("-----------------------------------");
+            Console.WriteLine("");
+            JointProviders();
+            Console.WriteLine("");
+            Console.WriteLine("-----------------------------------");
+            Console.WriteLine("");
+            WebcastRegistrations(ImportUserID);
+            Console.WriteLine("");
+            Console.WriteLine("-----------------------------------");
+            Console.WriteLine("");
+            Webcastspecialties(ImportUserID);
+
+            TimeSpan ts = stopWatch.Elapsed;
+            string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
+            ts.Hours, ts.Minutes, ts.Seconds,
+            ts.Milliseconds / 10);
+            Console.WriteLine("RunTime " + elapsedTime);
 
         }
 
@@ -37,8 +47,9 @@ namespace OSUCCMEDataImport.Jobs
             TextWriter tw = new StreamWriter("WebcastsImportLog.txt");
             try
             {
+                var TransferStartDate = new DateTime(2012, 1, 1);
                 var WebcastsToImport = (from c in olddb.Webcasts
-                                        where c.IsDeleted == false
+                                        where c.IsDeleted == false && c.ExpirationDate >= TransferStartDate
                                         select c).ToList();
 
                 var Total = WebcastsToImport.Count();
@@ -48,7 +59,7 @@ namespace OSUCCMEDataImport.Jobs
 
                 foreach (var c in WebcastsToImport)
                 {
-                    Console.Write("Processing : (" + Index + "/" + Total + ") " + c.ID + " ");
+                    Console.Write("Processing Webcasts : (" + Index + "/" + Total + ") " + c.ID + " ");
                     var Webcast = new Models.Webcasts()
                     {
                         ID = c.ID,
@@ -141,10 +152,18 @@ namespace OSUCCMEDataImport.Jobs
                     }
 
                     db.Webcasts.Add(Webcast);
-                    db.SaveChanges();
+                    if (Index % 5 == 0)
+                    {
+                        db.SaveChanges();
+                        Console.WriteLine(" - Saved");
+                    }
+                    else
+                    {
+                        Console.WriteLine(" - Pending");
+                    }
                     Index++;
-                    Console.WriteLine(" - Saved");
                 }
+                db.SaveChanges();
                 Console.WriteLine(" - Complete");
             }
             catch (Exception e)
@@ -167,7 +186,7 @@ namespace OSUCCMEDataImport.Jobs
             try
             {
                 var WebcastsWithJointProvidership = (from c in db.Webcasts
-                                                     where c.Providership == "Joint"
+                                                     where c.Providership == "Joint" && c.IsDeleted == false
                                                      select c.ID).ToList();
 
                 var Total = WebcastsWithJointProvidership.Count();
@@ -177,9 +196,9 @@ namespace OSUCCMEDataImport.Jobs
 
                 foreach (var c in WebcastsWithJointProvidership)
                 {
-                    Console.Write("Processing : (" + Index + "/" + Total + ") " + c + " ");
+                    Console.Write("Processing Conferences Joint Providers : (" + Index + "/" + Total + ") " + c + " ");
                     var JointProviderToImport = (from j in olddb.Webcasts
-                                                 where j.ID == c
+                                                 where j.ID == c && j.JointSponsor != null && j.JointSponsor != ""
                                                  select j.JointSponsor).FirstOrDefault();
 
                     if (!string.IsNullOrWhiteSpace(JointProviderToImport))
@@ -191,13 +210,20 @@ namespace OSUCCMEDataImport.Jobs
                             Name = JointProviderToImport
                         };
                         db.WebcastJointProviders.Add(JointProviders);
-                        db.SaveChanges();
-                        Index++;
-                        Console.WriteLine(" - Saved");
+                        if (Index % 5 == 0)
+                        {
+                            db.SaveChanges();
+                            Console.WriteLine(" - Saved");
+                        }
+                        else
+                        {
+                            Console.WriteLine(" - Pending");
+                        }
                     }
-                    Console.WriteLine(" - Complete");
+                    Index++;
                 }
-
+                db.SaveChanges();
+                Console.WriteLine(" - Complete");
             }
             catch (Exception e)
             {
@@ -216,7 +242,7 @@ namespace OSUCCMEDataImport.Jobs
             try
             {
                 var WebcastRegistrationsToImport = (from c in olddb.WebcastRegistrations
-                                                    where c.IsDeleted == false && c.WebCastID != null
+                                                    where c.IsDeleted == false && c.WebCastID != null && c.Confirmation != "Speaker"
                                                     select c).ToList();
 
                 var Total = WebcastRegistrationsToImport.Count();
@@ -224,18 +250,21 @@ namespace OSUCCMEDataImport.Jobs
                 Console.WriteLine(Total + " to Process");
                 var Index = 1;
 
+                var WebcastIDs = (from c in db.Webcasts
+                                  where c.IsDeleted == false
+                                  select c.ID).ToList();
+
                 foreach (var r in WebcastRegistrationsToImport)
                 {
+                    Console.Write("Processing Webcast Registrations : (" + Index + "/" + Total + ") " + r.ID + " ");
+
                     if (r.WebCastID != null)
                     {
-                        Console.Write("Processing : WebcastID exist.");
-                        if (CommonFunctions.DoesUserExist(db, r.UserID))
+                        var WebcastID = r.WebCastID;
+                        if (WebcastIDs.Contains(WebcastID.Value))
                         {
-                            Console.Write("Processing : User Does Exist.");
-                            if (r.PaymentType != "N/A" && r.Confirmation != "Speaker")
-                            {
-                                Console.Write("Processing : (" + Index + "/" + Total + ") " + r.ID + " ");
-
+                            if (CommonFunctions.DoesUserExist(db, r.UserID))
+                            {                               
                                 var Registration = new Models.WebcastRegistrations()
                                 {
                                     WebcastID = r.WebCastID ?? 0,
@@ -250,7 +279,7 @@ namespace OSUCCMEDataImport.Jobs
                                     LastUpdatedOn = DateTime.Now,
                                     LastUpdatedBy = ImportUserID
                                 };
-                                db.WebcastRegistrations.Add(Registration);
+
 
                                 if (r.PaymentAmount != null)
                                 {
@@ -264,74 +293,89 @@ namespace OSUCCMEDataImport.Jobs
                                     Registration.PaymentAmount = 0.0m;
                                 }
 
-                                if (r.PaymentType == "Check")
-                                {
-                                    Registration.PaymentMethod = r.PaymentType;
-                                }
-                                if (r.PaymentType == "Free")
-                                {
-                                    Registration.PaymentMethod = r.PaymentType;
-                                }
-                                if (r.PaymentType.ToLower() == "credit")
-                                {
-                                    Registration.PaymentMethod = "Credit Card - Manual";
-                                }
-                                if (r.PaymentType == "None")
-                                {
-                                    Registration.PaymentMethod = "Free";
-                                }
-                                if (r.PaymentType == "Scholarship")
-                                {
-                                    Registration.PaymentMethod = "Waived";
-                                }
-                                if (r.PaymentType == "Waived")
-                                {
-                                    Registration.PaymentMethod = r.PaymentType;
-                                }
-                                if (r.PaymentType == "Attendance Only")
-                                {
-                                    Registration.PaymentMethod = "Free";
-                                }
-                                if (r.PaymentType == "Cash")
-                                {
-                                    Registration.PaymentMethod = "Other";
-                                }
-                                if (r.PaymentType == "Other")
-                                {
-                                    Registration.PaymentMethod = r.PaymentType;
-                                }
-                                if (r.PaymentType == "Credit Card")
-                                {
-                                    Registration.PaymentMethod = "Credit Card - Auto";
-                                }
-                                if (r.PaymentType == "eRequest")
-                                {
-                                    Registration.PaymentMethod = r.PaymentType;
-                                }
-                                if (r.PaymentType == "N/A")
-                                {
-                                    Registration.PaymentMethod = "Free";
-                                }
                                 if (r.PaymentType.Contains("HA:"))
                                 {
                                     Registration.PaymentMethod = "Hospital Assigned";
                                 }
-
-                                if (Registration.PaymentMethod == null)
+                                else if (Registration.PaymentMethod == null)
                                 {
                                     Registration.PaymentMethod = "Null";
                                 }
+                                else
+                                {
+                                    switch (r.PaymentType.ToLower())
+                                    {
+                                        case "check":
+                                        case "free":
+                                        case "waived":
+                                        case "other":
+                                        case "erequest":
+                                        case "scholarship":
+                                            {
+                                                Registration.PaymentMethod = r.PaymentType;
+                                                break;
+                                            }
+                                        case "credit":
+                                            {
+                                                Registration.PaymentMethod = "Credit Card - Manual";
+                                                break;
+                                            }
+                                        case "none":
+                                        case "attendance only":
+                                        case "N/A":
+                                            {
+                                                Registration.PaymentMethod = "Free";
+                                                break;
+                                            }
+                                        case "cash":
+                                            {
+                                                Registration.PaymentMethod = "Other";
+                                                break;
+                                            }
+                                        case "credit card":
+                                            {
+                                                Registration.PaymentMethod = "Credit Card - Auto";
+                                                break;
+                                            }
+                                        case null:
+                                            {
+                                                Registration.PaymentMethod = "Credit Card - Auto";
+                                                break;
+                                            }
+                                    }
+                                }
 
-                                db.SaveChanges();
-                                Index++;
-                                Console.WriteLine(" - Saved");
+                                db.WebcastRegistrations.Add(Registration);
+
+                                if (Index % 5 == 0)
+                                {
+                                    db.SaveChanges();
+                                    Console.WriteLine(" - Saved");
+                                }
+                                else
+                                {
+                                    Console.WriteLine(" - Pending");
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine(" - Skipped User Doesn't Exist");
                             }
                         }
+                        else
+                        {
+                            Console.WriteLine(" - Skipped Prior to 2012");
+                        }
                     }
-
-                    Console.WriteLine(" - Complete");
-
+                    else
+                    {
+                        Console.WriteLine(" - Skipped No ID");
+                    }
+                    Index++;
                 }
+                db.SaveChanges();
+                Console.WriteLine(" - Complete");
+
 
             }
             catch (Exception e)
@@ -351,33 +395,64 @@ namespace OSUCCMEDataImport.Jobs
             try
             {
                 var WebcastspecialtiesToImport = (from cs in olddb.WebcastSearchCategories
-                                                  select cs).ToList();
+                                                  select new
+                                                  {
+                                                      cs.WebcastID,
+                                                      cs.CategoryID
+                                                  }).ToList();
 
                 var Total = WebcastspecialtiesToImport.Count();
                 Console.Write("Importing Webcasts Specialties - Starting ");
                 Console.WriteLine(Total + " to Process");
                 var Index = 1;
 
+                var CategoryMappings = (from v in db.CategoryMapping
+                                        select new
+                                        {
+                                            v.OldID,
+                                            v.NewID
+                                        }).ToList();
+
+                var WebcastIDs = (from c in db.Webcasts
+                                  where c.IsDeleted == false
+                                  select c.ID).ToList();
+
                 foreach (var c in WebcastspecialtiesToImport)
                 {
-                    Console.Write("Processing : (" + Index + "/" + Total + ") " + c.WebcastID + " " + c.CategoryID);
+                    Console.Write("Processing Specialties : (" + Index + "/" + Total + ") " + c.WebcastID + " " + c.CategoryID);
 
-                    var NewSpecialtyID = (from v in db.CategoryMapping
-                                          where v.OldID == c.CategoryID
-                                          select v.NewID).FirstOrDefault();
-
-                    var Specialty = new Models.WebcastSpecialties()
+                    var WebcastID = c.WebcastID;
+                    if (WebcastIDs.Contains(WebcastID.Value))
                     {
-                        WebcastID = c.WebcastID ?? 0,
-                        SpecialtyID = NewSpecialtyID ?? 0
-                    };
-                    db.WebcastSpecialties.Add(Specialty);
-                    db.SaveChanges();
+                        var NewSpecialtyID = (from v in CategoryMappings
+                                              where v.OldID == c.CategoryID
+                                              select v.NewID).FirstOrDefault();
 
-                    Console.WriteLine(" - Saved");
+                        var Specialty = new Models.WebcastSpecialties()
+                        {
+                            WebcastID = c.WebcastID ?? 0,
+                            SpecialtyID = NewSpecialtyID ?? 0
+                        };
+                        db.WebcastSpecialties.Add(Specialty);
+                        if (Index % 10 == 0)
+                        {
+                            db.SaveChanges();
+                            Console.WriteLine(" - Saved");
+                        }
+                        else
+                        {
+                            Console.WriteLine(" - Pending");
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine(" - Skipped");
+                    }
+
 
                     Index++;
                 }
+                db.SaveChanges();
                 Console.WriteLine(" - Complete");
             }
             catch (Exception e)

@@ -527,7 +527,7 @@ namespace OSUCCMEDataImport.Jobs
             try
             {
                 var ConferenceRegistrationsToImport = (from c in olddb.ConferenceRegistrations
-                                                       where c.IsDeleted == false && c.ConferenceID != null
+                                                       where c.IsDeleted == false && c.ConferenceID != null && c.Confirmation != "Speaker"
                                                        select c).ToList();
 
                 var Total = ConferenceRegistrationsToImport.Count();
@@ -549,88 +549,82 @@ namespace OSUCCMEDataImport.Jobs
                         {
                             if (CommonFunctions.DoesUserExist(db, r.UserID))
                             {
-                                if (r.PaymentType != "N/A" && r.Confirmation != "Speaker")
+
+                                var Registration = new Models.ConferenceRegistrations()
                                 {
+                                    ConferenceID = r.ConferenceID ?? 0,
+                                    UserID = r.UserID,
+                                    IsCanceled = r.IsCancelled,
+                                    IsDeleted = false,
+                                    ConfirmationNumber = r.Confirmation ?? "",
+                                    EvaluationSent = r.EvaluationSent ?? false,
+                                    CreatedOn = DateTime.Now,
+                                    CreatedBy = ImportUserID,
+                                    FileAccessEnabled = true,
+                                    LastUpdatedOn = DateTime.Now,
+                                    LastUpdatedBy = ImportUserID
+                                };
 
+                                if (r.PaymentAmount != null)
+                                {
+                                    decimal OutPaymentAmount = 0.0m;
+                                    decimal.TryParse(r.PaymentAmount, out OutPaymentAmount);
 
-                                    var Registration = new Models.ConferenceRegistrations()
-                                    {
-                                        ConferenceID = r.ConferenceID ?? 0,
-                                        UserID = r.UserID,
-                                        IsCanceled = r.IsCancelled,
-                                        IsDeleted = false,
-                                        ConfirmationNumber = r.Confirmation ?? "",
-                                        EvaluationSent = r.EvaluationSent ?? false,
-                                        CreatedOn = DateTime.Now,
-                                        CreatedBy = ImportUserID,
-                                        FileAccessEnabled = true,
-                                        LastUpdatedOn = DateTime.Now,
-                                        LastUpdatedBy = ImportUserID
-                                    };
-
-                                    if (r.PaymentAmount != null)
-                                    {
-                                        decimal OutPaymentAmount = 0.0m;
-                                        decimal.TryParse(r.PaymentAmount, out OutPaymentAmount);
-
-                                        Registration.PaymentAmount = OutPaymentAmount;
-                                    }
-                                    else
-                                    {
-                                        Registration.PaymentAmount = 0.0m;
-                                    }
-
-                                    switch (r.PaymentType.ToLower())
-                                    {
-                                        case "check":
-                                        case "free":
-                                        case "waived":
-                                        case "other":
-                                        case "erequest":
-                                        case "scholarship":
-                                            {
-                                                Registration.PaymentMethod = r.PaymentType;
-                                                break;
-                                            }
-                                        case "credit":
-                                            {
-                                                Registration.PaymentMethod = "Credit Card - Manual";
-                                                break;
-                                            }
-                                        case "none":
-                                        case "attendance only":
-                                            {
-                                                Registration.PaymentMethod = "Free";
-                                                break;
-                                            }
-                                        case "cash":
-                                            {
-                                                Registration.PaymentMethod = "Other";
-                                                break;
-                                            }
-                                        case "credit card":
-                                            {
-                                                Registration.PaymentMethod = "Credit Card - Auto";
-                                                break;
-                                            }
-                                    }
-
-                                    db.ConferenceRegistrations.Add(Registration);
-
-                                    if (Index % 5 == 0)
-                                    {
-                                        db.SaveChanges();
-                                        Console.WriteLine(" - Saved");
-                                    }
-                                    else
-                                    {
-                                        Console.WriteLine(" - Pending");
-                                    }
+                                    Registration.PaymentAmount = OutPaymentAmount;
                                 }
                                 else
                                 {
-                                    Console.WriteLine(" - Skipped");
+                                    Registration.PaymentAmount = 0.0m;
                                 }
+
+                                switch (r.PaymentType.ToLower())
+                                {
+                                    case "check":
+                                    case "free":
+                                    case "waived":
+                                    case "other":
+                                    case "erequest":
+                                    case "scholarship":
+                                        {
+                                            Registration.PaymentMethod = r.PaymentType;
+                                            break;
+                                        }
+                                    case "credit":
+                                        {
+                                            Registration.PaymentMethod = "Credit Card - Manual";
+                                            break;
+                                        }
+                                    case "none":
+                                    case "attendance only":
+                                    case "N/A":
+                                        {
+                                            Registration.PaymentMethod = "Free";
+                                            break;
+                                        }
+                                    case "cash":
+                                        {
+                                            Registration.PaymentMethod = "Other";
+                                            break;
+                                        }
+                                    case "credit card":
+                                        {
+                                            Registration.PaymentMethod = "Credit Card - Auto";
+                                            break;
+                                        }
+                                }
+
+                                db.ConferenceRegistrations.Add(Registration);
+
+                                if (Index % 5 == 0)
+                                {
+                                    db.SaveChanges();
+                                    Console.WriteLine(" - Saved");
+                                }
+                                else
+                                {
+                                    Console.WriteLine(" - Pending");
+                                }
+
                             }
                             else
                             {
