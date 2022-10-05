@@ -2,6 +2,7 @@
 using OSUCCMEDataImport.Common;
 using OSUCCMEDataImport.Models;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -353,16 +354,16 @@ namespace OSUCCMEDataImport.Jobs
 
             try
             {
-                var UserToImport = (from c in olddb.RSSeriesRegistrations
-                                    where c.IsDeleted == false && c.RSSeriesID != null && c.Confirmation != "Speaker"
-                                    group c by c.UserID into cg
-                                    select new
-                                    {
-                                        UserID = cg.Key,
-                                        Registrations = cg
-                                    }).ToList();
+                var RSSeriesRegistrationsToImport = (from c in olddb.RSSeriesRegistrations
+                                                     where c.IsDeleted == false && c.RSSeriesID != null && c.Confirmation != "Speaker"
+                                                     group c by c.RSSeriesID into cg
+                                                     select new
+                                                     {
+                                                         RSSeriesID = cg.Key,
+                                                         Registrations = cg
+                                                     }).ToList();
 
-                var Total = UserToImport.Count();
+                var Total = RSSeriesRegistrationsToImport.Count();
                 Console.Write("Importing RSSeries Registrations - Starting ");
                 Console.WriteLine(Total + " to Process");
                 var Index = 1;
@@ -371,60 +372,95 @@ namespace OSUCCMEDataImport.Jobs
                                    where c.IsDeleted == false
                                    select c.ID).ToList();
 
-                foreach (var u in UserToImport)
+                foreach (var RSS in RSSeriesRegistrationsToImport)
                 {
-                    Console.WriteLine("Processing RSSeries Registrations : (" + Index + "/" + Total + ") " + u.UserID + " ");
-
-                    if (CommonFunctions.DoesUserExist(db, u.UserID))
+                    Console.WriteLine("Processing RSSeries Registrations : (" + Index + "/" + Total + ") " + RSS.RSSeriesID + " ");
+                    if (RSS.RSSeriesID != null)
                     {
-                        var TotalRegistrations = u.Registrations.Count();
-                        var RegistrationIndex = 1;
-                        foreach (var r in u.Registrations)
+                        var RSSeriesID = RSS.RSSeriesID;
+                        if (RSSeriesIDs.Contains(RSSeriesID.Value))
                         {
-                            Console.Write("User Registrations : (" + Index + "/" + Total + ") (" + RegistrationIndex + "/" + TotalRegistrations + ") " + r.ID + " ");
-                            if (r.RSSeriesID != null)
+                            var OldUserCredits = (from uc in olddb.UserCredits
+                                                  where uc.EventID == RSS.RSSeriesID && uc.IsDeleted == false && uc.IsSpeaker == false && uc.EventType == "RSSeries"
+                                                  select uc).ToList();
+
+                            var TotalCredits = RSS.Registrations.Count();
+                            var CreditsIndex = 1;
+
+                            var NewRegistrationsToAdd = new List<Models.RSSeriesRegistrations>();
+                            foreach (var RSSeriesRegistration in RSS.Registrations)
                             {
-                                var RSSeriesID = r.RSSeriesID;
-                                if (RSSeriesIDs.Contains(RSSeriesID.Value))
+                                Console.Write("Processing RSSeries Registrations User Credits : (" + Index + "/" + Total + ") (" + CreditsIndex + "/" + TotalCredits + ") " + RSSeriesRegistration.ID + " ");
+
+                                if (CommonFunctions.DoesUserExist(db, RSSeriesRegistration.UserID))
                                 {
                                     var Registration = new Models.RSSeriesRegistrations()
                                     {
-                                        RSSeriesID = r.RSSeriesID.Value,
-                                        UserID = r.UserID,
+                                        RSSeriesID = RSSeriesRegistration.RSSeriesID.Value,
+                                        UserID = RSSeriesRegistration.UserID,
                                         IsDeleted = false,
-                                        EvaluationSent = r.EvaluationSent ?? false,
+                                        EvaluationSent = RSSeriesRegistration.EvaluationSent ?? false,
                                         EvaluationSentOn = null,
                                         CreatedOn = DateTime.Now,
                                         CreatedBy = ImportUserID,
                                         LastUpdatedOn = DateTime.Now,
                                         LastUpdatedBy = ImportUserID
                                     };
-                                    db.RSSeriesRegistrations.Add(Registration);
-                                    Console.WriteLine(" - Pending");
+
+                                    var OldUserCredit = (from c in OldUserCredits
+                                                         where c.UserID == RSSeriesRegistration.UserID
+                                                         select c).FirstOrDefault();
+                                    if (OldUserCredit != null)
+                                    {
+                                        var AssignedByUserID = ImportUserID;
+                                        if (CommonFunctions.DoesUserExist(db, OldUserCredit.AssignedBy))
+                                        {
+                                            AssignedByUserID = OldUserCredit.AssignedBy;
+                                        }
+
+                                        if (OldUserCredit.IsMOC == true)
+                                        {
+                                            decimal OutMOCPoints = 0.0m;
+                                            decimal.TryParse(OldUserCredit.CreditHours.ToString(), out OutMOCPoints);
+
+                                            Registration.MOCPoints = OutMOCPoints;
+                                            Registration.MOCPointsAssignedOn = OldUserCredit.AssignedOn;
+                                            Registration.MOCPointsAssignedBy = AssignedByUserID;
+                                        }
+
+                                        decimal OutCreditHours = 0.0m;
+                                        decimal.TryParse(OldUserCredit.CreditHours.ToString(), out OutCreditHours);
+
+                                        Registration.CreditHours = OutCreditHours;
+                                        Registration.CreditAssignedOn = OldUserCredit.AssignedOn;
+                                        Registration.CreditAssignedBy = AssignedByUserID;
+                                    }
+
+                                    NewRegistrationsToAdd.Add(Registration);
+                                    Console.WriteLine(" - Saved");
+
                                 }
                                 else
                                 {
                                     Console.WriteLine(" - Skipped");
                                 }
+                                CreditsIndex++;
                             }
-                            else
-                            {
-                                Console.WriteLine(" - Skipped");
-                            }
-                            RegistrationIndex++;
+                            db.RSSeriesRegistrations.AddRange(NewRegistrationsToAdd);
+                            db.SaveChanges();
                         }
-                        db.SaveChanges();
-                        Console.WriteLine(" - Saved");
+                        else
+                        {
+                            Console.WriteLine(" - Skipped");
+                        }
                     }
                     else
                     {
-                        Console.WriteLine(" - User Skipped");
+                        Console.WriteLine(" - Skipped");
                     }
                     Index++;
                 }
-                db.SaveChanges();
                 Console.WriteLine(" - Complete");
-
             }
             catch (Exception e)
             {

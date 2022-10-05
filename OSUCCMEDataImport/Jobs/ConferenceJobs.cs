@@ -2,6 +2,7 @@
 using OSUCCMEDataImport.Common;
 using OSUCCMEDataImport.Models;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -15,42 +16,42 @@ namespace OSUCCMEDataImport.Jobs
             Stopwatch stopWatch = new Stopwatch();
             stopWatch.Start();
 
-            //Conferences(ImportUserID);
-            //Console.WriteLine("");
-            //Console.WriteLine("-----------------------------------");
-            //Console.WriteLine("");
-            //JointProviders();
-            //Console.WriteLine("");
-            //Console.WriteLine("-----------------------------------");
-            //Console.WriteLine("");
-            //ConferenceOptionGroup(ImportUserID);
-            //Console.WriteLine("");
-            //Console.WriteLine("-----------------------------------");
-            //Console.WriteLine("");
-            //ConferenceOptions(ImportUserID);
-            //Console.WriteLine("");
-            //Console.WriteLine("-----------------------------------");
-            //Console.WriteLine("");
-            //ConferencePrices(ImportUserID);
-            //Console.WriteLine("");
-            //Console.WriteLine("-----------------------------------");
-            //Console.WriteLine("");
+            Conferences(ImportUserID);
+            Console.WriteLine("");
+            Console.WriteLine("-----------------------------------");
+            Console.WriteLine("");
+            JointProviders();
+            Console.WriteLine("");
+            Console.WriteLine("-----------------------------------");
+            Console.WriteLine("");
+            ConferenceOptionGroup(ImportUserID);
+            Console.WriteLine("");
+            Console.WriteLine("-----------------------------------");
+            Console.WriteLine("");
+            ConferenceOptions(ImportUserID);
+            Console.WriteLine("");
+            Console.WriteLine("-----------------------------------");
+            Console.WriteLine("");
+            ConferencePrices(ImportUserID);
+            Console.WriteLine("");
+            Console.WriteLine("-----------------------------------");
+            Console.WriteLine("");
             ConferenceRegistrations(ImportUserID);
-            //Console.WriteLine("");
-            //Console.WriteLine("-----------------------------------");
-            //Console.WriteLine("");
-            //ConferenceSpecialties(ImportUserID);
-            //Console.WriteLine("");
-            //Console.WriteLine("-----------------------------------");
-            //Console.WriteLine("");
-            //ConferenceStreams(ImportUserID);
-            //Console.WriteLine("");
-            //Console.WriteLine("-----------------------------------");
-            //Console.WriteLine("");
-            //ConferenceStreamViews(ImportUserID);
-            //Console.WriteLine("");
-            //Console.WriteLine("-----------------------------------");
-            //Console.WriteLine("");
+            Console.WriteLine("");
+            Console.WriteLine("-----------------------------------");
+            Console.WriteLine("");
+            ConferenceSpecialties(ImportUserID);
+            Console.WriteLine("");
+            Console.WriteLine("-----------------------------------");
+            Console.WriteLine("");
+            ConferenceStreams(ImportUserID);
+            Console.WriteLine("");
+            Console.WriteLine("-----------------------------------");
+            Console.WriteLine("");
+            ConferenceStreamViews(ImportUserID);
+            Console.WriteLine("");
+            Console.WriteLine("-----------------------------------");
+            Console.WriteLine("");
 
             TimeSpan ts = stopWatch.Elapsed;
             string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
@@ -248,6 +249,7 @@ namespace OSUCCMEDataImport.Jobs
                 Console.WriteLine(Total + " to Process");
                 var Index = 1;
 
+                var NewJointProvidersToAdd = new List<Models.ConferenceJointProviders>();
                 foreach (var c in ConferencesWithJointProvidership)
                 {
                     Console.Write("Processing Conferences Joint Providers : (" + Index + "/" + Total + ") " + c + " ");
@@ -262,17 +264,8 @@ namespace OSUCCMEDataImport.Jobs
                             ConferenceID = c,
                             Name = JointProviderToImport
                         };
-                        db.ConferenceJointProviders.Add(JointProviders);
-                        if (Index % 5 == 0)
-                        {
-                            db.SaveChanges();
-                            Console.WriteLine(" - Saved");
-                        }
-                        else
-                        {
-                            Console.WriteLine(" - Pending");
-                        }
-
+                        NewJointProvidersToAdd.Add(JointProviders);                        
+                        Console.WriteLine(" - Saved");                    
                     }
                     else
                     {
@@ -280,6 +273,7 @@ namespace OSUCCMEDataImport.Jobs
                     }
                     Index++;
                 }
+                db.ConferenceJointProviders.AddRange(NewJointProvidersToAdd);
                 db.SaveChanges();
                 Console.WriteLine(" - Complete");
 
@@ -391,7 +385,7 @@ namespace OSUCCMEDataImport.Jobs
 
                 foreach (var c in ConferencesOptions)
                 {
-                    Console.WriteLine("Processing Conference Options : (" + Index + "/" + Total + ") " + c.ID + " ");
+                    Console.Write("Processing Conference Options : (" + Index + "/" + Total + ") " + c.ID + " ");
 
                     var ConferenceOptionsToImport = (from ce in olddb.ConferenceExtras
                                                      where ce.ConferenceID == c.ConferenceID.ToString() && ce.GroupBy == c.ID
@@ -528,7 +522,12 @@ namespace OSUCCMEDataImport.Jobs
             {
                 var ConferenceRegistrationsToImport = (from c in olddb.ConferenceRegistrations
                                                        where c.IsDeleted == false && c.ConferenceID != null && c.Confirmation != "Speaker"
-                                                       select c).ToList();
+                                                       group c by c.ConferenceID into cg
+                                                       select new
+                                                       {
+                                                           ConferenceID = cg.Key,
+                                                           Registrations = cg
+                                                       }).ToList();
 
                 var Total = ConferenceRegistrationsToImport.Count();
                 Console.Write("Importing Conferences Registrations - Starting ");
@@ -539,97 +538,134 @@ namespace OSUCCMEDataImport.Jobs
                                      where c.IsDeleted == false
                                      select c.ID).ToList();
 
-                foreach (var r in ConferenceRegistrationsToImport)
+                foreach (var Conference in ConferenceRegistrationsToImport)
                 {
-                    Console.Write("Processing Conference Registrations : (" + Index + "/" + Total + ") " + r.ID + " ");
-                    if (r.ConferenceID != null)
+                    Console.WriteLine("Processing Conference Registrations : (" + Index + "/" + Total + ") " + Conference.ConferenceID + " ");
+                    if (Conference.ConferenceID != null)
                     {
-                        var ConferenceID = r.ConferenceID;
+                        var ConferenceID = Conference.ConferenceID;
                         if (ConferenceIDs.Contains(ConferenceID.Value))
                         {
-                            if (CommonFunctions.DoesUserExist(db, r.UserID))
+                            var OldUserCredits = (from uc in olddb.UserCredits
+                                                  where uc.EventID == Conference.ConferenceID && uc.IsDeleted == false && uc.IsSpeaker == false && uc.EventType == "Conference"
+                                                  select uc).ToList();
+
+                            var TotalCredits = Conference.Registrations.Count();
+                            var CreditsIndex = 1;
+
+                            var NewRegistrationsToAdd = new List<Models.ConferenceRegistrations>();
+                            foreach (var ConferenceRegistration in Conference.Registrations)
                             {
+                                Console.Write("Processing Conference Registrations User Credits : (" + Index + "/" + Total + ") (" + CreditsIndex + "/" + TotalCredits + ") " + ConferenceRegistration.ID + " ");
 
-                                var Registration = new Models.ConferenceRegistrations()
+                                if (CommonFunctions.DoesUserExist(db, ConferenceRegistration.UserID))
                                 {
-                                    ConferenceID = r.ConferenceID ?? 0,
-                                    UserID = r.UserID,
-                                    IsCanceled = r.IsCancelled,
-                                    IsDeleted = false,
-                                    ConfirmationNumber = r.Confirmation ?? "",
-                                    EvaluationSent = r.EvaluationSent ?? false,
-                                    CreatedOn = DateTime.Now,
-                                    CreatedBy = ImportUserID,
-                                    FileAccessEnabled = true,
-                                    LastUpdatedOn = DateTime.Now,
-                                    LastUpdatedBy = ImportUserID
-                                };
+                                    var Registration = new Models.ConferenceRegistrations()
+                                    {
+                                        ConferenceID = ConferenceRegistration.ConferenceID ?? 0,
+                                        UserID = ConferenceRegistration.UserID,
+                                        IsCanceled = ConferenceRegistration.IsCancelled,
+                                        IsDeleted = false,
+                                        ConfirmationNumber = ConferenceRegistration.Confirmation ?? "",
+                                        EvaluationSent = ConferenceRegistration.EvaluationSent ?? false,
+                                        CreatedOn = DateTime.Now,
+                                        CreatedBy = ImportUserID,
+                                        FileAccessEnabled = true,
+                                        LastUpdatedOn = DateTime.Now,
+                                        LastUpdatedBy = ImportUserID
+                                    };
 
-                                if (r.PaymentAmount != null)
-                                {
-                                    decimal OutPaymentAmount = 0.0m;
-                                    decimal.TryParse(r.PaymentAmount, out OutPaymentAmount);
+                                    if (ConferenceRegistration.PaymentAmount != null)
+                                    {
+                                        decimal OutPaymentAmount = 0.0m;
+                                        decimal.TryParse(ConferenceRegistration.PaymentAmount, out OutPaymentAmount);
 
-                                    Registration.PaymentAmount = OutPaymentAmount;
-                                }
-                                else
-                                {
-                                    Registration.PaymentAmount = 0.0m;
-                                }
+                                        Registration.PaymentAmount = OutPaymentAmount;
+                                    }
+                                    else
+                                    {
+                                        Registration.PaymentAmount = 0.0m;
+                                    }
 
-                                switch (r.PaymentType.ToLower())
-                                {
-                                    case "check":
-                                    case "free":
-                                    case "waived":
-                                    case "other":
-                                    case "erequest":
-                                    case "scholarship":
-                                        {
-                                            Registration.PaymentMethod = r.PaymentType;
-                                            break;
-                                        }
-                                    case "credit":
-                                        {
-                                            Registration.PaymentMethod = "Credit Card - Manual";
-                                            break;
-                                        }
-                                    case "none":
-                                    case "attendance only":
-                                    case "N/A":
-                                        {
-                                            Registration.PaymentMethod = "Free";
-                                            break;
-                                        }
-                                    case "cash":
-                                        {
-                                            Registration.PaymentMethod = "Other";
-                                            break;
-                                        }
-                                    case "credit card":
-                                        {
-                                            Registration.PaymentMethod = "Credit Card - Auto";
-                                            break;
-                                        }
-                                }
+                                    switch (ConferenceRegistration.PaymentType.ToLower())
+                                    {
+                                        case "check":
+                                        case "free":
+                                        case "waived":
+                                        case "other":
+                                        case "erequest":
+                                        case "scholarship":
+                                            {
+                                                Registration.PaymentMethod = ConferenceRegistration.PaymentType;
+                                                break;
+                                            }
+                                        case "credit":
+                                            {
+                                                Registration.PaymentMethod = "Credit Card - Manual";
+                                                break;
+                                            }
+                                        case "none":
+                                        case "attendance only":
+                                        case "N/A":
+                                            {
+                                                Registration.PaymentMethod = "Free";
+                                                break;
+                                            }
+                                        case "cash":
+                                            {
+                                                Registration.PaymentMethod = "Other";
+                                                break;
+                                            }
+                                        case "credit card":
+                                            {
+                                                Registration.PaymentMethod = "Credit Card - Auto";
+                                                break;
+                                            }
+                                    }
 
-                                db.ConferenceRegistrations.Add(Registration);
+                                    var OldUserCredit = (from c in OldUserCredits
+                                                         where c.UserID == ConferenceRegistration.UserID
+                                                         select c).FirstOrDefault();
+                                    if (OldUserCredit != null)
+                                    {
+                                        var AssignedByUserID = ImportUserID;
+                                        if (CommonFunctions.DoesUserExist(db, OldUserCredit.AssignedBy))
+                                        {
+                                            AssignedByUserID = OldUserCredit.AssignedBy;
+                                        }
 
-                                if (Index % 5 == 0)
-                                {
-                                    db.SaveChanges();
+                                        if (OldUserCredit.IsMOC == true)
+                                        {
+                                            decimal OutMOCPoints = 0.0m;
+                                            decimal.TryParse(OldUserCredit.CreditHours.ToString(), out OutMOCPoints);
+
+                                            Registration.MOCPoints = OutMOCPoints;
+                                            Registration.MOCPointsAssignedOn = OldUserCredit.AssignedOn;
+                                            Registration.MOCPointsAssignedBy = AssignedByUserID;
+                                        }
+
+                                        decimal OutCreditHours = 0.0m;
+                                        decimal.TryParse(OldUserCredit.CreditHours.ToString(), out OutCreditHours);
+
+                                        Registration.CreditHours = OutCreditHours;
+                                        Registration.CreditAssignedOn = OldUserCredit.AssignedOn;
+                                        Registration.CreditAssignedBy = AssignedByUserID;
+                                    }
+
+                                    NewRegistrationsToAdd.Add(Registration);
+                                    //db.ConferenceRegistrations.Add(Registration);
+                                    //db.SaveChanges();
                                     Console.WriteLine(" - Saved");
+
                                 }
                                 else
                                 {
-                                    Console.WriteLine(" - Pending");
+                                    Console.WriteLine(" - Skipped");
                                 }
-
+                                CreditsIndex++;
                             }
-                            else
-                            {
-                                Console.WriteLine(" - Skipped");
-                            }
+                            db.ConferenceRegistrations.AddRange(NewRegistrationsToAdd);
+                            db.SaveChanges();
                         }
                         else
                         {
@@ -641,10 +677,9 @@ namespace OSUCCMEDataImport.Jobs
                         Console.WriteLine(" - Skipped");
                     }
                     Index++;
+                    //db.SaveChanges();
                 }
-                db.SaveChanges();
                 Console.WriteLine(" - Complete");
-
 
             }
             catch (Exception e)
