@@ -11,11 +11,9 @@ namespace OSUCCMEDataImport.Jobs
         public static void Process(string ImportUserID)
         {
             EnduringCredits(ImportUserID);
-            //Console.WriteLine("");
-            //Console.WriteLine("-----------------------------------");
-            //Console.WriteLine("");
-
-
+            Console.WriteLine("");
+            Console.WriteLine("-----------------------------------");
+            Console.WriteLine("");
         }
 
         private static void EnduringCredits(string ImportUserID)

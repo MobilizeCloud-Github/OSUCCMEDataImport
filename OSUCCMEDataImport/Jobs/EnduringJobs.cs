@@ -2,6 +2,7 @@
 using OSUCCMEDataImport.Common;
 using OSUCCMEDataImport.Models;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -334,140 +335,177 @@ namespace OSUCCMEDataImport.Jobs
             {
                 var EnduringMaterialRegistrationsToImport = (from c in olddb.EnduringMaterialRegistrations
                                                              where c.IsDeleted == false && c.EnduringID != null && c.Confirmation != "Speaker"
-                                                             select c).ToList();
+                                                             group c by c.EnduringID into cg
+                                                             select new
+                                                             {
+                                                                 EnduringID = cg.Key,
+                                                                 Registrations = cg
+                                                             }).ToList();
 
                 var Total = EnduringMaterialRegistrationsToImport.Count();
-                Console.Write("Importing EnduringMaterials Prices - Starting ");
+                Console.Write("Importing Enduring Materials Prices - Starting ");
                 Console.WriteLine(Total + " to Process");
                 var Index = 1;
 
                 var EnduringIDs = (from c in db.EnduringMaterials
-                                     where c.IsDeleted == false
-                                     select c.ID).ToList();
+                                   where c.IsDeleted == false
+                                   select c.ID).ToList();
 
-                foreach (var r in EnduringMaterialRegistrationsToImport)
+                foreach (var Enduring in EnduringMaterialRegistrationsToImport)
                 {
-                    Console.Write("Processing Enduring Registrations : (" + Index + "/" + Total + ") " + r.ID + " ");
-
-                    if (r.EnduringID != null)
+                    Console.WriteLine("Processing Enduring Material Registrations : (" + Index + "/" + Total + ") " + Enduring.EnduringID + " ");
+                    if (Enduring.EnduringID != null)
                     {
-                        var EnduringID = r.EnduringID;
-                        if (EnduringIDs.Contains(EnduringID.Value))
+                        var ConferenceID = Enduring.EnduringID;
+                        if (EnduringIDs.Contains(ConferenceID.Value))
                         {
-                            if (CommonFunctions.DoesUserExist(db, r.UserID))
+                            var OldUserCredits = (from uc in olddb.UserCredits
+                                                  where uc.EventID == Enduring.EnduringID && uc.IsDeleted == false && uc.IsSpeaker == false && uc.EventType == "Enduring"
+                                                  select uc).ToList();
+
+                            var TotalCredits = Enduring.Registrations.Count();
+                            var CreditsIndex = 1;
+
+                            var NewRegistrationsToAdd = new List<Models.EnduringMaterialRegistrations>();
+                            foreach (var EnduringRegistration in Enduring.Registrations)
                             {
+                                Console.Write("Processing Enduring Material Registrations User Credits : (" + Index + "/" + Total + ") (" + CreditsIndex + "/" + TotalCredits + ") " + EnduringRegistration.ID + " ");
 
-                                var Registration = new Models.EnduringMaterialRegistrations()
+                                if (CommonFunctions.DoesUserExist(db, EnduringRegistration.UserID))
                                 {
-                                    EnduringMaterialID = r.EnduringID ?? 0,
-                                    UserID = r.UserID,
-                                    IsDeleted = false,
-                                    ConfirmationNumber = r.Confirmation ?? "",
-                                    EvaluationSent = r.EvaluationSent ?? false,
-                                    CreatedOn = DateTime.Now,
-                                    CreatedBy = ImportUserID,
-                                    FileAccessEnabled = true,
-                                    LastUpdatedOn = DateTime.Now,
-                                    LastUpdatedBy = ImportUserID
-                                };
-                                db.EnduringMaterialRegistrations.Add(Registration);
-
-                                if (r.PaymentAmount != null)
-                                {
-                                    decimal OutPaymentAmount = 0.0m;
-                                    decimal.TryParse(r.PaymentAmount, out OutPaymentAmount);
-
-                                    Registration.PaymentAmount = OutPaymentAmount;
-                                }
-                                else
-                                {
-                                    Registration.PaymentAmount = 0.0m;
-                                }
-
-                                if (r.PaymentType.Contains("HA:"))
-                                {
-                                    Registration.PaymentMethod = "Hospital Assigned";
-                                }
-                                else if (Registration.PaymentMethod == null)
-                                {
-                                    Registration.PaymentMethod = "Null";
-                                }
-                                else
-                                {
-                                    switch (r.PaymentType.ToLower())
+                                    var Registration = new Models.EnduringMaterialRegistrations()
                                     {
-                                        case "check":
-                                        case "free":
-                                        case "waived":
-                                        case "other":
-                                        case "erequest":
-                                        case "scholarship":
-                                            {
-                                                Registration.PaymentMethod = r.PaymentType;
-                                                break;
-                                            }
-                                        case "credit":
-                                            {
-                                                Registration.PaymentMethod = "Credit Card - Manual";
-                                                break;
-                                            }
-                                        case "none":
-                                        case "attendance only":
-                                        case "N/A":
-                                            {
-                                                Registration.PaymentMethod = "Free";
-                                                break;
-                                            }
-                                        case "cash":
-                                            {
-                                                Registration.PaymentMethod = "Other";
-                                                break;
-                                            }
-                                        case "credit card":
-                                            {
-                                                Registration.PaymentMethod = "Credit Card - Auto";
-                                                break;
-                                            }
-                                        case null:
-                                            {
-                                                Registration.PaymentMethod = "Credit Card - Auto";
-                                                break;
-                                            }
+                                        EnduringMaterialID = EnduringRegistration.EnduringID ?? 0,
+                                        UserID = EnduringRegistration.UserID,
+                                        IsDeleted = false,
+                                        ConfirmationNumber = EnduringRegistration.Confirmation ?? "",
+                                        EvaluationSent = EnduringRegistration.EvaluationSent ?? false,
+                                        CreatedOn = DateTime.Now,
+                                        CreatedBy = ImportUserID,
+                                        FileAccessEnabled = true,
+                                        LastUpdatedOn = DateTime.Now,
+                                        LastUpdatedBy = ImportUserID
+                                    };
+
+
+                                    if (EnduringRegistration.PaymentAmount != null)
+                                    {
+                                        decimal OutPaymentAmount = 0.0m;
+                                        decimal.TryParse(EnduringRegistration.PaymentAmount, out OutPaymentAmount);
+
+                                        Registration.PaymentAmount = OutPaymentAmount;
                                     }
-                                }
+                                    else
+                                    {
+                                        Registration.PaymentAmount = 0.0m;
+                                    }
 
-                                db.EnduringMaterialRegistrations.Add(Registration);
+                                    if (EnduringRegistration.PaymentType.Contains("HA:"))
+                                    {
+                                        Registration.PaymentMethod = "Hospital Assigned";
+                                    }
+                                    else if (Registration.PaymentMethod == null)
+                                    {
+                                        Registration.PaymentMethod = "Null";
+                                    }
+                                    else
+                                    {
+                                        switch (EnduringRegistration.PaymentType.ToLower())
+                                        {
+                                            case "check":
+                                            case "free":
+                                            case "waived":
+                                            case "other":
+                                            case "erequest":
+                                            case "scholarship":
+                                                {
+                                                    Registration.PaymentMethod = EnduringRegistration.PaymentType;
+                                                    break;
+                                                }
+                                            case "credit":
+                                                {
+                                                    Registration.PaymentMethod = "Credit Card - Manual";
+                                                    break;
+                                                }
+                                            case "none":
+                                            case "attendance only":
+                                            case "N/A":
+                                                {
+                                                    Registration.PaymentMethod = "Free";
+                                                    break;
+                                                }
+                                            case "cash":
+                                                {
+                                                    Registration.PaymentMethod = "Other";
+                                                    break;
+                                                }
+                                            case "credit card":
+                                                {
+                                                    Registration.PaymentMethod = "Credit Card - Auto";
+                                                    break;
+                                                }
+                                            case null:
+                                                {
+                                                    Registration.PaymentMethod = "Credit Card - Auto";
+                                                    break;
+                                                }
+                                        }
+                                    }
 
-                                if (Index % 5 == 0)
-                                {
-                                    db.SaveChanges();
+                                    var OldUserCredit = (from c in OldUserCredits
+                                                         where c.UserID == EnduringRegistration.UserID
+                                                         select c).FirstOrDefault();
+                                    if (OldUserCredit != null)
+                                    {
+                                        var AssignedByUserID = ImportUserID;
+                                        if (CommonFunctions.DoesUserExist(db, OldUserCredit.AssignedBy))
+                                        {
+                                            AssignedByUserID = OldUserCredit.AssignedBy;
+                                        }
+
+                                        if (OldUserCredit.IsMOC == true)
+                                        {
+                                            decimal OutMOCPoints = 0.0m;
+                                            decimal.TryParse(OldUserCredit.CreditHours.ToString(), out OutMOCPoints);
+
+                                            Registration.MOCPoints = OutMOCPoints;
+                                            Registration.MOCPointsAssignedOn = OldUserCredit.AssignedOn;
+                                            Registration.MOCPointsAssignedBy = AssignedByUserID;
+                                        }
+
+                                        decimal OutCreditHours = 0.0m;
+                                        decimal.TryParse(OldUserCredit.CreditHours.ToString(), out OutCreditHours);
+
+                                        Registration.CreditHours = OutCreditHours;
+                                        Registration.CreditAssignedOn = OldUserCredit.AssignedOn;
+                                        Registration.CreditAssignedBy = AssignedByUserID;
+                                    }
+
+                                    NewRegistrationsToAdd.Add(Registration);
                                     Console.WriteLine(" - Saved");
+
                                 }
                                 else
                                 {
-                                    Console.WriteLine(" - Pending");
+                                    Console.WriteLine(" - Skipped");
                                 }
+                                CreditsIndex++;
                             }
-                            else
-                            {
-                                Console.WriteLine(" - Skipped User Doesn't Exist");
-                            }
+                            db.EnduringMaterialRegistrations.AddRange(NewRegistrationsToAdd);
+                            db.SaveChanges();
                         }
                         else
                         {
-                            Console.WriteLine(" - Skipped Prior to 2012");
+                            Console.WriteLine(" - Skipped");
                         }
                     }
                     else
                     {
-                        Console.WriteLine(" - Skipped No ID");
+                        Console.WriteLine(" - Skipped");
                     }
                     Index++;
+                    Console.WriteLine(" - Complete");
                 }
-                db.SaveChanges();
-                Console.WriteLine(" - Complete");
-
-
             }
             catch (Exception e)
             {
@@ -501,14 +539,14 @@ namespace OSUCCMEDataImport.Jobs
                                         }).ToList();
 
                 var EnduringIDs = (from c in db.EnduringMaterials
-                                  where c.IsDeleted == false
-                                  select c.ID).ToList();
+                                   where c.IsDeleted == false
+                                   select c.ID).ToList();
 
                 foreach (var c in EnduringMaterialspecialtiesToImport)
                 {
                     Console.Write("Processing Specialties : (" + Index + "/" + Total + ") " + c.EnduringID + " " + c.CategoryID);
 
-                    
+
                     var EnduringID = c.EnduringID;
                     if (EnduringIDs.Contains(EnduringID.Value))
                     {
