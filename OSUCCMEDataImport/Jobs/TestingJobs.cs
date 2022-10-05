@@ -2,6 +2,7 @@
 using OSUCCMEDataImport.Common;
 using OSUCCMEDataImport.Models;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace OSUCCMEDataImport.Jobs
@@ -11,7 +12,7 @@ namespace OSUCCMEDataImport.Jobs
         public static void Process(string ImportUserID)
         {
 
-            Test(ImportUserID);
+            //Test(ImportUserID);
             //Console.WriteLine("");
             //Console.WriteLine("-----------------------------------");
             //Console.WriteLine("");
@@ -40,8 +41,6 @@ namespace OSUCCMEDataImport.Jobs
                 Console.WriteLine(Total + " to Process");
                 var Index = 1;
 
-
-
                 foreach (var c in TestToImport)
                 {
                     Console.Write("Processing Test: (" + Index + "/" + Total + ") " + c.ID);
@@ -69,6 +68,11 @@ namespace OSUCCMEDataImport.Jobs
                         };
                         db.Testing.Add(test);
                         db.SaveChanges();
+                        Console.WriteLine(" - Saved");
+                    }
+                    else
+                    {
+                        Console.WriteLine(" - Skipped");
                     }
 
                     Index++;
@@ -94,102 +98,128 @@ namespace OSUCCMEDataImport.Jobs
             try
             {
                 var TransferStartDate = new DateTime(2012, 1, 1);
-                var QuestionsToImport = (from c in olddb.Questions
+                var TestsToImport = (from c in olddb.Questions
                                          where c.IsDeleted == false
-                                         select c).ToList();
+                                         group c by c.TestID into cg
+                                         select new { 
+                                            cg.Key,
+                                            Questions = cg
+                                         }).ToList();
 
-                var Total = QuestionsToImport.Count();
+                var Total = TestsToImport.Count();
                 Console.Write("Importing Test Questions - Starting ");
                 Console.WriteLine(Total + " to Process");
                 var Index = 1;
 
-                foreach (var c in QuestionsToImport)
+                foreach (var c in TestsToImport)
                 {
-                    if (c.TestID != null)
+                    Console.Write("Processing Test Questions: (" + Index + "/" + Total + ") " + c.Key);
+                    if (c.Key != null)
                     {
-                        var TestExist = CommonFunctions.DoesTestExist(db, c.TestID.Value);
+                        var TestExist = CommonFunctions.DoesTestExist(db, c.Key.Value);
 
                         if (TestExist)
                         {
-
-                            Console.Write("Processing Test Questions: (" + Index + "/" + Total + ") " + c.ID);
-                            var questions = new Models.TestingQuestions()
+                            var QuestionCount = c.Questions.Count();
+                            var QuestionIndex = 1;
+                            foreach (var Question in c.Questions)
                             {
-                                TestID = c.TestID.Value,
-                                Rank = c.Position.Value + 1,
-                                QuestionText = c.QuestionText,
-                                Explanation = c.AnswerExplanation,
-                                CreatedOn = DateTime.Now,
-                                CreatedBy = ImportUserID,
-                                IsDeleted = false
-                            };
-                            db.TestingQuestions.Add(questions);
-                            db.SaveChanges();
-                            Console.Write("Saving Question");
 
-                            switch (c.AnswerType)
-                            {
-                                case (1):
-                                    {
-                                        //Radio
-                                        questions.QuestionTypeID = 3;
-                                        break;
-                                    }
-                                case (2):
-                                    {
-                                        //Checkbox
-                                        questions.QuestionTypeID = 2;
-                                        break;
-                                    }
-                                case (3):
-                                    {
-                                        //Text
-                                        questions.QuestionTypeID = 4;
-                                        break;
-                                    }
-                                case (4):
-                                    {
-                                        questions.QuestionTypeID = 4;
-                                        break;
-                                    }
-                                case (5):
-                                    {
-                                        //Dropdown
-                                        questions.QuestionTypeID = 1;
-                                        break;
-                                    }
-                            }
-
-                            var AnswersToImport = (from a in olddb.Answers
-                                                   where a.qID == c.ID && a.IsDeleted == false
-                                                   select a).ToList();
-
-                            var AnswerPosition = 1;
-
-                            foreach (var a in AnswersToImport)
-                            {
-                                var Answer = new Models.TestingQuestionsAnswers()
+                                Console.Write("Processing Test Questions: (" + Index + "/" + Total + ") (" + QuestionIndex + "/" + QuestionCount + ") " + Question.ID);
+                                var NewQuestion = new Models.TestingQuestions()
                                 {
-                                    QuestionID = questions.ID,
-                                    Position = AnswerPosition,
-                                    AnswerText = a.Answer,
-                                    CorrectAnswer = false,
+                                    TestID = Question.TestID.Value,
+                                    Rank = Question.Position.Value + 1,
+                                    QuestionText = Question.QuestionText,
+                                    Explanation = Question.AnswerExplanation,
                                     CreatedOn = DateTime.Now,
                                     CreatedBy = ImportUserID,
                                     IsDeleted = false
                                 };
+                                db.TestingQuestions.Add(NewQuestion);
 
-                                if (Answer.AnswerText == c.CorrectAnswer)
+
+                                switch (Question.AnswerType)
                                 {
-                                    Answer.CorrectAnswer = true;
+                                    case (1):
+                                        {
+                                            //Radio
+                                            NewQuestion.QuestionTypeID = 3;
+                                            break;
+                                        }
+                                    case (2):
+                                        {
+                                            //Checkbox
+                                            NewQuestion.QuestionTypeID = 2;
+                                            break;
+                                        }
+                                    case (3):
+                                        {
+                                            //Text
+                                            NewQuestion.QuestionTypeID = 4;
+                                            break;
+                                        }
+                                    case (4):
+                                        {
+                                            NewQuestion.QuestionTypeID = 4;
+                                            break;
+                                        }
+                                    case (5):
+                                        {
+                                            //Dropdown
+                                            NewQuestion.QuestionTypeID = 1;
+                                            break;
+                                        }
                                 }
 
-                                db.TestingQuestionsAnswers.Add(Answer);
+                                Console.WriteLine(" - Saving Question");
+                                db.SaveChanges();
 
-                                AnswerPosition++;
+                                var AnswersToImport = (from a in olddb.Answers
+                                                       where a.qID == Question.ID && a.IsDeleted == false
+                                                       select a).ToList();
+
+                                var AnswerPosition = 1;
+                                var TotalAnswers = AnswersToImport.Count();
+                                var TestAnswers = new List<Models.TestingQuestionsAnswers>();
+                                foreach (var a in AnswersToImport)
+                                {
+                                    Console.Write("Processing Test Question Answers: (" + Index + "/" + Total + ") (" + QuestionIndex + "/" + QuestionCount + ") (" + AnswerPosition + "/" + TotalAnswers + ")" + a.ID);
+
+                                    var Answer = new Models.TestingQuestionsAnswers()
+                                    {
+                                        QuestionID = NewQuestion.ID,
+                                        Position = AnswerPosition,
+                                        AnswerText = a.Answer,
+                                        CorrectAnswer = false,
+                                        CreatedOn = DateTime.Now,
+                                        CreatedBy = ImportUserID,
+                                        IsDeleted = false
+                                    };
+
+                                    if (Answer.AnswerText == Question.CorrectAnswer)
+                                    {
+                                        Answer.CorrectAnswer = true;
+                                    }
+
+                                    Console.WriteLine(" - Answer Saved");
+
+                                    TestAnswers.Add(Answer);
+                                    AnswerPosition++;
+                                }
+                                db.TestingQuestionsAnswers.AddRange(TestAnswers);
+                                db.SaveChanges();
+                                QuestionIndex++;
                             }
-                            db.SaveChanges();
                         }
+                        else
+                        {
+                            Console.WriteLine(" - Skipped");
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine(" - Skipped");
                     }
                     Index++;
                 }

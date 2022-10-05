@@ -57,8 +57,8 @@
   <ItemGroup>
     <Compile Include="Common\CommonFunctions.cs" />
     <Compile Include="Common\FileFunctions.cs" />
-    <Compile Include="Jobs\WebcastMOCBoardJobs.cs" />
     <Compile Include="Jobs\TestingJobs.cs" />
+    <Compile Include="Jobs\WebcastMOCBoardJobs.cs" />
     <Compile Include="Jobs\EventCriteriaJobs.cs" />
     <Compile Include="Jobs\DataListsJobs.cs" />
     <Compile Include="Jobs\FileJobs.cs" />
@@ -767,6 +767,7 @@
       <DependentUpon>NewOSUCCMEModel.edmx</DependentUpon>
       <LastGenOutput>NewOSUCCMEModel.cs</LastGenOutput>
     </Content>
+    <Content Include="OSU-DeleteFacultyDisclosures.sql" />
     <Content Include="OSU-DeleteHospitals.sql" />
     <Content Include="OSU-DeleteUsers.sql" />
     <Content Include="OSU-DeleteConferences.sql" />
