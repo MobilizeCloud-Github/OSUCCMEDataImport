@@ -2,6 +2,7 @@
 using OSUCCMEDataImport.Common;
 using OSUCCMEDataImport.Models;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -243,7 +244,12 @@ namespace OSUCCMEDataImport.Jobs
             {
                 var WebcastRegistrationsToImport = (from c in olddb.WebcastRegistrations
                                                     where c.IsDeleted == false && c.WebCastID != null && c.Confirmation != "Speaker"
-                                                    select c).ToList();
+                                                    group c by c.WebCastID into cg
+                                                    select new
+                                                    {
+                                                        WebcastID = cg.Key,
+                                                        Registrations = cg
+                                                    }).ToList();
 
                 var Total = WebcastRegistrationsToImport.Count();
                 Console.Write("Importing Webcasts Prices - Starting ");
@@ -254,129 +260,162 @@ namespace OSUCCMEDataImport.Jobs
                                   where c.IsDeleted == false
                                   select c.ID).ToList();
 
-                foreach (var r in WebcastRegistrationsToImport)
+                foreach (var Webcast in WebcastRegistrationsToImport)
                 {
-                    Console.Write("Processing Webcast Registrations : (" + Index + "/" + Total + ") " + r.ID + " ");
-
-                    if (r.WebCastID != null)
+                    Console.WriteLine("Processing Webcast Registrations : (" + Index + "/" + Total + ") " + Webcast.WebcastID + " ");
+                    if (Webcast.WebcastID != null)
                     {
-                        var WebcastID = r.WebCastID;
-                        if (WebcastIDs.Contains(WebcastID.Value))
+                        var ConferenceID = Webcast.WebcastID;
+                        if (WebcastIDs.Contains(ConferenceID.Value))
                         {
-                            if (CommonFunctions.DoesUserExist(db, r.UserID))
-                            {                               
-                                var Registration = new Models.WebcastRegistrations()
-                                {
-                                    WebcastID = r.WebCastID ?? 0,
-                                    UserID = r.UserID,
-                                    IsCanceled = r.IsCancelled,
-                                    IsDeleted = false,
-                                    ConfirmationNumber = r.Confirmation ?? "",
-                                    EvaluationSent = r.EvaluationSent ?? false,
-                                    CreatedOn = DateTime.Now,
-                                    CreatedBy = ImportUserID,
-                                    FileAccessEnabled = true,
-                                    LastUpdatedOn = DateTime.Now,
-                                    LastUpdatedBy = ImportUserID
-                                };
+                            var OldUserCredits = (from uc in olddb.UserCredits
+                                                  where uc.EventID == Webcast.WebcastID && uc.IsDeleted == false && uc.IsSpeaker == false && (uc.EventType == "Webcast-Live" || uc.EventType == "Webcast-VOD")
+                                                  select uc).ToList();
 
+                            var TotalCredits = Webcast.Registrations.Count();
+                            var CreditsIndex = 1;
 
-                                if (r.PaymentAmount != null)
-                                {
-                                    decimal OutPaymentAmount = 0.0m;
-                                    decimal.TryParse(r.PaymentAmount, out OutPaymentAmount);
-
-                                    Registration.PaymentAmount = OutPaymentAmount;
-                                }
-                                else
-                                {
-                                    Registration.PaymentAmount = 0.0m;
-                                }
-
-                                if (r.PaymentType.Contains("HA:"))
-                                {
-                                    Registration.PaymentMethod = "Hospital Assigned";
-                                }
-                                else if (Registration.PaymentMethod == null)
-                                {
-                                    Registration.PaymentMethod = "Null";
-                                }
-                                else
-                                {
-                                    switch (r.PaymentType.ToLower())
-                                    {
-                                        case "check":
-                                        case "free":
-                                        case "waived":
-                                        case "other":
-                                        case "erequest":
-                                        case "scholarship":
-                                            {
-                                                Registration.PaymentMethod = r.PaymentType;
-                                                break;
-                                            }
-                                        case "credit":
-                                            {
-                                                Registration.PaymentMethod = "Credit Card - Manual";
-                                                break;
-                                            }
-                                        case "none":
-                                        case "attendance only":
-                                        case "N/A":
-                                            {
-                                                Registration.PaymentMethod = "Free";
-                                                break;
-                                            }
-                                        case "cash":
-                                            {
-                                                Registration.PaymentMethod = "Other";
-                                                break;
-                                            }
-                                        case "credit card":
-                                            {
-                                                Registration.PaymentMethod = "Credit Card - Auto";
-                                                break;
-                                            }
-                                        case null:
-                                            {
-                                                Registration.PaymentMethod = "Credit Card - Auto";
-                                                break;
-                                            }
-                                    }
-                                }
-
-                                db.WebcastRegistrations.Add(Registration);
-
-                                if (Index % 5 == 0)
-                                {
-                                    db.SaveChanges();
-                                    Console.WriteLine(" - Saved");
-                                }
-                                else
-                                {
-                                    Console.WriteLine(" - Pending");
-                                }
-                            }
-                            else
+                            var NewRegistrationsToAdd = new List<Models.WebcastRegistrations>();
+                            foreach (var WebcastRegistration in Webcast.Registrations)
                             {
-                                Console.WriteLine(" - Skipped User Doesn't Exist");
+                                Console.Write("Processing Webcast Registrations User Credits : (" + Index + "/" + Total + ") (" + CreditsIndex + "/" + TotalCredits + ") " + WebcastRegistration.ID + " ");
+
+                                if (CommonFunctions.DoesUserExist(db, WebcastRegistration.UserID))
+                                {
+                                    var Registration = new Models.WebcastRegistrations()
+                                    {
+                                        WebcastID = WebcastRegistration.WebCastID ?? 0,
+                                        UserID = WebcastRegistration.UserID,
+                                        IsCanceled = WebcastRegistration.IsCancelled,
+                                        IsDeleted = false,
+                                        ConfirmationNumber = WebcastRegistration.Confirmation ?? "",
+                                        EvaluationSent = WebcastRegistration.EvaluationSent ?? false,
+                                        CreatedOn = DateTime.Now,
+                                        CreatedBy = ImportUserID,
+                                        FileAccessEnabled = true,
+                                        LastUpdatedOn = DateTime.Now,
+                                        LastUpdatedBy = ImportUserID
+                                    };
+
+
+                                    if (WebcastRegistration.PaymentAmount != null)
+                                    {
+                                        decimal OutPaymentAmount = 0.0m;
+                                        decimal.TryParse(WebcastRegistration.PaymentAmount, out OutPaymentAmount);
+
+                                        Registration.PaymentAmount = OutPaymentAmount;
+                                    }
+                                    else
+                                    {
+                                        Registration.PaymentAmount = 0.0m;
+                                    }
+
+                                    if (WebcastRegistration.PaymentType.Contains("HA:"))
+                                    {
+                                        Registration.PaymentMethod = "Hospital Assigned";
+                                    }
+                                    else if (Registration.PaymentMethod == null)
+                                    {
+                                        Registration.PaymentMethod = "Null";
+                                    }
+                                    else
+                                    {
+                                        switch (WebcastRegistration.PaymentType.ToLower())
+                                        {
+                                            case "check":
+                                            case "free":
+                                            case "waived":
+                                            case "other":
+                                            case "erequest":
+                                            case "scholarship":
+                                                {
+                                                    Registration.PaymentMethod = WebcastRegistration.PaymentType;
+                                                    break;
+                                                }
+                                            case "credit":
+                                                {
+                                                    Registration.PaymentMethod = "Credit Card - Manual";
+                                                    break;
+                                                }
+                                            case "none":
+                                            case "attendance only":
+                                            case "N/A":
+                                                {
+                                                    Registration.PaymentMethod = "Free";
+                                                    break;
+                                                }
+                                            case "cash":
+                                                {
+                                                    Registration.PaymentMethod = "Other";
+                                                    break;
+                                                }
+                                            case "credit card":
+                                                {
+                                                    Registration.PaymentMethod = "Credit Card - Auto";
+                                                    break;
+                                                }
+                                            case null:
+                                                {
+                                                    Registration.PaymentMethod = "Credit Card - Auto";
+                                                    break;
+                                                }
+                                        }
+                                    }
+
+                                    var OldUserCredit = (from c in OldUserCredits
+                                                         where c.UserID == WebcastRegistration.UserID
+                                                         select c).FirstOrDefault();
+                                    if (OldUserCredit != null)
+                                    {
+                                        var AssignedByUserID = ImportUserID;
+                                        if (CommonFunctions.DoesUserExist(db, OldUserCredit.AssignedBy))
+                                        {
+                                            AssignedByUserID = OldUserCredit.AssignedBy;
+                                        }
+
+                                        if (OldUserCredit.IsMOC == true)
+                                        {
+                                            decimal OutMOCPoints = 0.0m;
+                                            decimal.TryParse(OldUserCredit.CreditHours.ToString(), out OutMOCPoints);
+
+                                            Registration.MOCPoints = OutMOCPoints;
+                                            Registration.MOCPointsAssignedOn = OldUserCredit.AssignedOn;
+                                            Registration.MOCPointsAssignedBy = AssignedByUserID;
+                                        }
+
+                                        decimal OutCreditHours = 0.0m;
+                                        decimal.TryParse(OldUserCredit.CreditHours.ToString(), out OutCreditHours);
+
+                                        Registration.CreditHours = OutCreditHours;
+                                        Registration.CreditAssignedOn = OldUserCredit.AssignedOn;
+                                        Registration.CreditAssignedBy = AssignedByUserID;
+                                    }
+
+                                    NewRegistrationsToAdd.Add(Registration);
+                                    Console.WriteLine(" - Saved");
+
+                                }
+                                else
+                                {
+                                    Console.WriteLine(" - Skipped");
+                                }
+                                CreditsIndex++;
                             }
+                            db.WebcastRegistrations.AddRange(NewRegistrationsToAdd);
+                            db.SaveChanges();
                         }
                         else
                         {
-                            Console.WriteLine(" - Skipped Prior to 2012");
+                            Console.WriteLine(" - Skipped");
                         }
                     }
                     else
                     {
-                        Console.WriteLine(" - Skipped No ID");
+                        Console.WriteLine(" - Skipped");
                     }
                     Index++;
                 }
-                db.SaveChanges();
                 Console.WriteLine(" - Complete");
-
-
             }
             catch (Exception e)
             {
