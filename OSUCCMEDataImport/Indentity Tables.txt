@@ -19,3 +19,6 @@ Asp.net Roles
 TestingQuestionTypes
 
 ARCH RSSeries Series
+
+Conference Options
+Conference Option Groups

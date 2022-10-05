@@ -60,6 +60,7 @@
     <Compile Include="Jobs\WebcastMOCBoardJobs.cs" />
     <Compile Include="Jobs\TestingJobs.cs" />
     <Compile Include="Jobs\EventCriteriaJobs.cs" />
+    <Compile Include="Jobs\DataListsJobs.cs" />
     <Compile Include="Jobs\FileJobs.cs" />
     <Compile Include="Jobs\RSSeriesCreditJobs.cs" />
     <Compile Include="Jobs\EnduringCreditJobs.cs" />
@@ -79,7 +80,6 @@
     <Compile Include="Jobs\TruncateJobs.cs" />
     <Compile Include="Jobs\ConferenceJobs.cs" />
     <Compile Include="Jobs\UserJobs.cs" />
-    <Compile Include="Jobs\WebcastJobs.cs" />
     <Compile Include="Models\AggregatedCounter.cs">
       <DependentUpon>NewOSUCCMEModel.tt</DependentUpon>
     </Compile>
@@ -767,9 +767,12 @@
       <DependentUpon>NewOSUCCMEModel.edmx</DependentUpon>
       <LastGenOutput>NewOSUCCMEModel.cs</LastGenOutput>
     </Content>
+    <Content Include="OSU-DeleteHospitals.sql" />
+    <Content Include="OSU-DeleteUsers.sql" />
     <Content Include="OSU-DeleteConferences.sql" />
     <Content Include="OSU-DeleteEnduring.sql" />
     <Content Include="OSU-DeleteRSSeries.sql" />
+    <Content Include="OSU-DeleteDataLists.sql" />
     <Content Include="OSU-DeleteWebcasts.sql" />
     <Content Include="OSUDelete.sql" />
   </ItemGroup>

@@ -265,8 +265,8 @@ namespace OSUCCMEDataImport.Jobs
                     Console.WriteLine("Processing Webcast Registrations : (" + Index + "/" + Total + ") " + Webcast.WebcastID + " ");
                     if (Webcast.WebcastID != null)
                     {
-                        var ConferenceID = Webcast.WebcastID;
-                        if (WebcastIDs.Contains(ConferenceID.Value))
+                        var WebcastID = Webcast.WebcastID;
+                        if (WebcastIDs.Contains(WebcastID.Value))
                         {
                             var OldUserCredits = (from uc in olddb.UserCredits
                                                   where uc.EventID == Webcast.WebcastID && uc.IsDeleted == false && uc.IsSpeaker == false && (uc.EventType == "Webcast-Live" || uc.EventType == "Webcast-VOD")

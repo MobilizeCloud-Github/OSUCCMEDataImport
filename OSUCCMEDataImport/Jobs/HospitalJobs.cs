@@ -214,7 +214,7 @@ namespace OSUCCMEDataImport.Jobs
                                        select h).FirstOrDefault();
                     if (NewUser != null && NewHospital != null)
                     {
-                        var NewHospitalUser = new Models.HospitalUsers()
+                        var NewHospitalAdmin = new Models.HospitalAdmins()
                         {
                             UserID = NewUser.UserID,
                             HospitalID = NewHospital.ID,
@@ -222,7 +222,7 @@ namespace OSUCCMEDataImport.Jobs
                             CreatedOn = DateTime.Now,
                             CreatedBy = importUserID
                         };
-                        db.HospitalUsers.Add(NewHospitalUser);
+                        db.HospitalAdmins.Add(NewHospitalAdmin);
                         db.SaveChanges();
                     }
 
