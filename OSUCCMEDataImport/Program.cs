@@ -28,12 +28,15 @@ namespace OSUCCMEDataImport
             Console.WriteLine(" 16. Enduring Credits & MOC");
             Console.WriteLine(" 17. Enduring Speakers");
             Console.WriteLine(" 18. Files");
+            Console.WriteLine(" 19. Criteria");
+            Console.WriteLine(" 20. Conference Options");
+            Console.WriteLine(" 21. Webcast MOC Boards and ACCME");
             Console.WriteLine("");
             Console.WriteLine("Please select 1-15 and hit enter.");
 
             var JobNumber = Console.ReadLine();
             var ImportUserID = "b942c30a-575c-4263-8028-28fad69beacf";
-            var ApprovedJobs = new List<string> { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18" };
+            var ApprovedJobs = new List<string> { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21" };
             try
             {
 
@@ -132,9 +135,19 @@ namespace OSUCCMEDataImport
                                 FileJobs.Process(ImportUserID);
                                 break;
                             }
-                        case "15":
+                        case "19":
+                            {
+                                EventCriteriaJobs.Process(ImportUserID);
+                                break;
+                            }
+                        case "20":
                             {
                                 ConferenceOptionsImportJobs.Process(ImportUserID);
+                                break;
+                            }
+                        case "21":
+                            {
+                                WebcastMOCBoardJobs.Process(ImportUserID);
                                 break;
                             }
                     }

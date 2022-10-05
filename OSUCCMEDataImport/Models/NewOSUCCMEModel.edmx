@@ -216,7 +216,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="GroupID" Type="int" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="Description" Type="nvarchar" MaxLength="512" Nullable="false" />
@@ -631,7 +631,7 @@
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="EventID" Type="int" Nullable="false" />
-          <Property Name="EnentType" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="EventType" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="ActivityTitle" Type="nvarchar(max)" />
           <Property Name="ActivityDate" Type="datetime" />
           <Property Name="ActivityFormat" Type="nvarchar" MaxLength="100" />
@@ -7730,7 +7730,6 @@
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="EventID" Type="Int32" Nullable="false" />
-          <Property Name="EnentType" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="ActivityTitle" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="ActivityDate" Type="DateTime" Precision="3" />
           <Property Name="ActivityFormat" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
@@ -7738,6 +7737,7 @@
           <Property Name="FacultyProfessions" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="EventType" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Criteria24">
           <Key>
@@ -15007,9 +15007,9 @@
           <EntitySetMapping Name="Criteria23">
             <EntityTypeMapping TypeName="NewOSUCCMEModel.Criteria23">
               <MappingFragment StoreEntitySet="Criteria23">
+                <ScalarProperty Name="EventType" ColumnName="EventType" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="EventID" ColumnName="EventID" />
-                <ScalarProperty Name="EnentType" ColumnName="EnentType" />
                 <ScalarProperty Name="ActivityTitle" ColumnName="ActivityTitle" />
                 <ScalarProperty Name="ActivityDate" ColumnName="ActivityDate" />
                 <ScalarProperty Name="ActivityFormat" ColumnName="ActivityFormat" />

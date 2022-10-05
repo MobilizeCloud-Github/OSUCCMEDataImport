@@ -16,7 +16,6 @@ namespace OSUCCMEDataImport.Models
     {
         public int ID { get; set; }
         public int EventID { get; set; }
-        public string EnentType { get; set; }
         public string ActivityTitle { get; set; }
         public Nullable<System.DateTime> ActivityDate { get; set; }
         public string ActivityFormat { get; set; }
@@ -24,5 +23,6 @@ namespace OSUCCMEDataImport.Models
         public string FacultyProfessions { get; set; }
         public string Description { get; set; }
         public bool IsDeleted { get; set; }
+        public string EventType { get; set; }
     }
 }
