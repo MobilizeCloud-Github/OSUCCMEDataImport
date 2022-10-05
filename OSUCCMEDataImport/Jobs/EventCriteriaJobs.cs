@@ -10,7 +10,7 @@ namespace OSUCCMEDataImport.Jobs
         public static void Process(string ImportUserID)
         {
 
-            //EventCriteriaC23(ImportUserID);
+            EventCriteriaC23(ImportUserID);
             //Console.WriteLine("");
             //Console.WriteLine("-----------------------------------");
             //Console.WriteLine("");
@@ -479,36 +479,47 @@ namespace OSUCCMEDataImport.Jobs
                         case ("conference"):
                             {
                                 var ConferenceInfo = (from i in db.Conferences
-                                                      where i.ID == criteria.ID
+                                                      where i.ID == criteria.EventID
                                                       select i).FirstOrDefault();
 
-                                criteria.ActivityTitle = ConferenceInfo.Title;
-                                criteria.ActivityDate = ConferenceInfo.StartDate;
-                                db.SaveChanges();
+                                if (ConferenceInfo != null)
+                                {
+                                    criteria.ActivityTitle = ConferenceInfo.Title;
+                                    criteria.ActivityDate = ConferenceInfo.StartDate;
+                                    db.SaveChanges();
+                                }
+
+
 
                                 break;
                             }
                         case ("webcast"):
                             {
                                 var WebcastInfo = (from i in db.Webcasts
-                                                   where i.ID == criteria.ID
+                                                   where i.ID == criteria.EventID
                                                    select i).FirstOrDefault();
 
-                                criteria.ActivityTitle = WebcastInfo.Title;
-                                criteria.ActivityDate = WebcastInfo.StartDate;
-                                db.SaveChanges();
+                                if (WebcastInfo != null)
+                                {
+                                    criteria.ActivityTitle = WebcastInfo.Title;
+                                    criteria.ActivityDate = WebcastInfo.StartDate;
+                                    db.SaveChanges();
+                                }
 
                                 break;
                             }
                         case ("enduringmaterial"):
                             {
                                 var EnduringInfo = (from i in db.EnduringMaterials
-                                                    where i.ID == criteria.ID
+                                                    where i.ID == criteria.EventID
                                                     select i).FirstOrDefault();
 
-                                criteria.ActivityTitle = EnduringInfo.Title;
-                                criteria.ActivityDate = EnduringInfo.StartDate;
-                                db.SaveChanges();
+                                if (EnduringInfo != null)
+                                {
+                                    criteria.ActivityTitle = EnduringInfo.Title;
+                                    criteria.ActivityDate = EnduringInfo.StartDate;
+                                    db.SaveChanges();
+                                }
 
                                 break;
                             }
@@ -544,36 +555,47 @@ namespace OSUCCMEDataImport.Jobs
                         case ("conference"):
                             {
                                 var ConferenceInfo = (from i in db.Conferences
-                                                      where i.ID == criteria.ID
+                                                      where i.ID == criteria.EventID
                                                       select i).FirstOrDefault();
 
-                                criteria.ActivityTitle = ConferenceInfo.Title;
-                                criteria.ActivityDate = ConferenceInfo.StartDate;
-                                db.SaveChanges();
+                                if (ConferenceInfo != null)
+                                {
+                                    criteria.ActivityTitle = ConferenceInfo.Title;
+                                    criteria.ActivityDate = ConferenceInfo.StartDate;
+                                    db.SaveChanges();
+                                }
+
+
 
                                 break;
                             }
                         case ("webcast"):
                             {
                                 var WebcastInfo = (from i in db.Webcasts
-                                                   where i.ID == criteria.ID
+                                                   where i.ID == criteria.EventID
                                                    select i).FirstOrDefault();
 
-                                criteria.ActivityTitle = WebcastInfo.Title;
-                                criteria.ActivityDate = WebcastInfo.StartDate;
-                                db.SaveChanges();
+                                if (WebcastInfo != null)
+                                {
+                                    criteria.ActivityTitle = WebcastInfo.Title;
+                                    criteria.ActivityDate = WebcastInfo.StartDate;
+                                    db.SaveChanges();
+                                }
 
                                 break;
                             }
                         case ("enduringmaterial"):
                             {
                                 var EnduringInfo = (from i in db.EnduringMaterials
-                                                    where i.ID == criteria.ID
+                                                    where i.ID == criteria.EventID
                                                     select i).FirstOrDefault();
 
-                                criteria.ActivityTitle = EnduringInfo.Title;
-                                criteria.ActivityDate = EnduringInfo.StartDate;
-                                db.SaveChanges();
+                                if (EnduringInfo != null)
+                                {
+                                    criteria.ActivityTitle = EnduringInfo.Title;
+                                    criteria.ActivityDate = EnduringInfo.StartDate;
+                                    db.SaveChanges();
+                                }
 
                                 break;
                             }
@@ -611,36 +633,47 @@ namespace OSUCCMEDataImport.Jobs
                         case ("conference"):
                             {
                                 var ConferenceInfo = (from i in db.Conferences
-                                                      where i.ID == criteria.ID
+                                                      where i.ID == criteria.EventID
                                                       select i).FirstOrDefault();
 
-                                criteria.ActivityTitle = ConferenceInfo.Title;
-                                criteria.ActivityDate = ConferenceInfo.StartDate;
-                                db.SaveChanges();
+                                if (ConferenceInfo != null)
+                                {
+                                    criteria.ActivityTitle = ConferenceInfo.Title;
+                                    criteria.ActivityDate = ConferenceInfo.StartDate;
+                                    db.SaveChanges();
+                                }
+
+
 
                                 break;
                             }
                         case ("webcast"):
                             {
                                 var WebcastInfo = (from i in db.Webcasts
-                                                   where i.ID == criteria.ID
+                                                   where i.ID == criteria.EventID
                                                    select i).FirstOrDefault();
 
-                                criteria.ActivityTitle = WebcastInfo.Title;
-                                criteria.ActivityDate = WebcastInfo.StartDate;
-                                db.SaveChanges();
+                                if (WebcastInfo != null)
+                                {
+                                    criteria.ActivityTitle = WebcastInfo.Title;
+                                    criteria.ActivityDate = WebcastInfo.StartDate;
+                                    db.SaveChanges();
+                                }
 
                                 break;
                             }
                         case ("enduringmaterial"):
                             {
                                 var EnduringInfo = (from i in db.EnduringMaterials
-                                                    where i.ID == criteria.ID
+                                                    where i.ID == criteria.EventID
                                                     select i).FirstOrDefault();
 
-                                criteria.ActivityTitle = EnduringInfo.Title;
-                                criteria.ActivityDate = EnduringInfo.StartDate;
-                                db.SaveChanges();
+                                if (EnduringInfo != null)
+                                {
+                                    criteria.ActivityTitle = EnduringInfo.Title;
+                                    criteria.ActivityDate = EnduringInfo.StartDate;
+                                    db.SaveChanges();
+                                }
 
                                 break;
                             }
@@ -676,36 +709,47 @@ namespace OSUCCMEDataImport.Jobs
                         case ("conference"):
                             {
                                 var ConferenceInfo = (from i in db.Conferences
-                                                      where i.ID == criteria.ID
+                                                      where i.ID == criteria.EventID
                                                       select i).FirstOrDefault();
 
-                                criteria.ActivityTitle = ConferenceInfo.Title;
-                                criteria.ActivityDate = ConferenceInfo.StartDate;
-                                db.SaveChanges();
+                                if (ConferenceInfo != null)
+                                {
+                                    criteria.ActivityTitle = ConferenceInfo.Title;
+                                    criteria.ActivityDate = ConferenceInfo.StartDate;
+                                    db.SaveChanges();
+                                }
+
+
 
                                 break;
                             }
                         case ("webcast"):
                             {
                                 var WebcastInfo = (from i in db.Webcasts
-                                                   where i.ID == criteria.ID
+                                                   where i.ID == criteria.EventID
                                                    select i).FirstOrDefault();
 
-                                criteria.ActivityTitle = WebcastInfo.Title;
-                                criteria.ActivityDate = WebcastInfo.StartDate;
-                                db.SaveChanges();
+                                if (WebcastInfo != null)
+                                {
+                                    criteria.ActivityTitle = WebcastInfo.Title;
+                                    criteria.ActivityDate = WebcastInfo.StartDate;
+                                    db.SaveChanges();
+                                }
 
                                 break;
                             }
                         case ("enduringmaterial"):
                             {
                                 var EnduringInfo = (from i in db.EnduringMaterials
-                                                    where i.ID == criteria.ID
+                                                    where i.ID == criteria.EventID
                                                     select i).FirstOrDefault();
 
-                                criteria.ActivityTitle = EnduringInfo.Title;
-                                criteria.ActivityDate = EnduringInfo.StartDate;
-                                db.SaveChanges();
+                                if (EnduringInfo != null)
+                                {
+                                    criteria.ActivityTitle = EnduringInfo.Title;
+                                    criteria.ActivityDate = EnduringInfo.StartDate;
+                                    db.SaveChanges();
+                                }
 
                                 break;
                             }
@@ -741,36 +785,47 @@ namespace OSUCCMEDataImport.Jobs
                         case ("conference"):
                             {
                                 var ConferenceInfo = (from i in db.Conferences
-                                                      where i.ID == criteria.ID
+                                                      where i.ID == criteria.EventID
                                                       select i).FirstOrDefault();
 
-                                criteria.ActivityName = ConferenceInfo.Title;
-                                criteria.ActivityDate = ConferenceInfo.StartDate;
-                                db.SaveChanges();
+                                if (ConferenceInfo != null)
+                                {
+                                    criteria.ActivityName = ConferenceInfo.Title;
+                                    criteria.ActivityDate = ConferenceInfo.StartDate;
+                                    db.SaveChanges();
+                                }
+
+
 
                                 break;
                             }
                         case ("webcast"):
                             {
                                 var WebcastInfo = (from i in db.Webcasts
-                                                   where i.ID == criteria.ID
+                                                   where i.ID == criteria.EventID
                                                    select i).FirstOrDefault();
 
-                                criteria.ActivityName = WebcastInfo.Title;
-                                criteria.ActivityDate = WebcastInfo.StartDate;
-                                db.SaveChanges();
+                                if (WebcastInfo != null)
+                                {
+                                    criteria.ActivityName = WebcastInfo.Title;
+                                    criteria.ActivityDate = WebcastInfo.StartDate;
+                                    db.SaveChanges();
+                                }
 
                                 break;
                             }
                         case ("enduringmaterial"):
                             {
                                 var EnduringInfo = (from i in db.EnduringMaterials
-                                                    where i.ID == criteria.ID
+                                                    where i.ID == criteria.EventID
                                                     select i).FirstOrDefault();
 
-                                criteria.ActivityName = EnduringInfo.Title;
-                                criteria.ActivityDate = EnduringInfo.StartDate;
-                                db.SaveChanges();
+                                if (EnduringInfo != null)
+                                {
+                                    criteria.ActivityName = EnduringInfo.Title;
+                                    criteria.ActivityDate = EnduringInfo.StartDate;
+                                    db.SaveChanges();
+                                }
 
                                 break;
                             }
@@ -806,36 +861,47 @@ namespace OSUCCMEDataImport.Jobs
                         case ("conference"):
                             {
                                 var ConferenceInfo = (from i in db.Conferences
-                                                      where i.ID == criteria.ID
+                                                      where i.ID == criteria.EventID
                                                       select i).FirstOrDefault();
 
-                                criteria.ActivityTitle = ConferenceInfo.Title;
-                                criteria.ActivityDate = ConferenceInfo.StartDate;
-                                db.SaveChanges();
+                                if (ConferenceInfo != null)
+                                {
+                                    criteria.ActivityTitle = ConferenceInfo.Title;
+                                    criteria.ActivityDate = ConferenceInfo.StartDate;
+                                    db.SaveChanges();
+                                }
+
+
 
                                 break;
                             }
                         case ("webcast"):
                             {
                                 var WebcastInfo = (from i in db.Webcasts
-                                                   where i.ID == criteria.ID
+                                                   where i.ID == criteria.EventID
                                                    select i).FirstOrDefault();
 
-                                criteria.ActivityTitle = WebcastInfo.Title;
-                                criteria.ActivityDate = WebcastInfo.StartDate;
-                                db.SaveChanges();
+                                if (WebcastInfo != null)
+                                {
+                                    criteria.ActivityTitle = WebcastInfo.Title;
+                                    criteria.ActivityDate = WebcastInfo.StartDate;
+                                    db.SaveChanges();
+                                }
 
                                 break;
                             }
                         case ("enduringmaterial"):
                             {
                                 var EnduringInfo = (from i in db.EnduringMaterials
-                                                    where i.ID == criteria.ID
+                                                    where i.ID == criteria.EventID
                                                     select i).FirstOrDefault();
 
-                                criteria.ActivityTitle = EnduringInfo.Title;
-                                criteria.ActivityDate = EnduringInfo.StartDate;
-                                db.SaveChanges();
+                                if (EnduringInfo != null)
+                                {
+                                    criteria.ActivityTitle = EnduringInfo.Title;
+                                    criteria.ActivityDate = EnduringInfo.StartDate;
+                                    db.SaveChanges();
+                                }
 
                                 break;
                             }

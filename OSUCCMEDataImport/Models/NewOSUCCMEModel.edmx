@@ -2212,7 +2212,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="None" Nullable="false" />
           <Property Name="EventID" Type="int" Nullable="false" />
           <Property Name="EventType" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="TestType" Type="nvarchar" MaxLength="50" Nullable="false" />
@@ -9505,7 +9505,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="None" />
           <Property Name="EventID" Type="Int32" Nullable="false" />
           <Property Name="EventType" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="TestType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />

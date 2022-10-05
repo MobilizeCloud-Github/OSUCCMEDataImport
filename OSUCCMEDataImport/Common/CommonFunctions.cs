@@ -142,14 +142,56 @@ namespace OSUCCMEDataImport.Common
                     select u.UserID).Any();
         }
 
+        public static bool DoesEventExist(NewOSUCCMEEntities db, int EventID, string EventType)
+        {
+            switch (EventType.ToLower())
+            {
+                case ("conference"):
+                    {
+                        return (from u in db.Conferences
+                                where u.ID == EventID && u.IsDeleted == false
+                                select u.ID).Any();
+
+                    }
+
+                case ("webcast"):
+                    {
+                        return (from u in db.Webcasts
+                                where u.ID == EventID && u.IsDeleted == false
+                                select u.ID).Any();
+
+                    }
+
+                case ("enduringmaterial"):
+                    {
+                        return (from u in db.EnduringMaterials
+                                where u.ID == EventID && u.IsDeleted == false
+                                select u.ID).Any();
+
+                    }
+                default:
+                    {
+                        return false;
+                    }
+            }
+
+        }
+
+        public static bool DoesTestExist(NewOSUCCMEEntities db, int TestID)
+        {
+            return (from u in db.Testing
+                    where u.ID == TestID && u.IsDeleted == false
+                    select u.ID).Any();
+        }
+
         public static string GetUserFullName(string UserID)
         {
             var db = new NewOSUCCMEEntities();
             db.Configuration.AutoDetectChangesEnabled = false;
 
             return (from u in db.UserProfiles
-                                where u.UserID == UserID && u.IsDeleted == false
-                                select u.FullName).FirstOrDefault();
+                    where u.UserID == UserID && u.IsDeleted == false
+                    select u.FullName).FirstOrDefault();
         }
 
         public static string GetTrimedString(string Content, int Length)

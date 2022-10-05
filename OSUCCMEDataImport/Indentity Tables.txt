@@ -8,6 +8,7 @@ EnduringMaterials
 ConferenceStreams
 ConverenceOptionGroups
 EnduringMaterialsSeries
+Testing
 
 
 Make Sure Tables are updated
@@ -15,5 +16,6 @@ Payment Methods
 Category Mappings
 Speciality Mappings
 Asp.net Roles
+TestingQuestionTypes
 
 ARCH RSSeries Series
