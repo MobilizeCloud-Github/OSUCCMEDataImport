@@ -19,14 +19,15 @@ namespace OSUCCMEDataImport
             Console.WriteLine(" 7. RSSeries");
             Console.WriteLine(" 8. Hospitals");
             Console.WriteLine(" 9. FacultyDisclosures");
-            Console.WriteLine(" 11. Conference Speakers");
-            Console.WriteLine(" 13. Webcasts Speakers");
-            Console.WriteLine(" 15. RSSeries Speakers");
-            Console.WriteLine(" 17. Enduring Speakers");
-            Console.WriteLine(" 18. Files");
-            Console.WriteLine(" 19. Criteria");
-            Console.WriteLine(" 20. Conference Options");
-            Console.WriteLine(" 21. Webcast MOC Boards and ACCME");
+            Console.WriteLine(" 10. Conference Speakers");
+            Console.WriteLine(" 11. Webcasts Speakers");
+            Console.WriteLine(" 12. RSSeries Speakers");
+            Console.WriteLine(" 13. Enduring Speakers");
+            Console.WriteLine(" 14. Files");
+            Console.WriteLine(" 15. Criteria");
+            Console.WriteLine(" 16. Conference Options");
+            Console.WriteLine(" 17. Webcast MOC Boards and ACCME");
+            Console.WriteLine(" 18. Data Lists");
             Console.WriteLine("");
             Console.WriteLine("Please select 1-15 and hit enter.");
 
@@ -85,68 +86,48 @@ namespace OSUCCMEDataImport
                             {
                                 FacultyDisclosureJobs.Process(ImportUserID);
                                 break;
-                            }
+                            }                        
                         case "10":
-                            {
-                                ConferenceCreditJobs.Process(ImportUserID);
-                                break;
-                            }
-                        case "11":
                             {
                                 ConferenceSpeakerJobs.Process(ImportUserID);
                                 break;
-                            }
-                        case "12":
-                            {
-                                WebcastsCreditJobs.Process(ImportUserID);
-                                break;
-                            }
-                        case "13":
+                            }                        
+                        case "11":
                             {
                                 WebcastsSpeakerJobs.Process(ImportUserID);
                                 break;
-                            }
-                        case "14":
-                            {
-                                RSSeriesCreditJobs.Process(ImportUserID);
-                                break;
-                            }
-                        case "15":
+                            }                        
+                        case "12":
                             {
                                 RSSeriesSpeakerJobs.Process(ImportUserID);
                                 break;
-                            }
-                        case "16":
-                            {
-                                EnduringCreditJobs.Process(ImportUserID);
-                                break;
-                            }
-                        case "17":
+                            }                        
+                        case "13":
                             {
                                 EnduringSpeakerJobs.Process(ImportUserID);
                                 break;
                             }
-                        case "18":
+                        case "14":
                             {
                                 FileJobs.Process(ImportUserID);
                                 break;
                             }
-                        case "19":
+                        case "15":
                             {
                                 EventCriteriaJobs.Process(ImportUserID);
                                 break;
                             }
-                        case "20":
+                        case "16":
                             {
                                 ConferenceOptionsImportJobs.Process(ImportUserID);
                                 break;
                             }
-                        case "21":
+                        case "17":
                             {
                                 WebcastMOCBoardJobs.Process(ImportUserID);
                                 break;
                             }
-                        case "20":
+                        case "18":
                             {
                                 DataListsJobs.Process(ImportUserID);
                                 break;

@@ -17,3 +17,6 @@ Speciality Mappings
 Asp.net Roles
 
 ARCH RSSeries Series
+
+Conference Options
+Conference Option Groups

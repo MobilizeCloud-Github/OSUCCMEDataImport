@@ -16,11 +16,11 @@ namespace OSUCCMEDataImport.Jobs
             Console.WriteLine("");
             Console.WriteLine("-----------------------------------");
             Console.WriteLine("");
-            //ImportUserEmailPreferences(ImportUserID);
+            ImportUserEmailPreferences(ImportUserID);
             Console.WriteLine("");
             Console.WriteLine("-----------------------------------");
             Console.WriteLine("");
-            //ImportUserRoles(ImportUserID);
+            ImportUserRoles(ImportUserID);
             Console.WriteLine("");
             Console.WriteLine("-----------------------------------");
             Console.WriteLine("");
@@ -123,34 +123,6 @@ namespace OSUCCMEDataImport.Jobs
                                 PasswordHashUpdated = false
                             };
                             db.AspNetUsers.Add(NewUserLogin);
-
-                            //   var SQLNewUser = @"INSERT INTO [dbo].[AspNetUsers](
-                            //       [Id]
-                            //      ,[Email]
-                            //      ,[EmailConfirmed]
-                            //      ,[PasswordHash]
-                            //      ,[SecurityStamp]
-                            //      ,[PhoneNumberConfirmed]
-                            //      ,[TwoFactorEnabled]
-                            //      ,[LockoutEnabled]
-                            //      ,[AccessFailedCount]
-                            //      ,[UserName]
-                            //      ,[PasswordHashUpdated])
-                            //VALUES
-                            //      ('" + User.UserID + @"'
-                            //      ,'" + User.Username + @"'
-                            //      , 0
-                            //      ,'" + User.Password + '|' + User.PasswordFormat + '|' + User.PasswordSalt + @"'
-                            //      ,'" + Guid.NewGuid().ToString() + @"'
-                            //      , 0
-                            //      , 0
-                            //      , 1
-                            //      , 0
-                            //      ,'" + User.Username + @"'
-                            //      ,0)";
-                            //   var Status = db.Database.ExecuteSqlCommand(SQLNewUser);
-
-
 
                             Console.Write(" - Login Created");
 
