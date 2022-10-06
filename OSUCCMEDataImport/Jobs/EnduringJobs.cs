@@ -134,6 +134,7 @@ namespace OSUCCMEDataImport.Jobs
                 Console.WriteLine(Total + " to Process");
                 var Index = 1;
 
+                var EnduringToAdd = new List<Models.EnduringMaterials>();
                 foreach (var c in EnduringMaterialsToImport)
                 {
                     Console.Write("Processing Enduring: (" + Index + "/" + Total + ") " + c.ID + " ");
@@ -238,10 +239,13 @@ namespace OSUCCMEDataImport.Jobs
                         EnduringMaterial.CreatedBy = ImportUserID;
                     }
 
-                    db.EnduringMaterials.Add(EnduringMaterial);
-                    if (Index % 5 == 0)
+                    EnduringToAdd.Add(EnduringMaterial);
+
+                    if (Index % 5 == 0 || Index == Total)
                     {
+                        db.EnduringMaterials.AddRange(EnduringToAdd);
                         db.SaveChanges();
+                        EnduringToAdd.Clear();
                         Console.WriteLine(" - Saved");
                     }
                     else
@@ -250,7 +254,6 @@ namespace OSUCCMEDataImport.Jobs
                     }
                     Index++;
                 }
-                db.SaveChanges();
                 Console.WriteLine(" - Complete");
             }
             catch (Exception e)

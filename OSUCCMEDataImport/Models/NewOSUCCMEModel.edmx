@@ -216,7 +216,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ID" Type="int" Nullable="false" />
           <Property Name="GroupID" Type="int" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="Description" Type="nvarchar" MaxLength="512" Nullable="false" />
@@ -2212,7 +2212,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="int" StoreGeneratedPattern="None" Nullable="false" />
+          <Property Name="ID" Type="int" Nullable="false" />
           <Property Name="EventID" Type="int" Nullable="false" />
           <Property Name="EventType" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="TestType" Type="nvarchar" MaxLength="50" Nullable="false" />
@@ -7724,21 +7724,6 @@
           <Property Name="LastUpdetedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="CriteriaIsCompleted" Type="Boolean" />
         </EntityType>
-        <EntityType Name="Criteria23">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="EventID" Type="Int32" Nullable="false" />
-          <Property Name="ActivityTitle" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="ActivityDate" Type="DateTime" Precision="3" />
-          <Property Name="ActivityFormat" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="PlannerProfessions" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="FacultyProfessions" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
-          <Property Name="EventType" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-        </EntityType>
         <EntityType Name="Criteria24">
           <Key>
             <PropertyRef Name="ID" />
@@ -13244,7 +13229,6 @@
           <EntitySet Name="ContentManagementSystem" EntityType="Self.ContentManagementSystem" />
           <EntitySet Name="Countries" EntityType="Self.Countries" />
           <EntitySet Name="Criteria" EntityType="Self.Criteria" />
-          <EntitySet Name="Criteria23" EntityType="Self.Criteria23" />
           <EntitySet Name="Criteria24" EntityType="Self.Criteria24" />
           <EntitySet Name="Criteria25" EntityType="Self.Criteria25" />
           <EntitySet Name="Criteria27" EntityType="Self.Criteria27" />
@@ -14324,6 +14308,7 @@
             <End Role="EmailPreferences" EntitySet="EmailPreferences" />
           </AssociationSet>
           <EntitySet Name="CategoryMapping" EntityType="NewOSUCCMEModel.CategoryMapping" />
+          <EntitySet Name="Criteria23" EntityType="NewOSUCCMEModel.Criteria23" />
         </EntityContainer>
         <EntityType Name="CreditNotifications">
           <Key>
@@ -14375,6 +14360,21 @@
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="OldID" Type="Int32" />
           <Property Name="NewID" Type="Int32" />
+        </EntityType>
+        <EntityType Name="Criteria23">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EventID" Type="Int32" Nullable="false" />
+          <Property Name="ActivityTitle" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ActivityDate" Type="DateTime" Precision="3" />
+          <Property Name="ActivityFormat" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="PlannerProfessions" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="FacultyProfessions" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="EventType" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -15001,22 +15001,6 @@
                 <ScalarProperty Name="LastUpdateOn" ColumnName="LastUpdateOn" />
                 <ScalarProperty Name="LastUpdetedBy" ColumnName="LastUpdetedBy" />
                 <ScalarProperty Name="CriteriaIsCompleted" ColumnName="CriteriaIsCompleted" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Criteria23">
-            <EntityTypeMapping TypeName="NewOSUCCMEModel.Criteria23">
-              <MappingFragment StoreEntitySet="Criteria23">
-                <ScalarProperty Name="EventType" ColumnName="EventType" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="EventID" ColumnName="EventID" />
-                <ScalarProperty Name="ActivityTitle" ColumnName="ActivityTitle" />
-                <ScalarProperty Name="ActivityDate" ColumnName="ActivityDate" />
-                <ScalarProperty Name="ActivityFormat" ColumnName="ActivityFormat" />
-                <ScalarProperty Name="PlannerProfessions" ColumnName="PlannerProfessions" />
-                <ScalarProperty Name="FacultyProfessions" ColumnName="FacultyProfessions" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -17710,6 +17694,22 @@
               <MappingFragment StoreEntitySet="CategoryMapping">
                 <ScalarProperty Name="NewID" ColumnName="NewID" />
                 <ScalarProperty Name="OldID" ColumnName="OldID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Criteria23">
+            <EntityTypeMapping TypeName="NewOSUCCMEModel.Criteria23">
+              <MappingFragment StoreEntitySet="Criteria23">
+                <ScalarProperty Name="EventType" ColumnName="EventType" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="FacultyProfessions" ColumnName="FacultyProfessions" />
+                <ScalarProperty Name="PlannerProfessions" ColumnName="PlannerProfessions" />
+                <ScalarProperty Name="ActivityFormat" ColumnName="ActivityFormat" />
+                <ScalarProperty Name="ActivityDate" ColumnName="ActivityDate" />
+                <ScalarProperty Name="ActivityTitle" ColumnName="ActivityTitle" />
+                <ScalarProperty Name="EventID" ColumnName="EventID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>

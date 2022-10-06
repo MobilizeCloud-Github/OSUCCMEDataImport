@@ -1,6 +1,7 @@
 ﻿using OldOSUDatabase.Models;
 using OSUCCMEDataImport.Models;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -133,11 +134,12 @@ namespace OSUCCMEDataImport.Jobs
             Console.Write("Importing Hospital Users - Starting ");
             Console.WriteLine(Total + " to Process");
             var Index = 1;
-
-            foreach (var HospitalUser in HospitalUsers)
+            try
             {
-                try
-                {
+                var HospitalUsersToAdd = new List<Models.HospitalUsers>();
+                foreach (var HospitalUser in HospitalUsers)
+            {
+                
                     Console.Write("Processing : " + HospitalUser.UserID + " (" + Index + "/" + Total + ") ");
 
                     var NewUser = (from h in db.UserProfiles
@@ -160,19 +162,34 @@ namespace OSUCCMEDataImport.Jobs
                             CreatedOn = DateTime.Now,
                             CreatedBy = importUserID
                         };
-                        db.HospitalUsers.Add(NewHospitalUser);
-                        db.SaveChanges();
-                    }
+                        HospitalUsersToAdd.Add(NewHospitalUser);
 
-                    Console.WriteLine(" - Complete");
+                        if (Index % 10 == 0 || Index == Total)
+                        {
+                            db.HospitalUsers.AddRange(HospitalUsersToAdd);
+                            db.SaveChanges();
+                            HospitalUsersToAdd.Clear();
+                            Console.WriteLine(" - Saved");
+                        }
+                        else
+                        {
+                            Console.WriteLine(" - Pending");
+                        }                        
+                    }
+                    else
+                    {
+                        Console.WriteLine(" - Skipped");
+                    }
+                    Index++;
                 }
-                catch (Exception e)
-                {
-                    Console.WriteLine("");
-                    Console.WriteLine(" - " + e.Message);
-                    tw.WriteLineAsync(e.Message);
-                }
-                Index++;
+                Console.WriteLine(" - Complete");
+            
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("");
+                Console.WriteLine(" - " + e.Message);
+                tw.WriteLineAsync(e.Message);
             }
             tw.Close();
         }
@@ -220,7 +237,9 @@ namespace OSUCCMEDataImport.Jobs
                             HospitalID = NewHospital.ID,
                             IsDeleted = false,
                             CreatedOn = DateTime.Now,
-                            CreatedBy = importUserID
+                            CreatedBy = importUserID,
+                            LastUpdatedOn = DateTime.Now,
+                            LastUpdatedBy = importUserID
                         };
                         db.HospitalAdmins.Add(NewHospitalAdmin);
                         db.SaveChanges();

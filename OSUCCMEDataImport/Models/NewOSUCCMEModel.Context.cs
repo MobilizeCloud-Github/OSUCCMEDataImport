@@ -64,7 +64,6 @@ namespace OSUCCMEDataImport.Models
         public virtual DbSet<ContentManagementSystem> ContentManagementSystem { get; set; }
         public virtual DbSet<Countries> Countries { get; set; }
         public virtual DbSet<Criteria> Criteria { get; set; }
-        public virtual DbSet<Criteria23> Criteria23 { get; set; }
         public virtual DbSet<Criteria24> Criteria24 { get; set; }
         public virtual DbSet<Criteria25> Criteria25 { get; set; }
         public virtual DbSet<Criteria27> Criteria27 { get; set; }
@@ -240,5 +239,6 @@ namespace OSUCCMEDataImport.Models
         public virtual DbSet<CreditNotifications> CreditNotifications { get; set; }
         public virtual DbSet<EmailFrequencies> EmailFrequencies { get; set; }
         public virtual DbSet<CategoryMapping> CategoryMapping { get; set; }
+        public virtual DbSet<Criteria23> Criteria23 { get; set; }
     }
 }

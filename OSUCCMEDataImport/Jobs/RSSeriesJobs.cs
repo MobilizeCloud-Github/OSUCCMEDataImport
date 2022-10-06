@@ -138,10 +138,11 @@ namespace OSUCCMEDataImport.Jobs
                                        where r.Name == "ARCH"
                                        select r.ID).FirstOrDefault();
 
+                var RSSeriesToAdd = new List<Models.RSSeries>();
                 foreach (var c in RSSeriesToImport)
                 {
                     Console.Write("Processing RSSeries: (" + Index + "/" + Total + ") " + c.ID + " ");
-                    var RSSerie = new Models.RSSeries()
+                    var RSSeries = new Models.RSSeries()
                     {
                         ID = c.ID,
                         Title = c.Title,
@@ -195,76 +196,79 @@ namespace OSUCCMEDataImport.Jobs
                     if (c.SeriesTitleID == 0 || c.SeriesTitleID == null)
                     {
 
-                        RSSerie.SeriesID = ArchiveSeriesID;
+                        RSSeries.SeriesID = ArchiveSeriesID;
                     }
                     else
                     {
-                        RSSerie.SeriesID = c.SeriesTitleID ?? ArchiveSeriesID;
+                        RSSeries.SeriesID = c.SeriesTitleID ?? ArchiveSeriesID;
                     }
 
 
                     if (c.IsCancelled == true)
                     {
-                        RSSerie.Status = "Canceled";
+                        RSSeries.Status = "Canceled";
                     }
                     else if (c.PublicViewable == true)
                     {
-                        RSSerie.Status = "Occurring";
+                        RSSeries.Status = "Occurring";
                     }
                     else if (c.PublicViewable == false)
                     {
-                        RSSerie.Status = "Hidden";
+                        RSSeries.Status = "Hidden";
                     }
                     else if (c.IsCancelled == false && c.PublicViewable == null)
                     {
-                        RSSerie.Status = "Unpublished";
+                        RSSeries.Status = "Unpublished";
                     }
 
                     if (c.isJointSponsor == true)
                     {
-                        RSSerie.Providership = "Joint";
+                        RSSeries.Providership = "Joint";
                     }
                     else
                     {
-                        RSSerie.Providership = "Direct";
+                        RSSeries.Providership = "Direct";
                     }
 
                     if (CommonFunctions.DoesUserExist(db, c.CreatingUserID))
                     {
-                        RSSerie.CreatedBy = c.CreatingUserID;
+                        RSSeries.CreatedBy = c.CreatingUserID;
                     }
                     else
                     {
-                        RSSerie.CreatedBy = ImportUserID;
+                        RSSeries.CreatedBy = ImportUserID;
                     }
 
                     if (c.LocationState == "None" || string.IsNullOrWhiteSpace(c.LocationState))
                     {
-                        RSSerie.LocationKnown = false;
-                        RSSerie.LocationName = "";
-                        RSSerie.LocationAddressLine1 = "";
-                        RSSerie.LocationAddressLine2 = "";
-                        RSSerie.LocationCity = "";
-                        RSSerie.LocationState = "";
-                        RSSerie.LocationZipCode = "";
+                        RSSeries.LocationKnown = false;
+                        RSSeries.LocationName = "";
+                        RSSeries.LocationAddressLine1 = "";
+                        RSSeries.LocationAddressLine2 = "";
+                        RSSeries.LocationCity = "";
+                        RSSeries.LocationState = "";
+                        RSSeries.LocationZipCode = "";
 
                     }
                     else
                     {
-                        RSSerie.LocationKnown = true;
-                        RSSerie.LocationName = c.Location ?? "";
-                        RSSerie.LocationAddressLine1 = c.LocationAddress1 ?? "";
-                        RSSerie.LocationAddressLine2 = c.LocationAddress2 ?? "";
-                        RSSerie.LocationCity = c.LocationCity ?? "";
-                        RSSerie.LocationState = c.LocationState ?? "";
-                        RSSerie.LocationZipCode = CommonFunctions.GetTrimedString(c.LocationZip, 5);
+                        RSSeries.LocationKnown = true;
+                        RSSeries.LocationName = c.Location ?? "";
+                        RSSeries.LocationAddressLine1 = c.LocationAddress1 ?? "";
+                        RSSeries.LocationAddressLine2 = c.LocationAddress2 ?? "";
+                        RSSeries.LocationCity = c.LocationCity ?? "";
+                        RSSeries.LocationState = c.LocationState ?? "";
+                        RSSeries.LocationZipCode = CommonFunctions.GetTrimedString(c.LocationZip, 5);
 
                     }
 
-                    db.RSSeries.Add(RSSerie);
-                    if (Index % 5 == 0)
+                    RSSeriesToAdd.Add(RSSeries);
+
+                    if (Index % 5 == 0 || Index == Total)
                     {
+                        db.RSSeries.AddRange(RSSeriesToAdd);
                         db.SaveChanges();
+                        RSSeriesToAdd.Clear();
                         Console.WriteLine(" - Saved");
                     }
                     else

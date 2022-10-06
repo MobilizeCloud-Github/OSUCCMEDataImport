@@ -58,6 +58,7 @@ namespace OSUCCMEDataImport.Jobs
                 Console.WriteLine(Total + " to Process");
                 var Index = 1;
 
+                var WebcastsToAdd = new List<Models.Webcasts>();
                 foreach (var c in WebcastsToImport)
                 {
                     Console.Write("Processing Webcasts : (" + Index + "/" + Total + ") " + c.ID + " ");
@@ -152,10 +153,13 @@ namespace OSUCCMEDataImport.Jobs
                         Webcast.CreatedBy = ImportUserID;
                     }
 
-                    db.Webcasts.Add(Webcast);
-                    if (Index % 5 == 0)
+                    WebcastsToAdd.Add(Webcast);
+
+                    if (Index % 5 == 0 || Index == Total)
                     {
+                        db.Webcasts.AddRange(WebcastsToAdd);
                         db.SaveChanges();
+                        WebcastsToAdd.Clear();
                         Console.WriteLine(" - Saved");
                     }
                     else
@@ -164,7 +168,6 @@ namespace OSUCCMEDataImport.Jobs
                     }
                     Index++;
                 }
-                db.SaveChanges();
                 Console.WriteLine(" - Complete");
             }
             catch (Exception e)
