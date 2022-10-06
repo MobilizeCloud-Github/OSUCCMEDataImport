@@ -13,7 +13,6 @@ DELETE FROM [dbo].[ConferenceFiles]
 DELETE FROM [dbo].[Conferences]
 
 DBCC CHECKIDENT ('[ConferenceStreamViews]', RESEED, 0);
-DBCC CHECKIDENT ('[ConferenceStreams]', RESEED, 0);
 DBCC CHECKIDENT ('[ConferenceJointProviders]', RESEED, 0);
 DBCC CHECKIDENT ('[ConferencePrices]', RESEED, 0);
 DBCC CHECKIDENT ('[ConferenceRegistrations]', RESEED, 0);

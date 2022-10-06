@@ -19,19 +19,16 @@ namespace OSUCCMEDataImport
             Console.WriteLine(" 7. RSSeries");
             Console.WriteLine(" 8. Hospitals");
             Console.WriteLine(" 9. FacultyDisclosures");
-            Console.WriteLine(" 10. Conference Credits & MOC");
-            Console.WriteLine(" 11. Conference Speakers");
-            Console.WriteLine(" 12. Webcasts Credits & MOC");
-            Console.WriteLine(" 13. Webcasts Speakers");
-            Console.WriteLine(" 14. RSSeries Credits & MOC");
-            Console.WriteLine(" 15. RSSeries Speakers");
-            Console.WriteLine(" 16. Enduring Credits & MOC");
-            Console.WriteLine(" 17. Enduring Speakers");
-            Console.WriteLine(" 18. Files");
-            Console.WriteLine(" 19. Criteria");
-            Console.WriteLine(" 20. Conference Options");
-            Console.WriteLine(" 21. Webcast MOC Boards and ACCME");
-            Console.WriteLine(" 22. Test");
+            Console.WriteLine(" 10. Conference Speakers");
+            Console.WriteLine(" 11. Webcasts Speakers");
+            Console.WriteLine(" 12. RSSeries Speakers");
+            Console.WriteLine(" 13. Enduring Speakers");
+            Console.WriteLine(" 14. Files");
+            Console.WriteLine(" 15. Criteria");
+            Console.WriteLine(" 16. Conference Options");
+            Console.WriteLine(" 17. Webcast MOC Boards and ACCME");
+            Console.WriteLine(" 18. Data Lists");
+            Console.WriteLine(" 19. Tests");
             Console.WriteLine("");
             Console.WriteLine("Please select 1-15 and hit enter.");
 
@@ -136,7 +133,7 @@ namespace OSUCCMEDataImport
                                 DataListsJobs.Process(ImportUserID);
                                 break;
                             }
-                        case "22":
+                        case "19":
                             {
                                 TestingJobs.Process(ImportUserID);
                                 break;

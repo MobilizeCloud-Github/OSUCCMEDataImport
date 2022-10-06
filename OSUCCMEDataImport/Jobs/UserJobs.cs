@@ -12,11 +12,11 @@ namespace OSUCCMEDataImport.Jobs
     {
         public static void Process(string ImportUserID)
         {
-            ImportUserProfiles(ImportUserID);
+            //ImportUserProfiles(ImportUserID);
             Console.WriteLine("");
             Console.WriteLine("-----------------------------------");
             Console.WriteLine("");
-            ImportUserEmailPreferences(ImportUserID);
+            //ImportUserEmailPreferences(ImportUserID);
             Console.WriteLine("");
             Console.WriteLine("-----------------------------------");
             Console.WriteLine("");
@@ -24,6 +24,7 @@ namespace OSUCCMEDataImport.Jobs
             Console.WriteLine("");
             Console.WriteLine("-----------------------------------");
             Console.WriteLine("");
+            ImportABIMNumbers(ImportUserID);
         }
 
 
@@ -201,12 +202,6 @@ namespace OSUCCMEDataImport.Jobs
 
                             Console.Write(" - Profile Created");
 
-                            if (NewUser.IsBoardCertifiedPhysician == true)
-                            {
-                                SaveUserBoards(db, User.ABIMDiplomatNumber, User.UserID);
-                                Console.Write(" - Boards Saved");
-                            }
-
                             Console.WriteLine(" - Complete");
                         }
                         catch (Exception e)
@@ -278,6 +273,7 @@ namespace OSUCCMEDataImport.Jobs
             {
                 try
                 {
+                    var PreferencesToAdd = new List<Models.EmailPreferences>();
                     Console.Write("Processing : " + UserID + " (" + Index + "/" + Total + ") ");
                     var Preferences = (from u in olddb.EmailPreferences
                                        where u.UserID == UserID
@@ -295,7 +291,7 @@ namespace OSUCCMEDataImport.Jobs
                             EmailFrequency = GetEmailFrequency(Preference.FrequencyID),
                             LastUpdated = DateTime.Now
                         };
-                        db.EmailPreferences.Add(NewEmailPreference);
+                        PreferencesToAdd.Add(NewEmailPreference);
 
                         Console.Write(" - " + NewEmailPreference.EmailType + " saved");
                     }
@@ -307,7 +303,7 @@ namespace OSUCCMEDataImport.Jobs
                         EmailFrequency = "Monthly",
                         LastUpdated = DateTime.Now
                     };
-                    db.EmailPreferences.Add(GeneralPreference);
+                    PreferencesToAdd.Add(GeneralPreference);
 
                     Console.Write(" - GeneralAnnouncements saved");
 
@@ -318,9 +314,10 @@ namespace OSUCCMEDataImport.Jobs
                         EmailFrequency = "Monthly",
                         LastUpdated = DateTime.Now
                     };
-                    db.EmailPreferences.Add(RSSeriesPreference);
+                    PreferencesToAdd.Add(RSSeriesPreference);
 
 
+                    db.EmailPreferences.AddRange(PreferencesToAdd);
                     db.SaveChanges();
 
                     Console.Write(" - GrandRoundsNewsletters saved");
@@ -384,6 +381,71 @@ namespace OSUCCMEDataImport.Jobs
                     }
                 }
             }
+            tw.Close();
+        }
+
+        private static void ImportABIMNumbers(string importUserID)
+        {
+            var db = new NewOSUCCMEEntities();
+            var olddb = new OldOSUCCMEEntities();
+
+            db.Configuration.AutoDetectChangesEnabled = false;
+            olddb.Configuration.AutoDetectChangesEnabled = false;
+
+            
+            var OldUsers = (from u in olddb.Users
+                           where u.IsDeleted == false && u.IsDeceased == false && u.IsABIM == true
+                           select new
+                           {
+                               u.UserID,
+                               u.ABIMDiplomatNumber
+                           }).ToList();
+
+
+            TextWriter tw = new StreamWriter("UserABIMNumbers.txt");
+
+            var Total = OldUsers.Count();
+            Console.Write("Importing ABIM Numbers - Starting ");
+            Console.WriteLine(Total + " to Process");
+            var Index = 1;
+            var UserBoardsToAdd = new List<UserBoardIdentificationNumbers>();
+            foreach (var OldUser in OldUsers)
+            {
+                try
+                {
+                    Console.Write("Processing : " + OldUser .UserID + " (" + Index + "/" + Total + ") ");
+                    var Users = (from u in db.UserProfiles
+                                       where u.UserID == OldUser.UserID
+                                       select u.UserID).ToList();
+
+                    
+                    if(Users.Contains(OldUser.UserID))
+                    { 
+                        var UserBoard = new UserBoardIdentificationNumbers()
+                        {
+                            UserProfileID = OldUser.UserID,
+                            BoardID = 9,
+                            IdentificationNumber = OldUser.ABIMDiplomatNumber
+                        };
+                        UserBoardsToAdd.Add(UserBoard);
+                        Console.Write(" - saved");
+                    }
+                    
+
+                    Console.Write(" - ABIM Nunbers saved");
+
+                    Console.WriteLine(" - Complete");
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("");
+                    Console.WriteLine(" - " + e.Message);
+                    tw.WriteLineAsync(e.Message);
+                }
+                Index++;
+            }
+            db.UserBoardIdentificationNumbers.AddRange(UserBoardsToAdd);
+            db.SaveChanges();
             tw.Close();
         }
 
