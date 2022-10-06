@@ -767,6 +767,10 @@
       <DependentUpon>NewOSUCCMEModel.edmx</DependentUpon>
       <LastGenOutput>NewOSUCCMEModel.cs</LastGenOutput>
     </Content>
+    <Content Include="OSU-IdentityTables.sql" />
+    <Content Include="OSU-RowCount.sql" />
+    <Content Include="OSU-DeleteTesting.sql" />
+    <Content Include="OSU-DeleteMaster.sql" />
     <Content Include="OSU-DeleteFacultyDisclosures.sql" />
     <Content Include="OSU-DeleteHospitals.sql" />
     <Content Include="OSU-DeleteUsers.sql" />

@@ -2,14 +2,13 @@ USE [osuccme-dev]
 GO
 
 
-DELETE FROM [dbo].[HospitalAdmins]
-DELETE FROM [dbo].[HospitalUsers]
-DELETE FROM [dbo].[Hospitals]
-DELETE FROM [dbo].[HospitalGroups]
+DELETE FROM [dbo].[FacultyDisclosureCommercialInterests]
+DELETE FROM [dbo].[FacultyDisclosureRoles]
+DELETE FROM [dbo].[FacultyDisclosures]
 
-DBCC CHECKIDENT ('[HospitalGroups]', RESEED, 0);
-DBCC CHECKIDENT ('[HospitalUsers]', RESEED, 0);
-DBCC CHECKIDENT ('[HospitalAdmins]', RESEED, 0);
+DBCC CHECKIDENT ('[FacultyDisclosureCommercialInterests]', RESEED, 0);
+DBCC CHECKIDENT ('[FacultyDisclosureRoles]', RESEED, 0);
+DBCC CHECKIDENT ('[FacultyDisclosures]', RESEED, 0);
 GO
 
 
