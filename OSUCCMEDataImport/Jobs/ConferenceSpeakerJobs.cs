@@ -85,7 +85,7 @@ namespace OSUCCMEDataImport.Jobs
                                     SpeakerCheckListOnFile = false
                                 };
 
-                                if (CommonFunctions.DoesUserExist(db, uc.UserID))
+                                if (CommonFunctions.DoesUserExist(db, uc.AssignedBy))
                                 {
                                     NewConferenceSpeaker.SpeakerHoursAssignedBy = uc.AssignedBy;
                                     NewConferenceSpeaker.CreatedBy = uc.AssignedBy;

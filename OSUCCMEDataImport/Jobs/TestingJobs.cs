@@ -109,12 +109,13 @@ namespace OSUCCMEDataImport.Jobs
             {
                 var TransferStartDate = new DateTime(2012, 1, 1);
                 var TestsToImport = (from c in olddb.Questions
-                                         where c.IsDeleted == false
-                                         group c by c.TestID into cg
-                                         select new { 
-                                            cg.Key,
-                                            Questions = cg
-                                         }).ToList();
+                                     where c.IsDeleted == false
+                                     group c by c.TestID into cg
+                                     select new
+                                     {
+                                         cg.Key,
+                                         Questions = cg
+                                     }).ToList();
 
                 var Total = TestsToImport.Count();
                 Console.Write("Importing Test Questions - Starting ");
@@ -184,6 +185,21 @@ namespace OSUCCMEDataImport.Jobs
 
                                 Console.WriteLine(" - Saving Question");
                                 db.SaveChanges();
+
+                                if (!string.IsNullOrWhiteSpace(Question.AssociatedFileName))
+                                {
+                                    var NewFile = new TestingQuestionsFiles()
+                                    {
+                                        QuestionID = NewQuestion.ID,
+                                        FileName = Question.AssociatedFileURL.Substring(Question.AssociatedFileURL.LastIndexOf('/') + 1),
+                                        Location = Question.AssociatedFileURL,
+                                        CreatedOn = DateTime.Now,
+                                        CreatedBy = ImportUserID,
+                                        IsDeleted = false
+                                    };
+                                    db.TestingQuestionsFiles.Add(NewFile);
+                                    db.SaveChanges();
+                                }
 
                                 var AnswersToImport = (from a in olddb.Answers
                                                        where a.qID == Question.ID && a.IsDeleted == false
