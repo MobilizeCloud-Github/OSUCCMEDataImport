@@ -96,7 +96,7 @@ namespace OSUCCMEDataImport.Jobs
                                              select c).ToList();
 
                 var Total = EventCriteriaToImport.Count();
-                Console.Write("Importing Criteria - Starting ");
+                Console.Write("Importing Criteria 23 - Starting ");
                 Console.WriteLine(Total + " to Process");
                 var Index = 1;
 
@@ -109,7 +109,7 @@ namespace OSUCCMEDataImport.Jobs
                         EventID = c.EventID
                     };
                     db.Criteria23.Add(Criteria23);
-
+                    Console.WriteLine(" - Pending");
                     Index++;
                 }
                 db.SaveChanges();
@@ -139,7 +139,7 @@ namespace OSUCCMEDataImport.Jobs
                                              select c).ToList();
 
                 var Total = EventCriteriaToImport.Count();
-                Console.Write("Importing Criteria - Starting ");
+                Console.Write("Importing Criteria 24 - Starting ");
                 Console.WriteLine(Total + " to Process");
                 var Index = 1;
 
@@ -182,7 +182,7 @@ namespace OSUCCMEDataImport.Jobs
                                              select c).ToList();
 
                 var Total = EventCriteriaToImport.Count();
-                Console.Write("Importing Criteria - Starting ");
+                Console.Write("Importing Criteria 25 - Starting ");
                 Console.WriteLine(Total + " to Process");
                 var Index = 1;
 
@@ -225,7 +225,7 @@ namespace OSUCCMEDataImport.Jobs
                                              select c).ToList();
 
                 var Total = EventCriteriaToImport.Count();
-                Console.Write("Importing Criteria - Starting ");
+                Console.Write("Importing Criteria 27 - Starting ");
                 Console.WriteLine(Total + " to Process");
                 var Index = 1;
 
@@ -268,7 +268,7 @@ namespace OSUCCMEDataImport.Jobs
                                              select c).ToList();
 
                 var Total = EventCriteriaToImport.Count();
-                Console.Write("Importing Criteria - Starting ");
+                Console.Write("Importing Criteria 28 - Starting ");
                 Console.WriteLine(Total + " to Process");
                 var Index = 1;
 
@@ -311,7 +311,7 @@ namespace OSUCCMEDataImport.Jobs
                                              select c).ToList();
 
                 var Total = EventCriteriaToImport.Count();
-                Console.Write("Importing Criteria - Starting ");
+                Console.Write("Importing Criteria 30 - Starting ");
                 Console.WriteLine(Total + " to Process");
                 var Index = 1;
 
@@ -354,7 +354,7 @@ namespace OSUCCMEDataImport.Jobs
                                              select c).ToList();
 
                 var Total = EventCriteriaToImport.Count();
-                Console.Write("Importing Criteria - Starting ");
+                Console.Write("Importing Criteria 32 - Starting ");
                 Console.WriteLine(Total + " to Process");
                 var Index = 1;
 
@@ -397,7 +397,7 @@ namespace OSUCCMEDataImport.Jobs
                                              select c).ToList();
 
                 var Total = EventCriteriaToImport.Count();
-                Console.Write("Importing Criteria - Starting ");
+                Console.Write("Importing Criteria 35 - Starting ");
                 Console.WriteLine(Total + " to Process");
                 var Index = 1;
 
@@ -440,7 +440,7 @@ namespace OSUCCMEDataImport.Jobs
                                              select c).ToList();
 
                 var Total = EventCriteriaToImport.Count();
-                Console.Write("Importing Criteria - Starting ");
+                Console.Write("Importing Criteria 37 - Starting ");
                 Console.WriteLine(Total + " to Process");
                 var Index = 1;
 
@@ -483,6 +483,7 @@ namespace OSUCCMEDataImport.Jobs
 
                 foreach (var criteria in Criteria23)
                 {
+                    Console.Write("Getting Event Info 23 ");
                     switch (criteria.EventType.ToLower())
                     {
                         case ("conference"):
@@ -559,6 +560,7 @@ namespace OSUCCMEDataImport.Jobs
 
                 foreach (var criteria in Criteria24)
                 {
+                    Console.Write("Getting Event Info 24 ");
                     switch (criteria.EventType.ToLower())
                     {
                         case ("conference"):
@@ -637,6 +639,7 @@ namespace OSUCCMEDataImport.Jobs
 
                 foreach (var criteria in Criteria25)
                 {
+                    Console.Write("Getting Event Info 25 ");
                     switch (criteria.EventType.ToLower())
                     {
                         case ("conference"):

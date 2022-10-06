@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="83f1bbbe0a9c4394b27a42f126a104af" Name="Diagram1" ZoomLevel="94">
+      <Diagram DiagramId="83f1bbbe0a9c4394b27a42f126a104af" Name="Diagram1" ZoomLevel="52">
         <EntityTypeShape EntityType="NewOSUCCMEModel.AspNetRoles" Width="1.5" PointX="3.75" PointY="148.625" IsExpanded="true" />
         <EntityTypeShape EntityType="NewOSUCCMEModel.AspNetUserClaims" Width="1.5" PointX="8.25" PointY="142.125" IsExpanded="true" />
         <EntityTypeShape EntityType="NewOSUCCMEModel.AspNetUserLogins" Width="1.5" PointX="8.25" PointY="138.875" IsExpanded="true" />
@@ -44,7 +44,6 @@
         <EntityTypeShape EntityType="NewOSUCCMEModel.ContentManagementSystem" Width="1.5" PointX="10.5" PointY="167.25" IsExpanded="true" />
         <EntityTypeShape EntityType="NewOSUCCMEModel.Countries" Width="1.5" PointX="7.75" PointY="10.75" IsExpanded="true" />
         <EntityTypeShape EntityType="NewOSUCCMEModel.Criteria" Width="1.5" PointX="9.75" PointY="10.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="NewOSUCCMEModel.Criteria23" Width="1.5" PointX="11.75" PointY="6.75" IsExpanded="true" />
         <EntityTypeShape EntityType="NewOSUCCMEModel.Criteria24" Width="1.5" PointX="11.75" PointY="10.75" IsExpanded="true" />
         <EntityTypeShape EntityType="NewOSUCCMEModel.Criteria25" Width="1.5" PointX="12.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="NewOSUCCMEModel.Criteria27" Width="1.5" PointX="0.75" PointY="12.75" IsExpanded="true" />
@@ -446,6 +445,7 @@
         <AssociationConnector Association="NewOSUCCMEModel.FK_CreditNotifications_EventTypes" />
         <AssociationConnector Association="NewOSUCCMEModel.FK_EmailPreferences_EmailFrequencies" />
         <EntityTypeShape EntityType="NewOSUCCMEModel.CategoryMapping" Width="1.5" PointX="13.375" PointY="19.75" />
+        <EntityTypeShape EntityType="NewOSUCCMEModel.Criteria23" Width="1.5" PointX="15.375" PointY="19.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

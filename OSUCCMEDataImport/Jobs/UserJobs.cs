@@ -109,6 +109,7 @@ namespace OSUCCMEDataImport.Jobs
                                      select x).ToList();
 
 
+            var UsersToAdd = new List<UserProfiles>();
             foreach (var User in UsersToImport)
             {
                 Console.Write("Processing : (" + Index + "/" + Total + ") " + User.Username + " ");
@@ -207,12 +208,19 @@ namespace OSUCCMEDataImport.Jobs
 
                             }
 
-                            db.UserProfiles.Add(NewUser);
-                            db.SaveChanges();
+                            UsersToAdd.Add(NewUser);
 
-                            Console.Write(" - Profile Created");
-
-                            Console.WriteLine(" - Complete");
+                            if (Index % 25 == 0 || Index == Total)
+                            {
+                                db.UserProfiles.AddRange(UsersToAdd);
+                                db.SaveChanges();
+                                UsersToAdd.Clear();
+                                Console.WriteLine(" - Saved");
+                            }
+                            else
+                            {
+                                Console.WriteLine(" - Pending");
+                            }
                         }
                         catch (Exception e)
                         {
@@ -235,6 +243,7 @@ namespace OSUCCMEDataImport.Jobs
                 }
                 Index++;
             }
+            Console.WriteLine(" - Complete");
             tw.Close();
         }
 
@@ -279,11 +288,12 @@ namespace OSUCCMEDataImport.Jobs
             Console.Write("Importing User Email Preferences - Starting ");
             Console.WriteLine(Total + " to Process");
             var Index = 1;
-            foreach (var UserID in UserIDs)
+
+            var EmailPreferencesToAdd = new List<Models.EmailPreferences>();
+            try
             {
-                try
-                {
-                    var PreferencesToAdd = new List<Models.EmailPreferences>();
+                foreach (var UserID in UserIDs)
+                {                    
                     Console.Write("Processing : " + UserID + " (" + Index + "/" + Total + ") ");
                     var Preferences = (from u in olddb.EmailPreferences
                                        where u.UserID == UserID
@@ -301,7 +311,7 @@ namespace OSUCCMEDataImport.Jobs
                             EmailFrequency = GetEmailFrequency(Preference.FrequencyID),
                             LastUpdated = DateTime.Now
                         };
-                        PreferencesToAdd.Add(NewEmailPreference);
+                        EmailPreferencesToAdd.Add(NewEmailPreference);
 
                         Console.Write(" - " + NewEmailPreference.EmailType + " saved");
                     }
@@ -313,7 +323,7 @@ namespace OSUCCMEDataImport.Jobs
                         EmailFrequency = "Monthly",
                         LastUpdated = DateTime.Now
                     };
-                    PreferencesToAdd.Add(GeneralPreference);
+                    EmailPreferencesToAdd.Add(GeneralPreference);
 
                     Console.Write(" - GeneralAnnouncements saved");
 
@@ -324,23 +334,33 @@ namespace OSUCCMEDataImport.Jobs
                         EmailFrequency = "Monthly",
                         LastUpdated = DateTime.Now
                     };
-                    PreferencesToAdd.Add(RSSeriesPreference);
-
-
-                    db.EmailPreferences.AddRange(PreferencesToAdd);
-                    db.SaveChanges();
+                    EmailPreferencesToAdd.Add(RSSeriesPreference);
+                    
 
                     Console.Write(" - GrandRoundsNewsletters saved");
 
-                    Console.WriteLine(" - Complete");
+                    
+
+                    if (Index % 25 == 0 || Index == Total)
+                    {
+                        db.EmailPreferences.AddRange(EmailPreferencesToAdd);
+                        db.SaveChanges();
+                        EmailPreferencesToAdd.Clear();
+                        Console.WriteLine(" - Saved");
+                    }
+                    else
+                    {
+                        Console.WriteLine(" - Pending");
+                    }
+                    Index++;
                 }
-                catch (Exception e)
-                {
-                    Console.WriteLine("");
-                    Console.WriteLine(" - " + e.Message);
-                    tw.WriteLineAsync(e.Message);
-                }
-                Index++;
+                Console.WriteLine(" - Complete");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("");
+                Console.WriteLine(" - " + e.Message);
+                tw.WriteLineAsync(e.Message);
             }
             tw.Close();
         }
@@ -402,14 +422,14 @@ namespace OSUCCMEDataImport.Jobs
             db.Configuration.AutoDetectChangesEnabled = false;
             olddb.Configuration.AutoDetectChangesEnabled = false;
 
-            
+
             var OldUsers = (from u in olddb.Users
-                           where u.IsDeleted == false && u.IsDeceased == false && u.IsABIM == true
-                           select new
-                           {
-                               u.UserID,
-                               u.ABIMDiplomatNumber
-                           }).ToList();
+                            where u.IsDeleted == false && u.IsDeceased == false && u.IsABIM == true
+                            select new
+                            {
+                                u.UserID,
+                                u.ABIMDiplomatNumber
+                            }).ToList();
 
 
             TextWriter tw = new StreamWriter("UserABIMNumbers.txt");
@@ -423,14 +443,14 @@ namespace OSUCCMEDataImport.Jobs
             {
                 try
                 {
-                    Console.Write("Processing : " + OldUser .UserID + " (" + Index + "/" + Total + ") ");
+                    Console.Write("Processing : " + OldUser.UserID + " (" + Index + "/" + Total + ") ");
                     var Users = (from u in db.UserProfiles
-                                       where u.UserID == OldUser.UserID
-                                       select u.UserID).ToList();
+                                 where u.UserID == OldUser.UserID
+                                 select u.UserID).ToList();
 
-                    
-                    if(Users.Contains(OldUser.UserID))
-                    { 
+
+                    if (Users.Contains(OldUser.UserID))
+                    {
                         var UserBoard = new UserBoardIdentificationNumbers()
                         {
                             UserProfileID = OldUser.UserID,
@@ -440,7 +460,7 @@ namespace OSUCCMEDataImport.Jobs
                         UserBoardsToAdd.Add(UserBoard);
                         Console.Write(" - saved");
                     }
-                    
+
 
                     Console.Write(" - ABIM Nunbers saved");
 

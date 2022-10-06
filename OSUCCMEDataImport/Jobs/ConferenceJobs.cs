@@ -80,6 +80,7 @@ namespace OSUCCMEDataImport.Jobs
                 Console.WriteLine(Total + " to Process");
                 var Index = 1;
 
+                var ConferencesToAdd = new List<Models.Conferences>();
                 foreach (var c in ConferencesToImport)
                 {
                     Console.Write("Processing Conferences: (" + Index + "/" + Total + ") " + c.ID + " ");
@@ -206,10 +207,13 @@ namespace OSUCCMEDataImport.Jobs
                         Conference.LocationCountry = "US";
                     }
 
-                    db.Conferences.Add(Conference);
-                    if (Index % 5 == 0)
+                    ConferencesToAdd.Add(Conference);
+
+                    if (Index % 5 == 0 || Index == Total)
                     {
+                        db.Conferences.AddRange(ConferencesToAdd);
                         db.SaveChanges();
+                        ConferencesToAdd.Clear();
                         Console.WriteLine(" - Saved");
                     }
                     else
@@ -218,7 +222,6 @@ namespace OSUCCMEDataImport.Jobs
                     }
                     Index++;
                 }
-                db.SaveChanges();
                 Console.WriteLine(" - Complete");
             }
             catch (Exception e)
@@ -652,9 +655,7 @@ namespace OSUCCMEDataImport.Jobs
                                         Registration.CreditAssignedBy = AssignedByUserID;
                                     }
 
-                                    NewRegistrationsToAdd.Add(Registration);
-                                    //db.ConferenceRegistrations.Add(Registration);
-                                    //db.SaveChanges();
+                                    NewRegistrationsToAdd.Add(Registration);                                    
                                     Console.WriteLine(" - Saved");
 
                                 }
