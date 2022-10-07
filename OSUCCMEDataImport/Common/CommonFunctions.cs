@@ -147,6 +147,7 @@ namespace OSUCCMEDataImport.Common
             switch (EventType.ToLower())
             {
                 case ("conference"):
+                case ("conferences"):
                     {
                         return (from u in db.Conferences
                                 where u.ID == EventID && u.IsDeleted == false
@@ -155,14 +156,26 @@ namespace OSUCCMEDataImport.Common
                     }
 
                 case ("webcast"):
+                case ("webcast-vod"):
+                case ("webcast-live"):
+                case ("webcasts"):
                     {
                         return (from u in db.Webcasts
                                 where u.ID == EventID && u.IsDeleted == false
                                 select u.ID).Any();
 
                     }
+                case ("rsseries"):
+                    {
+                        return (from u in db.RSSeries
+                                where u.ID == EventID && u.IsDeleted == false
+                                select u.ID).Any();
 
+                    }
                 case ("enduringmaterial"):
+                case ("enduring-material"):
+                case ("enduringmaterials"):
+                case ("enduring material"):
                     {
                         return (from u in db.EnduringMaterials
                                 where u.ID == EventID && u.IsDeleted == false

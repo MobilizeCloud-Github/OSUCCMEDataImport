@@ -53,7 +53,6 @@ namespace OSUCCMEDataImport.Jobs
 
             try
             {
-                var TransferStartDate = new DateTime(2012, 1, 1);
                 var SpeakersToImport = (from c in olddb.Speakers
                                         where c.IsDeleted == false
                                         group c by c.UserID into cs
@@ -70,11 +69,14 @@ namespace OSUCCMEDataImport.Jobs
 
                 foreach (var c in SpeakersToImport)
                 {
-                    Console.Write("Processing Speakers: (" + Index + "/" + Total + ") " + c.UserID);
+                    Console.WriteLine("Processing Speaker: (" + Index + "/" + Total + ") " + c.UserID);
                     if (CommonFunctions.DoesUserExist(db, c.UserID))
                     {
+                        var EventIndex = 1;
+                        var EventTotal = c.Speakers.Count();
                         foreach (var s in c.Speakers)
                         {
+                            Console.Write("Processing Speaker Event: (" + Index + "/" + Total + ") (" + EventIndex + "/" + EventTotal + ")" + s.EventID + " " + s.Type + " ");
                             if (CommonFunctions.DoesEventExist(db, s.EventID.Value, s.Type))
                             {
                                 switch (s.Type.ToLower())
@@ -94,7 +96,7 @@ namespace OSUCCMEDataImport.Jobs
                                             };
                                             db.ConferenceSpeakers.Add(NewConferenceSpeaker);
                                             db.SaveChanges();
-                                            Console.WriteLine(" - Speaker Saved");
+                                            Console.Write(" - Speaker Saved");
 
                                             var NewSpeakerTopic = new ConferenceSpeakerTopics()
                                             {
@@ -125,7 +127,7 @@ namespace OSUCCMEDataImport.Jobs
                                             };
                                             db.WebcastSpeakers.Add(NewWebcastSpeaker);
                                             db.SaveChanges();
-                                            Console.WriteLine(" - Speaker Saved");
+                                            Console.Write(" - Speaker Saved");
 
                                             var NewSpeakerTopic = new WebcastSpeakerTopics()
                                             {
@@ -156,7 +158,7 @@ namespace OSUCCMEDataImport.Jobs
                                             };
                                             db.EnduringMaterialSpeakers.Add(NewEnduringSpeaker);
                                             db.SaveChanges();
-                                            Console.WriteLine(" - Speaker Saved");
+                                            Console.Write(" - Speaker Saved");
 
                                             var NewSpeakerTopic = new EnduringMaterialSpeakerTopics()
                                             {
@@ -189,13 +191,13 @@ namespace OSUCCMEDataImport.Jobs
                                             };
                                             db.RSSeriesSpeakers.Add(NewRSSeriesSpeaker);
                                             db.SaveChanges();
-                                            Console.WriteLine(" - Speaker Saved");
+                                            Console.Write(" - Speaker Saved");
 
                                             var NewSpeakerTopic = new RSSeriesSpeakerTopics()
                                             {
                                                 RSSeriesID = s.EventID ?? 0,
                                                 RSSeriesSpeakerID = NewRSSeriesSpeaker.ID,
-                                                Topic = db.EnduringMaterials.Where(x => x.ID == s.EventID).Select(x => x.Title).FirstOrDefault(),
+                                                Topic = db.RSSeries.Where(x => x.ID == s.EventID).Select(x => x.Title).FirstOrDefault(),
                                                 CreatedOn = DateTime.Now,
                                                 CreatedBy = ImportUserID,
                                                 LastUpdatedOn = DateTime.Now,
@@ -207,12 +209,20 @@ namespace OSUCCMEDataImport.Jobs
 
                                             break;
                                         }
+                                    case ("podcast"):
+                                        {
+                                            Console.WriteLine(" - Skipped");
+                                            break;
+                                        }
 
                                 }
                             }
+                            else
+                            {
+                                Console.WriteLine(" - Skipped");
+                            }
+                            EventIndex++;
                         }
-
-                        //Console.WriteLine(" - Saved");
                     }
                     else
                     {
@@ -256,24 +266,26 @@ namespace OSUCCMEDataImport.Jobs
                 Console.WriteLine(Total + " to Process");
                 var Index = 1;
 
+                var ConferenceIDs = (from ce in db.Conferences
+                                     where ce.IsDeleted == false
+                                     select ce.ID).ToList();
+
                 foreach (var u in ConferenceSpeakersToImport)
                 {
-                    Console.Write("Processing Speakers : (" + Index + "/" + Total + ") " + u.UserID);
+                    Console.WriteLine("Processing Conference Speakers : (" + Index + "/" + Total + ") " + u.UserID);
 
                     if (CommonFunctions.DoesUserExist(db, u.UserID))
                     {
+                        var FacultyDisclosures = (from f in db.FacultyDisclosures
+                                                  where f.UserID == u.UserID
+                                                  select f).ToList();
+
                         var TotalCredits = u.SpeakingCredits.Count();
                         var CreditsIndex = 1;
 
-                        var Conference = (from ce in db.Conferences
-                                          where ce.IsDeleted == false
-                                          select ce).ToList();
-
-                        var ConferenceIDs = Conference.Select(x => x.ID).ToList();
-
                         foreach (var uc in u.SpeakingCredits)
                         {
-                            Console.Write("Speaker Credits : (" + Index + "/" + Total + ") (" + CreditsIndex + "/" + TotalCredits + ") " + uc.ID + " ");
+                            Console.Write("Conference Speaker Credits : (" + Index + "/" + Total + ") (" + CreditsIndex + "/" + TotalCredits + ") " + uc.ID + " ");
 
 
                             if (ConferenceIDs.Contains(uc.EventID.Value))
@@ -281,40 +293,52 @@ namespace OSUCCMEDataImport.Jobs
                                 decimal OutSpeakerHours = 0.0m;
                                 decimal.TryParse(uc.CreditHours.ToString(), out OutSpeakerHours);
 
-                                var ConferenceSpeaker = (from ce in db.ConferenceSpeakers
-                                                         where ce.ConferenceID == uc.EventID && ce.UserID == uc.UserID
-                                                         select ce).FirstOrDefault();
+                                var Speaker = (from ce in db.ConferenceSpeakers
+                                               where ce.ConferenceID == uc.EventID && ce.UserID == uc.UserID
+                                               select ce).FirstOrDefault();
 
-                                if (ConferenceSpeaker != null)
+                                if (Speaker != null)
                                 {
 
-                                    ConferenceSpeaker.SpeakerHours = OutSpeakerHours;
-                                    ConferenceSpeaker.SpeakerHoursAssignedOn = uc.AssignedOn;
-                                    ConferenceSpeaker.CreatedOn = uc.AssignedOn ?? DateTime.Now;
-                                    ConferenceSpeaker.LastUpdatedOn = uc.AssignedOn ?? DateTime.Now;
-                                    ConferenceSpeaker.SpeakerCheckListOnFile = false;
+                                    Speaker.SpeakerHours = OutSpeakerHours;
+                                    Speaker.SpeakerHoursAssignedOn = uc.AssignedOn;
+                                    Speaker.CreatedOn = uc.AssignedOn ?? DateTime.Now;
+                                    Speaker.LastUpdatedOn = uc.AssignedOn ?? DateTime.Now;
+                                    Speaker.SpeakerCheckListOnFile = false;
 
                                     if (CommonFunctions.DoesUserExist(db, uc.AssignedBy))
                                     {
-                                        ConferenceSpeaker.SpeakerHoursAssignedBy = uc.AssignedBy;
-                                        ConferenceSpeaker.CreatedBy = uc.AssignedBy;
-                                        ConferenceSpeaker.LastUpdatedBy = uc.AssignedBy;
+                                        Speaker.SpeakerHoursAssignedBy = uc.AssignedBy;
+                                        Speaker.CreatedBy = uc.AssignedBy;
+                                        Speaker.LastUpdatedBy = uc.AssignedBy;
                                     }
                                     else
                                     {
-                                        ConferenceSpeaker.SpeakerHoursAssignedBy = ImportUserID;
-                                        ConferenceSpeaker.CreatedBy = ImportUserID;
-                                        ConferenceSpeaker.LastUpdatedBy = ImportUserID;
+                                        Speaker.SpeakerHoursAssignedBy = ImportUserID;
+                                        Speaker.CreatedBy = ImportUserID;
+                                        Speaker.LastUpdatedBy = ImportUserID;
                                     }
 
-                                    var FDOnFile = (from f in db.FacultyDisclosures
-                                                    where f.UserID == uc.UserID && f.EventType == "Conference" && f.EventID == uc.EventID
-                                                    select f).Any();
+                                    var FacultyDisclosure = (from f in FacultyDisclosures
+                                                             where f.EventType == "Conference" && f.EventID == uc.EventID
+                                                             select f).FirstOrDefault();
 
-                                    ConferenceSpeaker.FacultyDisclosureOnFile = FDOnFile;
+                                    if (FacultyDisclosure != null)
+                                    {
+                                        Speaker.FacultyDisclosureOnFile = true;
+                                        Speaker.FacultyDisclosureID = FacultyDisclosure.ID;
+                                    }
+                                    else
+                                    {
+                                        Speaker.FacultyDisclosureOnFile = false;
+                                    }
 
                                     db.SaveChanges();
                                     Console.WriteLine(" - Speaker Saved");
+                                }
+                                else
+                                {
+                                    Console.WriteLine(" - Skipped No Speaker");
                                 }
 
                             }
@@ -354,7 +378,7 @@ namespace OSUCCMEDataImport.Jobs
             {
                 var TransferStartDate = new DateTime(2012, 1, 1);
                 var WebcastSpeakersToImport = (from uc in olddb.UserCredits
-                                               where uc.IsDeleted == false && uc.AssignedOn > TransferStartDate && uc.IsSpeaker == false && (uc.EventType == "Webcast-Live" || uc.EventType == "Webcast-VOD")
+                                               where uc.IsDeleted == false && uc.AssignedOn > TransferStartDate && uc.IsSpeaker == true && (uc.EventType == "Webcast-Live" || uc.EventType == "Webcast-VOD")
                                                group uc by uc.UserID into ucg
                                                select new
                                                {
@@ -367,24 +391,26 @@ namespace OSUCCMEDataImport.Jobs
                 Console.WriteLine(Total + " to Process");
                 var Index = 1;
 
+                var WebcastIDs = (from ce in db.Webcasts
+                                  where ce.IsDeleted == false
+                                  select ce.ID).ToList();
+
                 foreach (var u in WebcastSpeakersToImport)
                 {
-                    Console.Write("Processing Speakers : (" + Index + "/" + Total + ") " + u.UserID);
+                    Console.WriteLine("Processing Webcast Speakers : (" + Index + "/" + Total + ") " + u.UserID);
 
                     if (CommonFunctions.DoesUserExist(db, u.UserID))
                     {
+                        var FacultyDisclosures = (from f in db.FacultyDisclosures
+                                                  where f.UserID == u.UserID
+                                                  select f).ToList();
+
                         var TotalCredits = u.SpeakingCredits.Count();
                         var CreditsIndex = 1;
 
-                        var Webcast = (from ce in db.Webcasts
-                                       where ce.IsDeleted == false
-                                       select ce).ToList();
-
-                        var WebcastIDs = Webcast.Select(x => x.ID).ToList();
-
                         foreach (var uc in u.SpeakingCredits)
                         {
-                            Console.Write("Speaker Credits : (" + Index + "/" + Total + ") (" + CreditsIndex + "/" + TotalCredits + ") " + uc.ID + " ");
+                            Console.Write("Webcast Speaker Credits : (" + Index + "/" + Total + ") (" + CreditsIndex + "/" + TotalCredits + ") " + uc.ID + " ");
 
 
                             if (WebcastIDs.Contains(uc.EventID.Value))
@@ -405,29 +431,32 @@ namespace OSUCCMEDataImport.Jobs
                                     Speaker.LastUpdatedOn = uc.AssignedOn ?? DateTime.Now;
                                     Speaker.SpeakerCheckListOnFile = false;
 
-                                    if (CommonFunctions.DoesUserExist(db, uc.AssignedBy))
+                                    Speaker.SpeakerHoursAssignedBy = ImportUserID;
+                                    Speaker.CreatedBy = ImportUserID;
+                                    Speaker.LastUpdatedBy = ImportUserID;
+
+
+                                    var FacultyDisclosure = (from f in FacultyDisclosures
+                                                             where f.EventType == "Webcasts" && f.EventID == uc.EventID
+                                                             select f).FirstOrDefault();
+
+                                    if (FacultyDisclosure != null)
                                     {
-                                        Speaker.SpeakerHoursAssignedBy = uc.AssignedBy;
-                                        Speaker.CreatedBy = uc.AssignedBy;
-                                        Speaker.LastUpdatedBy = uc.AssignedBy;
+                                        Speaker.FacultyDisclosureOnFile = true;
+                                        Speaker.FacultyDisclosureID = FacultyDisclosure.ID;
                                     }
                                     else
                                     {
-                                        Speaker.SpeakerHoursAssignedBy = ImportUserID;
-                                        Speaker.CreatedBy = ImportUserID;
-                                        Speaker.LastUpdatedBy = ImportUserID;
+                                        Speaker.FacultyDisclosureOnFile = false;
                                     }
-
-                                    var FDOnFile = (from f in db.FacultyDisclosures
-                                                    where f.UserID == uc.UserID && f.EventType == "Webcasts" && f.EventID == uc.EventID
-                                                    select f).Any();
-
-                                    Speaker.FacultyDisclosureOnFile = FDOnFile;
 
                                     db.SaveChanges();
                                     Console.WriteLine(" - Speaker Saved");
                                 }
-
+                                else
+                                {
+                                    Console.WriteLine(" - Skipped No Speaker");
+                                }
                             }
                             else
                             {
@@ -465,7 +494,7 @@ namespace OSUCCMEDataImport.Jobs
             {
                 var TransferStartDate = new DateTime(2012, 1, 1);
                 var EnduringSpeakersToImport = (from uc in olddb.UserCredits
-                                                where uc.IsDeleted == false && uc.AssignedOn > TransferStartDate && uc.IsSpeaker == false && uc.EventType == "Enduring"
+                                                where uc.IsDeleted == false && uc.AssignedOn > TransferStartDate && uc.IsSpeaker == true && uc.EventType == "Enduring"
                                                 group uc by uc.UserID into ucg
                                                 select new
                                                 {
@@ -478,24 +507,26 @@ namespace OSUCCMEDataImport.Jobs
                 Console.WriteLine(Total + " to Process");
                 var Index = 1;
 
+                var EnduringIDs = (from ce in db.EnduringMaterials
+                                   where ce.IsDeleted == false
+                                   select ce.ID).ToList();
+
                 foreach (var u in EnduringSpeakersToImport)
                 {
-                    Console.Write("Processing Speakers : (" + Index + "/" + Total + ") " + u.UserID);
+                    Console.WriteLine("Processing Enduring Speakers : (" + Index + "/" + Total + ") " + u.UserID);
 
                     if (CommonFunctions.DoesUserExist(db, u.UserID))
                     {
+                        var FacultyDisclosures = (from f in db.FacultyDisclosures
+                                                  where f.UserID == u.UserID
+                                                  select f).ToList();
+
                         var TotalCredits = u.SpeakingCredits.Count();
                         var CreditsIndex = 1;
 
-                        var Enduring = (from ce in db.EnduringMaterials
-                                        where ce.IsDeleted == false
-                                        select ce).ToList();
-
-                        var EnduringIDs = Enduring.Select(x => x.ID).ToList();
-
                         foreach (var uc in u.SpeakingCredits)
                         {
-                            Console.Write("Speaker Credits : (" + Index + "/" + Total + ") (" + CreditsIndex + "/" + TotalCredits + ") " + uc.ID + " ");
+                            Console.Write("Enduring Speaker Credits : (" + Index + "/" + Total + ") (" + CreditsIndex + "/" + TotalCredits + ") " + uc.ID + " ");
 
 
                             if (EnduringIDs.Contains(uc.EventID.Value))
@@ -516,27 +547,30 @@ namespace OSUCCMEDataImport.Jobs
                                     Speaker.LastUpdatedOn = uc.AssignedOn ?? DateTime.Now;
                                     Speaker.SpeakerCheckListOnFile = false;
 
-                                    if (CommonFunctions.DoesUserExist(db, uc.AssignedBy))
+                                    Speaker.SpeakerHoursAssignedBy = ImportUserID;
+                                    Speaker.CreatedBy = ImportUserID;
+                                    Speaker.LastUpdatedBy = ImportUserID;
+
+                                    var FacultyDisclosure = (from f in FacultyDisclosures
+                                                             where f.EventType == "EnduringMaterial" && f.EventID == uc.EventID
+                                                             select f).FirstOrDefault();
+
+                                    if (FacultyDisclosure != null)
                                     {
-                                        Speaker.SpeakerHoursAssignedBy = uc.AssignedBy;
-                                        Speaker.CreatedBy = uc.AssignedBy;
-                                        Speaker.LastUpdatedBy = uc.AssignedBy;
+                                        Speaker.FacultyDisclosureOnFile = true;
+                                        Speaker.FacultyDisclosureID = FacultyDisclosure.ID;
                                     }
                                     else
                                     {
-                                        Speaker.SpeakerHoursAssignedBy = ImportUserID;
-                                        Speaker.CreatedBy = ImportUserID;
-                                        Speaker.LastUpdatedBy = ImportUserID;
+                                        Speaker.FacultyDisclosureOnFile = false;
                                     }
-
-                                    var FDOnFile = (from f in db.FacultyDisclosures
-                                                    where f.UserID == uc.UserID && f.EventType == "EnduringMaterial" && f.EventID == uc.EventID
-                                                    select f).Any();
-
-                                    Speaker.FacultyDisclosureOnFile = FDOnFile;
 
                                     db.SaveChanges();
                                     Console.WriteLine(" - Speaker Saved");
+                                }
+                                else
+                                {
+                                    Console.WriteLine(" - Skipped No Speaker");
                                 }
 
                             }
@@ -576,38 +610,39 @@ namespace OSUCCMEDataImport.Jobs
             {
                 var TransferStartDate = new DateTime(2012, 1, 1);
                 var RSSeriesSpeakersToImport = (from uc in olddb.UserCredits
-                                                where uc.IsDeleted == false && uc.AssignedOn > TransferStartDate && uc.IsSpeaker == false && uc.EventType == "RSSeries"
+                                                where uc.IsDeleted == false && uc.AssignedOn > TransferStartDate && uc.IsSpeaker == true && uc.EventType == "RSSeries"
                                                 group uc by uc.UserID into ucg
                                                 select new
                                                 {
                                                     UserID = ucg.Key,
                                                     SpeakingCredits = ucg
-                                                }).ToList();
+                                                });
 
                 var Total = RSSeriesSpeakersToImport.Count();
                 Console.Write("Importing RSSeries Speakers - Starting ");
                 Console.WriteLine(Total + " to Process");
                 var Index = 1;
 
+                var RSSeriesIDs = (from ce in db.RSSeries
+                                   where ce.IsDeleted == false
+                                   select ce.ID).ToList();
+
                 foreach (var u in RSSeriesSpeakersToImport)
                 {
-                    Console.Write("Processing Speakers : (" + Index + "/" + Total + ") " + u.UserID);
+                    Console.WriteLine("Processing RSSeries Speakers : (" + Index + "/" + Total + ") " + u.UserID);
 
                     if (CommonFunctions.DoesUserExist(db, u.UserID))
                     {
+                        var FacultyDisclosures = (from f in db.FacultyDisclosures
+                                                  where f.UserID == u.UserID
+                                                  select f).ToList();
+
                         var TotalCredits = u.SpeakingCredits.Count();
                         var CreditsIndex = 1;
 
-                        var RSSeries = (from ce in db.RSSeries
-                                        where ce.IsDeleted == false
-                                        select ce).ToList();
-
-                        var RSSeriesIDs = RSSeries.Select(x => x.ID).ToList();
-
                         foreach (var uc in u.SpeakingCredits)
                         {
-                            Console.Write("Speaker Credits : (" + Index + "/" + Total + ") (" + CreditsIndex + "/" + TotalCredits + ") " + uc.ID + " ");
-
+                            Console.Write("RSSeries Speaker Credits : (" + Index + "/" + Total + ") (" + CreditsIndex + "/" + TotalCredits + ") " + uc.ID + " ");
 
                             if (RSSeriesIDs.Contains(uc.EventID.Value))
                             {
@@ -620,36 +655,36 @@ namespace OSUCCMEDataImport.Jobs
 
                                 if (Speaker != null)
                                 {
-
                                     Speaker.SpeakerHours = OutSpeakerHours;
                                     Speaker.SpeakerHoursAssignedOn = uc.AssignedOn;
                                     Speaker.CreatedOn = uc.AssignedOn ?? DateTime.Now;
                                     Speaker.LastUpdatedOn = uc.AssignedOn ?? DateTime.Now;
                                     Speaker.SpeakerCheckListOnFile = false;
+                                    Speaker.SpeakerHoursAssignedBy = ImportUserID;
+                                    Speaker.CreatedBy = ImportUserID;
+                                    Speaker.LastUpdatedBy = ImportUserID;
 
-                                    if (CommonFunctions.DoesUserExist(db, uc.AssignedBy))
+                                    var FacultyDisclosure = (from f in FacultyDisclosures
+                                                             where f.EventType == "RSSeries" && f.EventID == uc.EventID
+                                                             select f).FirstOrDefault();
+
+                                    if (FacultyDisclosure != null)
                                     {
-                                        Speaker.SpeakerHoursAssignedBy = uc.AssignedBy;
-                                        Speaker.CreatedBy = uc.AssignedBy;
-                                        Speaker.LastUpdatedBy = uc.AssignedBy;
+                                        Speaker.FacultyDisclosureOnFile = true;
+                                        Speaker.FacultyDisclosureID = FacultyDisclosure.ID;
                                     }
                                     else
                                     {
-                                        Speaker.SpeakerHoursAssignedBy = ImportUserID;
-                                        Speaker.CreatedBy = ImportUserID;
-                                        Speaker.LastUpdatedBy = ImportUserID;
+                                        Speaker.FacultyDisclosureOnFile = false;
                                     }
-
-                                    var FDOnFile = (from f in db.FacultyDisclosures
-                                                    where f.UserID == uc.UserID && f.EventType == "RSSeries" && f.EventID == uc.EventID
-                                                    select f).Any();
-
-                                    Speaker.FacultyDisclosureOnFile = FDOnFile;
 
                                     db.SaveChanges();
                                     Console.WriteLine(" - Speaker Saved");
                                 }
-
+                                else
+                                {
+                                    Console.WriteLine(" - Skipped No Speaker");
+                                }
                             }
                             else
                             {
@@ -658,7 +693,6 @@ namespace OSUCCMEDataImport.Jobs
 
                             CreditsIndex++;
                         }
-
                     }
                     else
                     {
