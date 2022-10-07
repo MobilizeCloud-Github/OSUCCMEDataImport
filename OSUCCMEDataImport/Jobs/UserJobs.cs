@@ -370,7 +370,7 @@ namespace OSUCCMEDataImport.Jobs
             var db = new NewOSUCCMEEntities();
             var olddb = new OldOSUCCMEEntities();
 
-            db.Configuration.AutoDetectChangesEnabled = false;
+            //db.Configuration.AutoDetectChangesEnabled = false;
             olddb.Configuration.AutoDetectChangesEnabled = false;
 
             var Roles = (from u in olddb.aspnet_Roles
