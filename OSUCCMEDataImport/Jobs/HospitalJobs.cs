@@ -1,7 +1,9 @@
 ﻿using OldOSUDatabase.Models;
+using OSUCCMEDataImport.Common;
 using OSUCCMEDataImport.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 
@@ -11,6 +13,9 @@ namespace OSUCCMEDataImport.Jobs
     {
         public static void Process(string ImportUserID)
         {
+            Stopwatch stopWatch = new Stopwatch();
+            stopWatch.Start();
+
             CreateDefaultHospitalGroup(ImportUserID);
             Console.WriteLine("");
             Console.WriteLine("-----------------------------------");
@@ -24,6 +29,12 @@ namespace OSUCCMEDataImport.Jobs
             Console.WriteLine("-----------------------------------");
             Console.WriteLine("");
             ImportHospitalAdmins(ImportUserID);
+
+            TimeSpan ts = stopWatch.Elapsed;
+            string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
+            ts.Hours, ts.Minutes, ts.Seconds,
+            ts.Milliseconds / 10);
+            Console.WriteLine("RunTime " + elapsedTime);
         }
 
         private static void CreateDefaultHospitalGroup(string ImportUserID)
@@ -117,64 +128,65 @@ namespace OSUCCMEDataImport.Jobs
             db.Configuration.AutoDetectChangesEnabled = false;
             olddb.Configuration.AutoDetectChangesEnabled = false;
 
-            var HospitalUsers = (from h in olddb.HospitalUsers
-                                 where h.IsDeleted == false
+            var HospitalsToImport = (from h in olddb.HospitalUsers
+                                 where h.IsDeleted == false && h.HospitalID != null
+                                 group h by h.HospitalID into hg
                                  select new
                                  {
-                                     h.HospitalID,
-                                     h.UserID,
-                                     h.IsApproved,
-                                     h.ReviewedTimeStamp,
-                                     h.RequestTimeStamp
+                                     HospitalID = hg.Key,
+                                     HospitalUsers = hg
                                  });
 
             TextWriter tw = new StreamWriter("ImportHospitalUsersLog.txt");
 
-            var Total = HospitalUsers.Count();
+            var Total = HospitalsToImport.Count();
             Console.Write("Importing Hospital Users - Starting ");
             Console.WriteLine(Total + " to Process");
             var Index = 1;
             try
             {
                 var HospitalUsersToAdd = new List<Models.HospitalUsers>();
-                foreach (var HospitalUser in HospitalUsers)
-            {
-                
-                    Console.Write("Processing : " + HospitalUser.UserID + " (" + Index + "/" + Total + ") ");
 
-                    var NewUser = (from h in db.UserProfiles
-                                   where h.UserID == HospitalUser.UserID && h.IsDeleted == false
-                                   select h).FirstOrDefault();
+                var HospitalIDs = (from h in db.Hospitals
+                                   where h.IsDeleted == false
+                                   select h.ID).ToList();
+                foreach (var Hospital in HospitalsToImport)
+                {
 
-                    var NewHospital = (from h in db.Hospitals
-                                       where h.ID == HospitalUser.HospitalID && h.IsDeleted == false
-                                       select h).FirstOrDefault();
-                    if (NewUser != null && NewHospital != null)
+                    Console.Write("Processing Hospital: (" + Index + "/" + Total + ") " + Hospital.HospitalID);
+                    if (HospitalIDs.Contains(Hospital.HospitalID.Value))
                     {
-                        var NewHospitalUser = new Models.HospitalUsers()
+                        var UsersTotal = Hospital.HospitalUsers.Count();
+                        var UserIndex = 1;
+                        foreach (var User in Hospital.HospitalUsers)
                         {
-                            UserID = HospitalUser.UserID,
-                            HospitalID = NewHospital.ID,
-                            IsDeleted = false,
-                            IsApproved = HospitalUser.IsApproved ?? false,
-                            RequestTimeStamp = HospitalUser.RequestTimeStamp,
-                            ReviewedTimeStamp = HospitalUser.ReviewedTimeStamp,
-                            CreatedOn = DateTime.Now,
-                            CreatedBy = importUserID
-                        };
-                        HospitalUsersToAdd.Add(NewHospitalUser);
-
-                        if (Index % 10 == 0 || Index == Total)
-                        {
-                            db.HospitalUsers.AddRange(HospitalUsersToAdd);
-                            db.SaveChanges();
-                            HospitalUsersToAdd.Clear();
-                            Console.WriteLine(" - Saved");
+                            Console.Write("Processing Hospital User: (" + Index + "/" + Total + ") (" + UserIndex + "/" + UsersTotal + ")" + Hospital.HospitalID + " " + User.UserID);
+                            if (CommonFunctions.DoesUserExist(db, User.UserID))
+                            {
+                                var NewHospitalUser = new Models.HospitalUsers()
+                                {
+                                    UserID = User.UserID,
+                                    HospitalID = Hospital.HospitalID.Value,
+                                    IsDeleted = false,
+                                    IsApproved = User.IsApproved ?? false,
+                                    RequestTimeStamp = User.RequestTimeStamp,
+                                    ReviewedTimeStamp = User.ReviewedTimeStamp,
+                                    CreatedOn = DateTime.Now,
+                                    CreatedBy = importUserID
+                                };
+                                HospitalUsersToAdd.Add(NewHospitalUser);
+                                Console.WriteLine(" - Pending");
+                            }
+                            else
+                            {
+                                Console.WriteLine(" - Skipped");
+                            }
+                            UserIndex++;
                         }
-                        else
-                        {
-                            Console.WriteLine(" - Pending");
-                        }                        
+                        db.HospitalUsers.AddRange(HospitalUsersToAdd);
+                        db.SaveChanges();
+                        HospitalUsersToAdd.Clear();
+                        Console.WriteLine(" - Complete");
                     }
                     else
                     {
@@ -183,7 +195,6 @@ namespace OSUCCMEDataImport.Jobs
                     Index++;
                 }
                 Console.WriteLine(" - Complete");
-            
             }
             catch (Exception e)
             {
@@ -204,9 +215,10 @@ namespace OSUCCMEDataImport.Jobs
 
             var HospitalAdmins = (from h in olddb.HospitalAdminCategories
                                   where h.IsDeleted == false
-                                  select new { 
-                                  h.HospitalID,
-                                  h.UserID
+                                  select new
+                                  {
+                                      h.HospitalID,
+                                      h.UserID
                                   }).ToList();
 
             TextWriter tw = new StreamWriter("ImportHospitalAdminsLog.txt");

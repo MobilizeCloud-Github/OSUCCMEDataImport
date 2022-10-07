@@ -210,7 +210,7 @@ namespace OSUCCMEDataImport.Jobs
 
                             UsersToAdd.Add(NewUser);
 
-                            if (Index % 25 == 0 || Index == Total)
+                            if (Index % 10 == 0 || Index == Total)
                             {
                                 db.UserProfiles.AddRange(UsersToAdd);
                                 db.SaveChanges();
@@ -341,7 +341,7 @@ namespace OSUCCMEDataImport.Jobs
 
                     
 
-                    if (Index % 25 == 0 || Index == Total)
+                    if (Index % 10 == 0 || Index == Total)
                     {
                         db.EmailPreferences.AddRange(EmailPreferencesToAdd);
                         db.SaveChanges();
@@ -444,12 +444,8 @@ namespace OSUCCMEDataImport.Jobs
                 try
                 {
                     Console.Write("Processing : " + OldUser.UserID + " (" + Index + "/" + Total + ") ");
-                    var Users = (from u in db.UserProfiles
-                                 where u.UserID == OldUser.UserID
-                                 select u.UserID).ToList();
 
-
-                    if (Users.Contains(OldUser.UserID))
+                    if (CommonFunctions.DoesUserExist(db, OldUser.UserID))
                     {
                         var UserBoard = new UserBoardIdentificationNumbers()
                         {
@@ -458,13 +454,14 @@ namespace OSUCCMEDataImport.Jobs
                             IdentificationNumber = OldUser.ABIMDiplomatNumber
                         };
                         UserBoardsToAdd.Add(UserBoard);
-                        Console.Write(" - saved");
+                        Console.Write(" - pending");
+                    }
+                    else
+                    {
+                        Console.Write(" - skipped");
                     }
 
-
-                    Console.Write(" - ABIM Nunbers saved");
-
-                    Console.WriteLine(" - Complete");
+                    
                 }
                 catch (Exception e)
                 {
@@ -476,6 +473,8 @@ namespace OSUCCMEDataImport.Jobs
             }
             db.UserBoardIdentificationNumbers.AddRange(UserBoardsToAdd);
             db.SaveChanges();
+            Console.Write(" - ABIM Nunbers saved");
+            Console.WriteLine(" - Complete");
             tw.Close();
         }
 
