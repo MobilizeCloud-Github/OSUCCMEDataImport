@@ -62,7 +62,7 @@ namespace OSUCCMEDataImport.Jobs
                         BoardID = BoardID
                     };
                     db.WebcastBoards.Add(board);
-
+                    Console.WriteLine(" - Pending");
                     Index++;
                 }
                 db.SaveChanges();
@@ -106,7 +106,7 @@ namespace OSUCCMEDataImport.Jobs
                         ACCMEActivityID = c.ACCMEActivityID
                     };
                     db.WebcastACCMEIDs.Add(accme);
-
+                    Console.WriteLine(" - Pending");
                     Index++;
                 }
                 db.SaveChanges();
