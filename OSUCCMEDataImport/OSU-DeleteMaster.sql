@@ -86,6 +86,8 @@ DBCC CHECKIDENT ('[TestingQuestionsFiles]', RESEED, 0);
 DBCC CHECKIDENT ('[TestingQuestionsAnswers]', RESEED, 0);
 DBCC CHECKIDENT ('[TestingQuestions]', RESEED, 0);
 
+DELETE FROM [dbo].[WebcastBoards]
+DELETE FROM [dbo].[WebcastACCMEIDs]
 DELETE FROM [dbo].[WebcastJointProviders]
 DELETE FROM [dbo].[WebcastOptions]
 DELETE FROM [dbo].[WebcastOptionsGroups]
@@ -96,6 +98,8 @@ DELETE FROM [dbo].[WebcastFiles]
 DELETE FROM [dbo].[Webcasts]
 
 
+DBCC CHECKIDENT ('[WebcastBoards]', RESEED, 0);
+DBCC CHECKIDENT ('[WebcastACCMEIDs]', RESEED, 0);
 DBCC CHECKIDENT ('[WebcastJointProviders]', RESEED, 0);
 DBCC CHECKIDENT ('[WebcastPrices]', RESEED, 0);
 DBCC CHECKIDENT ('[WebcastRegistrations]', RESEED, 0);

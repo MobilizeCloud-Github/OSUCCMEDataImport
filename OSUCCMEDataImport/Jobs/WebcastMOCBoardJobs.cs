@@ -1,6 +1,7 @@
 ﻿using OldOSUDatabase.Models;
 using OSUCCMEDataImport.Models;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
@@ -49,9 +50,13 @@ namespace OSUCCMEDataImport.Jobs
                 Console.WriteLine(Total + " to Process");
                 var Index = 1;
 
+                var Boards = (from b in db.Boards
+                              select b).ToList();
+
+                var BoardsToAdd = new List<Models.WebcastBoards>();
                 foreach (var c in WebcastMOCBoardsToImport)
                 {
-                    var BoardID = (from b in db.Boards
+                    var BoardID = (from b in Boards
                                    where b.Abbreviation == c.Board
                                    select b.ID).FirstOrDefault();
 
@@ -61,10 +66,11 @@ namespace OSUCCMEDataImport.Jobs
                         WebcastID = c.WebcastID,
                         BoardID = BoardID
                     };
-                    db.WebcastBoards.Add(board);
+                    BoardsToAdd.Add(board);
                     Console.WriteLine(" - Pending");
                     Index++;
                 }
+                db.WebcastBoards.AddRange(BoardsToAdd);
                 db.SaveChanges();
                 Console.WriteLine(" - Complete");
             }
@@ -96,19 +102,32 @@ namespace OSUCCMEDataImport.Jobs
                 Console.WriteLine(Total + " to Process");
                 var Index = 1;
 
+                var WebcastIDs = (from c in db.Webcasts
+                                  where c.IsDeleted == false
+                                  select c.ID).ToList();
+
+                var ACCMEIDsToAdd = new List<Models.WebcastACCMEIDs>();
                 foreach (var c in WebcastACCMEToImport)
                 {
-                    Console.Write("Processing Webcast ACCME: (" + Index + "/" + Total + ") " + c.ID);
-                    var accme = new Models.WebcastACCMEIDs()
+                    if (WebcastIDs.Contains(c.WebcastID))
                     {
-                        WebcastID = c.WebcastID,
-                        Year = c.Year,
-                        ACCMEActivityID = c.ACCMEActivityID
-                    };
-                    db.WebcastACCMEIDs.Add(accme);
-                    Console.WriteLine(" - Pending");
+                        Console.Write("Processing Webcast ACCME: (" + Index + "/" + Total + ") " + c.ID);
+                        var accme = new Models.WebcastACCMEIDs()
+                        {
+                            WebcastID = c.WebcastID,
+                            Year = c.Year,
+                            ACCMEActivityID = c.ACCMEActivityID
+                        };
+                        ACCMEIDsToAdd.Add(accme);
+                        Console.WriteLine(" - Pending");
+                    }
+                    else
+                    {
+                        Console.WriteLine(" - Skipped");
+                    }
                     Index++;
                 }
+                db.WebcastACCMEIDs.AddRange(ACCMEIDsToAdd);
                 db.SaveChanges();
                 Console.WriteLine(" - Complete");
             }

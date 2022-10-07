@@ -481,9 +481,11 @@ namespace OSUCCMEDataImport.Jobs
                 var Criteria23 = (from c in db.Criteria23
                                   select c).ToList();
 
+                var Index = 1;
+                var Total = Criteria23.Count();
                 foreach (var criteria in Criteria23)
                 {
-                    Console.Write("Getting Event Info 23 ");
+                    Console.Write("Getting Event Info 23: (" + Index + "/" + Total + ") " + criteria.ID + " ");
                     switch (criteria.EventType.ToLower())
                     {
                         case ("conference"):
@@ -535,6 +537,8 @@ namespace OSUCCMEDataImport.Jobs
                             }
 
                     }
+                    Index++;
+                    Console.WriteLine(" - Complete");
                 }
             }
             catch (Exception e)
@@ -558,9 +562,11 @@ namespace OSUCCMEDataImport.Jobs
                 var Criteria24 = (from c in db.Criteria24
                                   select c).ToList();
 
+                var Index = 1;
+                var Total = Criteria24.Count();
                 foreach (var criteria in Criteria24)
                 {
-                    Console.Write("Getting Event Info 24 ");
+                    Console.Write("Getting Event Info 24: (" + Index + "/" + Total + ") " + criteria.ID + " ");
                     switch (criteria.EventType.ToLower())
                     {
                         case ("conference"):
@@ -612,6 +618,8 @@ namespace OSUCCMEDataImport.Jobs
                             }
 
                     }
+                    Index++;
+                    Console.WriteLine(" - Complete");
                 }
             }
             catch (Exception e)
@@ -637,9 +645,11 @@ namespace OSUCCMEDataImport.Jobs
                 var Criteria25 = (from c in db.Criteria25
                                   select c).ToList();
 
+                var Index = 1;
+                var Total = Criteria25.Count();
                 foreach (var criteria in Criteria25)
                 {
-                    Console.Write("Getting Event Info 25 ");
+                    Console.Write("Getting Event Info 25: (" + Index + "/" + Total + ") " + criteria.ID + " ");
                     switch (criteria.EventType.ToLower())
                     {
                         case ("conference"):
@@ -691,6 +701,8 @@ namespace OSUCCMEDataImport.Jobs
                             }
 
                     }
+                    Index++;
+                    Console.WriteLine(" - Complete");
                 }
             }
             catch (Exception e)
@@ -714,8 +726,11 @@ namespace OSUCCMEDataImport.Jobs
                 var Criteria27 = (from c in db.Criteria27
                                   select c).ToList();
 
+                var Index = 1;
+                var Total = Criteria27.Count();
                 foreach (var criteria in Criteria27)
                 {
+                    Console.Write("Getting Event Info 27: (" + Index + "/" + Total + ") " + criteria.ID + " ");
                     switch (criteria.EventType.ToLower())
                     {
                         case ("conference"):
@@ -767,6 +782,8 @@ namespace OSUCCMEDataImport.Jobs
                             }
 
                     }
+                    Index++;
+                    Console.WriteLine(" - Complete");
                 }
             }
             catch (Exception e)
@@ -790,8 +807,11 @@ namespace OSUCCMEDataImport.Jobs
                 var Criteria30 = (from c in db.Criteria30
                                   select c).ToList();
 
+                var Index = 1;
+                var Total = Criteria30.Count();
                 foreach (var criteria in Criteria30)
                 {
+                    Console.Write("Getting Event Info 30: (" + Index + "/" + Total + ") " + criteria.ID + " ");
                     switch (criteria.EventType.ToLower())
                     {
                         case ("conference"):
@@ -843,6 +863,8 @@ namespace OSUCCMEDataImport.Jobs
                             }
 
                     }
+                    Index++;
+                    Console.WriteLine(" - Complete");
                 }
             }
             catch (Exception e)
@@ -866,8 +888,11 @@ namespace OSUCCMEDataImport.Jobs
                 var Criteria32 = (from c in db.Criteria32
                                   select c).ToList();
 
+                var Index = 1;
+                var Total = Criteria32.Count();
                 foreach (var criteria in Criteria32)
                 {
+                    Console.Write("Getting Event Info 32: (" + Index + "/" + Total + ") " + criteria.ID + " ");
                     switch (criteria.EventType.ToLower())
                     {
                         case ("conference"):
@@ -919,6 +944,8 @@ namespace OSUCCMEDataImport.Jobs
                             }
 
                     }
+                    Index++;
+                    Console.WriteLine(" - Complete");
                 }
             }
             catch (Exception e)
@@ -928,6 +955,5 @@ namespace OSUCCMEDataImport.Jobs
 
             }
         }
-
     }
 }
