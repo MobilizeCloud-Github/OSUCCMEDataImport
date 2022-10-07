@@ -1,3 +1,53 @@
+DELETE FROM [dbo].[EventPromoCode]
+DBCC CHECKIDENT ('[EventPromoCode]', RESEED, 0);
+
+
+DELETE FROM [dbo].[Criteria]
+DELETE FROM [dbo].[Criteria23]
+DELETE FROM [dbo].[Criteria24]
+DELETE FROM [dbo].[Criteria25]
+DELETE FROM [dbo].[Criteria27]
+DELETE FROM [dbo].[Criteria28]
+DELETE FROM [dbo].[Criteria30]
+DELETE FROM [dbo].[Criteria32]
+DELETE FROM [dbo].[Criteria35]
+DELETE FROM [dbo].[Criteria37]
+
+DBCC CHECKIDENT ('[Criteria]', RESEED, 0);
+DBCC CHECKIDENT ('[Criteria23]', RESEED, 0);
+DBCC CHECKIDENT ('[Criteria24]', RESEED, 0);
+DBCC CHECKIDENT ('[Criteria25]', RESEED, 0);
+DBCC CHECKIDENT ('[Criteria27]', RESEED, 0);
+DBCC CHECKIDENT ('[Criteria28]', RESEED, 0);
+DBCC CHECKIDENT ('[Criteria30]', RESEED, 0);
+DBCC CHECKIDENT ('[Criteria32]', RESEED, 0);
+DBCC CHECKIDENT ('[Criteria35]', RESEED, 0);
+DBCC CHECKIDENT ('[Criteria37]', RESEED, 0);
+
+
+DELETE FROM [dbo].[ConferenceSpeakerTopics]
+DELETE FROM [dbo].[ConferenceSpeakers]
+
+DELETE FROM [dbo].[WebcastSpeakerTopics]
+DELETE FROM [dbo].[WebcastSpeakers]
+
+DELETE FROM [dbo].[EnduringMaterialSpeakerTopics]
+DELETE FROM [dbo].[EnduringMaterialSpeakers]
+
+DELETE FROM [dbo].[RSSeriesSpeakerTopics]
+DELETE FROM [dbo].[RSSeriesSpeakers]
+
+
+DBCC CHECKIDENT ('[ConferenceSpeakerTopics]', RESEED, 0);
+DBCC CHECKIDENT ('[ConferenceSpeakers]', RESEED, 0);
+DBCC CHECKIDENT ('[WebcastSpeakerTopics]', RESEED, 0);
+DBCC CHECKIDENT ('[WebcastSpeakers]', RESEED, 0);
+DBCC CHECKIDENT ('[EnduringMaterialSpeakerTopics]', RESEED, 0);
+DBCC CHECKIDENT ('[EnduringMaterialSpeakers]', RESEED, 0);
+DBCC CHECKIDENT ('[RSSeriesSpeakerTopics]', RESEED, 0);
+DBCC CHECKIDENT ('[RSSeriesSpeakers]', RESEED, 0);
+
+
 DELETE FROM [dbo].[ConferenceStreamViews]
 DELETE FROM [dbo].[ConferenceStreams]
 DELETE FROM [dbo].[ConferenceJointProviders]
@@ -18,7 +68,6 @@ DBCC CHECKIDENT ('[ConferenceRegistrationItems]', RESEED, 0);
 DBCC CHECKIDENT ('[ConferenceRegistrations]', RESEED, 0);
 DBCC CHECKIDENT ('[ConferenceSpecialties]', RESEED, 0);
 DBCC CHECKIDENT ('[ConferenceFiles]', RESEED, 0);
-
 
 
 DELETE FROM [dbo].[EventAdvertisers]
@@ -54,6 +103,7 @@ DBCC CHECKIDENT ('[FacultyDisclosures]', RESEED, 0);
 
 DELETE FROM [dbo].[HospitalAdmins]
 DELETE FROM [dbo].[HospitalUsers]
+DELETE FROM [dbo].[HospitalGroupHospitals]
 DELETE FROM [dbo].[Hospitals]
 DELETE FROM [dbo].[HospitalGroups]
 

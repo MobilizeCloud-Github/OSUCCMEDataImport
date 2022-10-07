@@ -90,7 +90,7 @@ namespace OSUCCMEDataImport.Jobs
 
                 var ArchivedSeries = new RSSeriesSeries()
                 {
-                    ID = 340,
+                    ID = 341,
                     Name = "ARCH",
                     URL = CommonFunctions.URLFriendly("ARCH"),
                     AttendanceOverrideExpiration = null,

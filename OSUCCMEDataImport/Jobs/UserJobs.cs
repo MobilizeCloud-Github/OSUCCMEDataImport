@@ -158,7 +158,7 @@ namespace OSUCCMEDataImport.Jobs
                                 NameTag = CommonFunctions.GetTrimedString(User.NameTag, 128),
                                 Address1 = CommonFunctions.GetTrimedString(User.MailingAddress1, 256),
                                 Address2 = CommonFunctions.GetTrimedString(User.MailingAddress2, 256),
-                                City = CommonFunctions.GetTrimedString(User.SpecialNeeds, 256),
+                                City = CommonFunctions.GetTrimedString(User.MailingCity, 256),
                                 CreatedBy = importUserID,
                                 CreatedOn = User.CreatedDate ?? DateTime.Now,
                                 LastAccessedOn = User.LastAccessed,

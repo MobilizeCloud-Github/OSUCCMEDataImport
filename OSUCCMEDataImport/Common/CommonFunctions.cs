@@ -172,6 +172,7 @@ namespace OSUCCMEDataImport.Common
                                 select u.ID).Any();
 
                     }
+                case ("enduring"):
                 case ("enduringmaterial"):
                 case ("enduring-material"):
                 case ("enduringmaterials"):

@@ -1,4 +1,5 @@
 ﻿using OldOSUDatabase.Models;
+using OSUCCMEDataImport.Common;
 using OSUCCMEDataImport.Models;
 using System;
 using System.Diagnostics;
@@ -13,42 +14,46 @@ namespace OSUCCMEDataImport.Jobs
             Stopwatch stopWatch = new Stopwatch();
             stopWatch.Start();
 
-            EventCriteriaC23(ImportUserID);
+            Criteria(ImportUserID);
             Console.WriteLine("");
             Console.WriteLine("-----------------------------------");
             Console.WriteLine("");
-            EventCriteriaC24(ImportUserID);
-            Console.WriteLine("");
-            Console.WriteLine("-----------------------------------");
-            Console.WriteLine("");
-            EventCriteriaC25(ImportUserID);
-            Console.WriteLine("");
-            Console.WriteLine("-----------------------------------");
-            Console.WriteLine("");
-            EventCriteriaC27(ImportUserID);
-            Console.WriteLine("");
-            Console.WriteLine("-----------------------------------");
-            Console.WriteLine("");
-            EventCriteriaC28(ImportUserID);
-            Console.WriteLine("");
-            Console.WriteLine("-----------------------------------");
-            Console.WriteLine("");
-            EventCriteriaC30(ImportUserID);
-            Console.WriteLine("");
-            Console.WriteLine("-----------------------------------");
-            Console.WriteLine("");
-            EventCriteriaC32(ImportUserID);
-            Console.WriteLine("");
-            Console.WriteLine("-----------------------------------");
-            Console.WriteLine("");
-            EventCriteriaC35(ImportUserID);
-            Console.WriteLine("");
-            Console.WriteLine("-----------------------------------");
-            Console.WriteLine("");
-            EventCriteriaC37(ImportUserID);
-            Console.WriteLine("");
-            Console.WriteLine("-----------------------------------");
-            Console.WriteLine("");
+            //EventCriteriaC23(ImportUserID);
+            //Console.WriteLine("");
+            //Console.WriteLine("-----------------------------------");
+            //Console.WriteLine("");
+            //EventCriteriaC24(ImportUserID);
+            //Console.WriteLine("");
+            //Console.WriteLine("-----------------------------------");
+            //Console.WriteLine("");
+            //EventCriteriaC25(ImportUserID);
+            //Console.WriteLine("");
+            //Console.WriteLine("-----------------------------------");
+            //Console.WriteLine("");
+            //EventCriteriaC27(ImportUserID);
+            //Console.WriteLine("");
+            //Console.WriteLine("-----------------------------------");
+            //Console.WriteLine("");
+            //EventCriteriaC28(ImportUserID);
+            //Console.WriteLine("");
+            //Console.WriteLine("-----------------------------------");
+            //Console.WriteLine("");
+            //EventCriteriaC30(ImportUserID);
+            //Console.WriteLine("");
+            //Console.WriteLine("-----------------------------------");
+            //Console.WriteLine("");
+            //EventCriteriaC32(ImportUserID);
+            //Console.WriteLine("");
+            //Console.WriteLine("-----------------------------------");
+            //Console.WriteLine("");
+            //EventCriteriaC35(ImportUserID);
+            //Console.WriteLine("");
+            //Console.WriteLine("-----------------------------------");
+            //Console.WriteLine("");
+            //EventCriteriaC37(ImportUserID);
+            //Console.WriteLine("");
+            //Console.WriteLine("-----------------------------------");
+            //Console.WriteLine("");
             GetEventInfo23();
             Console.WriteLine("");
             Console.WriteLine("-----------------------------------");
@@ -79,6 +84,127 @@ namespace OSUCCMEDataImport.Jobs
             ts.Hours, ts.Minutes, ts.Seconds,
             ts.Milliseconds / 10);
             Console.WriteLine("RunTime " + elapsedTime);
+        }
+
+        private static void Criteria(string ImportUserID)
+        {
+            var db = new NewOSUCCMEEntities();
+            db.Configuration.AutoDetectChangesEnabled = false;
+            var olddb = new OldOSUCCMEEntities();
+            olddb.Configuration.AutoDetectChangesEnabled = false;
+
+            try
+            {
+                var TransferStartDate = new DateTime(2012, 1, 1);
+                var CriteriaToImport = (from c in olddb.EventCriteria
+                                        where c.IsDeleted == false
+                                        group c by new { c.EventID, c.EventType } into cg
+                                        select new
+                                        {
+                                            EventID = cg.Key.EventID,
+                                            EventType = cg.Key.EventType
+                                        }).ToList();
+
+                var Total = CriteriaToImport.Count();
+                Console.Write("Importing Criteria - Starting ");
+                Console.WriteLine(Total + " to Process");
+                var Index = 1;
+
+                foreach (var c in CriteriaToImport)
+                {
+                    Console.Write("Processing Criteria: (" + Index + "/" + Total + ") " + c.EventID + " " + c.EventType);
+
+                    if (CommonFunctions.DoesEventExist(db, c.EventID, c.EventType))
+                    {
+                        switch (c.EventType.ToLower())
+                        {
+                            //case ("conference"):
+                            //    {
+
+                            //        var NewCriteria = new Models.Criteria()
+                            //        {
+                            //            EventID = c.EventID,
+                            //            EventType = "Conference",
+                            //            CreatedOn = DateTime.Now,
+                            //            LastUpdateOn = DateTime.Now,
+                            //            CreatedBy = ImportUserID,
+                            //            LastUpdetedBy = ImportUserID,
+                            //            CriteriaIsCompleted = true
+                            //        };
+                            //        db.Criteria.Add(NewCriteria);
+                            //        db.SaveChanges();
+                            //        Console.Write(" - Criteria Saved");
+                            //        break;
+                            //    }
+                            //case ("webcast"):
+                            //    {
+                            //        var NewCriteria = new Models.Criteria()
+                            //        {
+                            //            EventID = c.EventID,
+                            //            EventType = "Webcasts",
+                            //            CreatedOn = DateTime.Now,
+                            //            LastUpdateOn = DateTime.Now,
+                            //            CreatedBy = ImportUserID,
+                            //            LastUpdetedBy = ImportUserID,
+                            //            CriteriaIsCompleted = true
+                            //        };
+                            //        db.Criteria.Add(NewCriteria);
+                            //        db.SaveChanges();
+                            //        Console.Write(" - Criteria Saved");
+                            //        break;
+                            //    }
+                            case ("enduring"):
+                                {
+                                    var NewCriteria = new Models.Criteria()
+                                    {
+                                        EventID = c.EventID,
+                                        EventType = "EnduringMaterial",
+                                        CreatedOn = DateTime.Now,
+                                        LastUpdateOn = DateTime.Now,
+                                        CreatedBy = ImportUserID,
+                                        LastUpdetedBy = ImportUserID,
+                                        CriteriaIsCompleted = true
+                                    };
+                                    db.Criteria.Add(NewCriteria);
+                                    db.SaveChanges();
+                                    Console.Write(" - Criteria Saved");
+
+                                    break;
+                                }
+                            //case ("rsseries"):
+                            //    {
+
+                            //        var NewCriteria = new Models.Criteria()
+                            //        {
+                            //            EventID = c.EventID,
+                            //            EventType = "RSSeries",
+                            //            CreatedOn = DateTime.Now,
+                            //            LastUpdateOn = DateTime.Now,
+                            //            CreatedBy = ImportUserID,
+                            //            LastUpdetedBy = ImportUserID,
+                            //            CriteriaIsCompleted = true
+                            //        };
+                            //        db.Criteria.Add(NewCriteria);
+                            //        db.SaveChanges();
+                            //        Console.Write(" - Criteria Saved");
+                            //        break;
+                            //    }
+
+                        }
+                    }
+
+                    Console.WriteLine(" - Pending");
+                    Index++;
+                }
+                db.SaveChanges();
+                Console.WriteLine(" - Complete");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("");
+                Console.WriteLine(" - " + e.Message);
+
+            }
         }
 
         private static void EventCriteriaC23(string ImportUserID)
@@ -505,7 +631,7 @@ namespace OSUCCMEDataImport.Jobs
 
                                 break;
                             }
-                        case ("webcast"):
+                        case ("webcasts"):
                             {
                                 var WebcastInfo = (from i in db.Webcasts
                                                    where i.ID == criteria.EventID
@@ -586,7 +712,7 @@ namespace OSUCCMEDataImport.Jobs
 
                                 break;
                             }
-                        case ("webcast"):
+                        case ("webcasts"):
                             {
                                 var WebcastInfo = (from i in db.Webcasts
                                                    where i.ID == criteria.EventID
@@ -669,7 +795,7 @@ namespace OSUCCMEDataImport.Jobs
 
                                 break;
                             }
-                        case ("webcast"):
+                        case ("webcasts"):
                             {
                                 var WebcastInfo = (from i in db.Webcasts
                                                    where i.ID == criteria.EventID
@@ -750,7 +876,7 @@ namespace OSUCCMEDataImport.Jobs
 
                                 break;
                             }
-                        case ("webcast"):
+                        case ("webcasts"):
                             {
                                 var WebcastInfo = (from i in db.Webcasts
                                                    where i.ID == criteria.EventID
@@ -831,7 +957,7 @@ namespace OSUCCMEDataImport.Jobs
 
                                 break;
                             }
-                        case ("webcast"):
+                        case ("webcasts"):
                             {
                                 var WebcastInfo = (from i in db.Webcasts
                                                    where i.ID == criteria.EventID
@@ -912,7 +1038,7 @@ namespace OSUCCMEDataImport.Jobs
 
                                 break;
                             }
-                        case ("webcast"):
+                        case ("webcasts"):
                             {
                                 var WebcastInfo = (from i in db.Webcasts
                                                    where i.ID == criteria.EventID
