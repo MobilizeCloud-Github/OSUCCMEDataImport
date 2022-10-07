@@ -29,6 +29,7 @@ namespace OSUCCMEDataImport
             Console.WriteLine(" 17. Webcast MOC Boards and ACCME");
             Console.WriteLine(" 18. Data Lists");
             Console.WriteLine(" 19. Tests");
+            Console.WriteLine(" 20. Speakers");
             Console.WriteLine("");
             Console.WriteLine("Please select 1-15 and hit enter.");
 
@@ -87,22 +88,22 @@ namespace OSUCCMEDataImport
                             {
                                 FacultyDisclosureJobs.Process(ImportUserID);
                                 break;
-                            }                        
+                            }
                         case "10":
                             {
                                 ConferenceSpeakerJobs.Process(ImportUserID);
                                 break;
-                            }                        
+                            }
                         case "11":
                             {
                                 WebcastsSpeakerJobs.Process(ImportUserID);
                                 break;
-                            }                        
+                            }
                         case "12":
                             {
                                 RSSeriesSpeakerJobs.Process(ImportUserID);
                                 break;
-                            }                        
+                            }
                         case "13":
                             {
                                 EnduringSpeakerJobs.Process(ImportUserID);
@@ -136,6 +137,11 @@ namespace OSUCCMEDataImport
                         case "19":
                             {
                                 TestingJobs.Process(ImportUserID);
+                                break;
+                            }
+                        case "20":
+                            {
+                                SpeakerJobs.Process(ImportUserID);
                                 break;
                             }
                     }

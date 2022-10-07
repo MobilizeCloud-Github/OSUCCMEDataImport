@@ -177,6 +177,48 @@ namespace OSUCCMEDataImport.Common
 
         }
 
+        public static bool DoesSpeakerExist(NewOSUCCMEEntities db, int EventID, string EventType, string UserID)
+        {
+            switch (EventType.ToLower())
+            {
+                case ("conference"):
+                    {
+                        return (from u in db.ConferenceSpeakers
+                                where u.ID == EventID && u.UserID == UserID && u.IsDeleted == false
+                                select u.ID).Any();
+
+                    }
+
+                case ("webcast"):
+                    {
+                        return (from u in db.WebcastSpeakers
+                                where u.ID == EventID && u.IsDeleted == false && u.UserID == UserID
+                                select u.ID).Any();
+
+                    }
+
+                case ("enduring"):
+                    {
+                        return (from u in db.EnduringMaterialSpeakers
+                                where u.ID == EventID && u.IsDeleted == false && u.UserID == UserID
+                                select u.ID).Any();
+
+                    }
+                case ("rsseries"):
+                    {
+                        return (from u in db.RSSeriesSpeakers
+                                where u.ID == EventID && u.IsDeleted == false && u.UserID == UserID
+                                select u.ID).Any();
+
+                    }
+                default:
+                    {
+                        return false;
+                    }
+            }
+
+        }
+
         public static bool DoesTestExist(NewOSUCCMEEntities db, int TestID)
         {
             return (from u in db.Testing
