@@ -16,18 +16,18 @@ namespace OSUCCMEDataImport.Jobs
             Stopwatch stopWatch = new Stopwatch();
             stopWatch.Start();
 
-            Webcasts(ImportUserID);
-            Console.WriteLine("");
-            Console.WriteLine("-----------------------------------");
-            Console.WriteLine("");
-            JointProviders();
-            Console.WriteLine("");
-            Console.WriteLine("-----------------------------------");
-            Console.WriteLine("");
-            WebcastRegistrations(ImportUserID);
-            Console.WriteLine("");
-            Console.WriteLine("-----------------------------------");
-            Console.WriteLine("");
+            //Webcasts(ImportUserID);
+            //Console.WriteLine("");
+            //Console.WriteLine("-----------------------------------");
+            //Console.WriteLine("");
+            //JointProviders();
+            //Console.WriteLine("");
+            //Console.WriteLine("-----------------------------------");
+            //Console.WriteLine("");
+            //WebcastRegistrations(ImportUserID);
+            //Console.WriteLine("");
+            //Console.WriteLine("-----------------------------------");
+            //Console.WriteLine("");
             Webcastspecialties(ImportUserID);
 
             TimeSpan ts = stopWatch.Elapsed;
@@ -437,11 +437,12 @@ namespace OSUCCMEDataImport.Jobs
             try
             {
                 var WebcastspecialtiesToImport = (from cs in olddb.WebcastSearchCategories
+                                                  where cs.IsDeleted == false
                                                   select new
                                                   {
                                                       cs.WebcastID,
                                                       cs.CategoryID
-                                                  }).ToList();
+                                                  }).Distinct().ToList();
 
                 var Total = WebcastspecialtiesToImport.Count();
                 Console.Write("Importing Webcasts Specialties - Starting ");
@@ -468,22 +469,27 @@ namespace OSUCCMEDataImport.Jobs
                     {
                         var NewSpecialtyID = (from v in CategoryMappings
                                               where v.OldID == c.CategoryID
-                                              select v.NewID).FirstOrDefault();
+                                              select v.NewID).FirstOrDefault();                        
 
-                        var Specialty = new Models.WebcastSpecialties()
+                        var AlreadyExists = (from v in db.WebcastSpecialties
+                                             where v.WebcastID == c.WebcastID && v.SpecialtyID == NewSpecialtyID
+                                             select v).Any();
+
+                        if (!AlreadyExists)
                         {
-                            WebcastID = c.WebcastID ?? 0,
-                            SpecialtyID = NewSpecialtyID ?? 0
-                        };
-                        db.WebcastSpecialties.Add(Specialty);
-                        if (Index % 10 == 0)
-                        {
+
+                            var Specialty = new WebcastSpecialties()
+                            {
+                                WebcastID = c.WebcastID ?? 0,
+                                SpecialtyID = NewSpecialtyID ?? 0
+                            };
+                            db.WebcastSpecialties.Add(Specialty);
                             db.SaveChanges();
                             Console.WriteLine(" - Saved");
                         }
                         else
                         {
-                            Console.WriteLine(" - Pending");
+                            Console.WriteLine(" - Already Exists");
                         }
                     }
                     else

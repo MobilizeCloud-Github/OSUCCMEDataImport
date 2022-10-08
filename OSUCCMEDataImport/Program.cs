@@ -13,10 +13,10 @@ namespace OSUCCMEDataImport
             //Console.WriteLine(" 1. Import Job User");
             //Console.WriteLine(" 2. System Data");
             //Console.WriteLine(" 3. User Data");
-            //Console.WriteLine(" 4. Conferences");
-            //Console.WriteLine(" 5. Webcasts");
-            //Console.WriteLine(" 6. Enduring");
-            //Console.WriteLine(" 7. RSSeries");
+            Console.WriteLine(" 4. Conferences");
+            Console.WriteLine(" 5. Webcasts");
+            Console.WriteLine(" 6. Enduring");
+            Console.WriteLine(" 7. RSSeries");
             //Console.WriteLine(" 8. Hospitals");
             //Console.WriteLine(" 9. FacultyDisclosures");
             //Console.WriteLine(" 10. Conference Speakers");
@@ -24,12 +24,12 @@ namespace OSUCCMEDataImport
             //Console.WriteLine(" 12. RSSeries Speakers");
             //Console.WriteLine(" 13. Enduring Speakers");
             //Console.WriteLine(" 14. Files");
-            Console.WriteLine(" 15. Criteria");
+            //Console.WriteLine(" 15. Criteria");
             //Console.WriteLine(" 16. Conference Options");
             //Console.WriteLine(" 17. Webcast MOC Boards and ACCME");
             //Console.WriteLine(" 18. Data Lists");
-            Console.WriteLine(" 19. Tests");
-            Console.WriteLine(" 20. Speakers");
+            //Console.WriteLine(" 19. Tests");
+            //Console.WriteLine(" 20. Speakers");
             Console.WriteLine("");
             Console.WriteLine("Please select 1-15 and hit enter.");
 
@@ -59,26 +59,26 @@ namespace OSUCCMEDataImport
                         //        UserJobs.Process(ImportUserID);
                         //        break;
                         //    }
-                        //case "4":
-                        //    {
-                        //        ConferenceJobs.Process(ImportUserID);
-                        //        break;
-                        //    }
-                        //case "5":
-                        //    {
-                        //        WebcastJobs.Process(ImportUserID);
-                        //        break;
-                        //    }
-                        //case "6":
-                        //    {
-                        //        EnduringJobs.Process(ImportUserID);
-                        //        break;
-                        //    }
-                        //case "7":
-                        //    {
-                        //        RSSeriesJobs.Process(ImportUserID);
-                        //        break;
-                        //    }
+                        case "4":
+                            {
+                                ConferenceJobs.Process(ImportUserID);
+                                break;
+                            }
+                        case "5":
+                            {
+                                WebcastJobs.Process(ImportUserID);
+                                break;
+                            }
+                        case "6":
+                            {
+                                EnduringJobs.Process(ImportUserID);
+                                break;
+                            }
+                        case "7":
+                            {
+                                RSSeriesJobs.Process(ImportUserID);
+                                break;
+                            }
                         //case "8":
                         //    {
                         //        HospitalJobs.Process(ImportUserID);

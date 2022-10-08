@@ -16,22 +16,22 @@ namespace OSUCCMEDataImport.Jobs
             Stopwatch stopWatch = new Stopwatch();
             stopWatch.Start();
 
-            RSSeriesSeries(ImportUserID);
-            Console.WriteLine("");
-            Console.WriteLine("-----------------------------------");
-            Console.WriteLine("");
-            RSSeries(ImportUserID);
-            Console.WriteLine("");
-            Console.WriteLine("-----------------------------------");
-            Console.WriteLine("");
-            JointProviders();
-            Console.WriteLine("");
-            Console.WriteLine("-----------------------------------");
-            Console.WriteLine("");
-            RSSeriesRegistrations(ImportUserID);
-            Console.WriteLine("");
-            Console.WriteLine("-----------------------------------");
-            Console.WriteLine("");
+            //RSSeriesSeries(ImportUserID);
+            //Console.WriteLine("");
+            //Console.WriteLine("-----------------------------------");
+            //Console.WriteLine("");
+            //RSSeries(ImportUserID);
+            //Console.WriteLine("");
+            //Console.WriteLine("-----------------------------------");
+            //Console.WriteLine("");
+            //JointProviders();
+            //Console.WriteLine("");
+            //Console.WriteLine("-----------------------------------");
+            //Console.WriteLine("");
+            //RSSeriesRegistrations(ImportUserID);
+            //Console.WriteLine("");
+            //Console.WriteLine("-----------------------------------");
+            //Console.WriteLine("");
             RSSeriespecialties(ImportUserID);
 
             TimeSpan ts = stopWatch.Elapsed;
@@ -483,7 +483,8 @@ namespace OSUCCMEDataImport.Jobs
             try
             {
                 var RSSeriespecialtiesToImport = (from cs in olddb.RSSeriesSearchCategories
-                                                  select cs).ToList();
+                                                  where cs.IsDeleted == false
+                                                  select cs).Distinct().ToList();
 
                 var Total = RSSeriespecialtiesToImport.Count();
                 Console.Write("Importing RSSeries Specialties - Starting ");
@@ -510,29 +511,29 @@ namespace OSUCCMEDataImport.Jobs
                     {
                         var NewSpecialtyID = (from v in CategoryMappings
                                               where v.OldID == c.CategoryID
-                                              select v.NewID).FirstOrDefault();
-
-                        var RSSerie = (from v in db.RSSeries
-                                       where v.ID == c.RSSeriesID
-                                       select v.ID).FirstOrDefault();
+                                              select v.NewID).FirstOrDefault();                                             
 
 
-                        var Specialty = new Models.RSSeriesSpecialties()
+                        var AlreadyExists = (from v in db.RSSeriesSpecialties
+                                             where v.RSSeriesID == c.RSSeriesID && v.SpecialtyID == NewSpecialtyID
+                                             select v).Any();
+
+                        if (!AlreadyExists)
                         {
-                            RSSeriesID = c.RSSeriesID ?? 0,
-                            SpecialtyID = NewSpecialtyID ?? 0
-                        };
-                        db.RSSeriesSpecialties.Add(Specialty);
-                        if (Index % 10 == 0)
-                        {
+
+                            var Specialty = new RSSeriesSpecialties()
+                            {
+                                RSSeriesID = c.RSSeriesID ?? 0,
+                                SpecialtyID = NewSpecialtyID ?? 0
+                            };
+                            db.RSSeriesSpecialties.Add(Specialty);
                             db.SaveChanges();
                             Console.WriteLine(" - Saved");
                         }
                         else
                         {
-                            Console.WriteLine(" - Pending");
+                            Console.WriteLine(" - Already Exists");
                         }
-
                     }
                     else
                     {

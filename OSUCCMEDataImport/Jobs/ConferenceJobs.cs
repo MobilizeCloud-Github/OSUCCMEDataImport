@@ -16,42 +16,42 @@ namespace OSUCCMEDataImport.Jobs
             Stopwatch stopWatch = new Stopwatch();
             stopWatch.Start();
 
-            Conferences(ImportUserID);
-            Console.WriteLine("");
-            Console.WriteLine("-----------------------------------");
-            Console.WriteLine("");
-            JointProviders();
-            Console.WriteLine("");
-            Console.WriteLine("-----------------------------------");
-            Console.WriteLine("");
-            ConferenceOptionGroup(ImportUserID);
-            Console.WriteLine("");
-            Console.WriteLine("-----------------------------------");
-            Console.WriteLine("");
-            ConferenceOptions(ImportUserID);
-            Console.WriteLine("");
-            Console.WriteLine("-----------------------------------");
-            Console.WriteLine("");
-            ConferencePrices(ImportUserID);
-            Console.WriteLine("");
-            Console.WriteLine("-----------------------------------");
-            Console.WriteLine("");
-            ConferenceRegistrations(ImportUserID);
-            Console.WriteLine("");
-            Console.WriteLine("-----------------------------------");
-            Console.WriteLine("");
+            //Conferences(ImportUserID);
+            //Console.WriteLine("");
+            //Console.WriteLine("-----------------------------------");
+            //Console.WriteLine("");
+            //JointProviders();
+            //Console.WriteLine("");
+            //Console.WriteLine("-----------------------------------");
+            //Console.WriteLine("");
+            //ConferenceOptionGroup(ImportUserID);
+            //Console.WriteLine("");
+            //Console.WriteLine("-----------------------------------");
+            //Console.WriteLine("");
+            //ConferenceOptions(ImportUserID);
+            //Console.WriteLine("");
+            //Console.WriteLine("-----------------------------------");
+            //Console.WriteLine("");
+            //ConferencePrices(ImportUserID);
+            //Console.WriteLine("");
+            //Console.WriteLine("-----------------------------------");
+            //Console.WriteLine("");
+            //ConferenceRegistrations(ImportUserID);
+            //Console.WriteLine("");
+            //Console.WriteLine("-----------------------------------");
+            //Console.WriteLine("");
             ConferenceSpecialties(ImportUserID);
             Console.WriteLine("");
             Console.WriteLine("-----------------------------------");
             Console.WriteLine("");
-            ConferenceStreams(ImportUserID);
-            Console.WriteLine("");
-            Console.WriteLine("-----------------------------------");
-            Console.WriteLine("");
-            ConferenceStreamViews(ImportUserID);
-            Console.WriteLine("");
-            Console.WriteLine("-----------------------------------");
-            Console.WriteLine("");
+            //ConferenceStreams(ImportUserID);
+            //Console.WriteLine("");
+            //Console.WriteLine("-----------------------------------");
+            //Console.WriteLine("");
+            //ConferenceStreamViews(ImportUserID);
+            //Console.WriteLine("");
+            //Console.WriteLine("-----------------------------------");
+            //Console.WriteLine("");
 
             TimeSpan ts = stopWatch.Elapsed;
             string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
@@ -267,8 +267,8 @@ namespace OSUCCMEDataImport.Jobs
                             ConferenceID = c,
                             Name = JointProviderToImport
                         };
-                        NewJointProvidersToAdd.Add(JointProviders);                        
-                        Console.WriteLine(" - Saved");                    
+                        NewJointProvidersToAdd.Add(JointProviders);
+                        Console.WriteLine(" - Saved");
                     }
                     else
                     {
@@ -655,7 +655,7 @@ namespace OSUCCMEDataImport.Jobs
                                         Registration.CreditAssignedBy = AssignedByUserID;
                                     }
 
-                                    NewRegistrationsToAdd.Add(Registration);                                    
+                                    NewRegistrationsToAdd.Add(Registration);
                                     Console.WriteLine(" - Saved");
 
                                 }
@@ -700,11 +700,12 @@ namespace OSUCCMEDataImport.Jobs
             try
             {
                 var ConferenceSpecialtiesToImport = (from cs in olddb.ConferenceSearchCategories
+                                                     where cs.IsDeleted == false
                                                      select new
                                                      {
                                                          cs.ConferenceID,
                                                          cs.CategoryID
-                                                     }).ToList();
+                                                     }).Distinct().ToList();
 
                 var Total = ConferenceSpecialtiesToImport.Count();
                 Console.Write("Importing Conferences Specialties - Starting ");
@@ -733,20 +734,25 @@ namespace OSUCCMEDataImport.Jobs
                                               where v.OldID == c.CategoryID
                                               select v.NewID).FirstOrDefault();
 
-                        var Specialty = new ConferenceSpecialties()
+                        var AlreadyExists = (from v in db.ConferenceSpecialties
+                                             where v.ConferenceID == c.ConferenceID && v.SpecialtyID == NewSpecialtyID
+                                             select v).Any();
+
+                        if (!AlreadyExists)
                         {
-                            ConferenceID = c.ConferenceID ?? 0,
-                            SpecialtyID = NewSpecialtyID ?? 0
-                        };
-                        db.ConferenceSpecialties.Add(Specialty);
-                        if (Index % 10 == 0)
-                        {
+
+                            var Specialty = new ConferenceSpecialties()
+                            {
+                                ConferenceID = c.ConferenceID ?? 0,
+                                SpecialtyID = NewSpecialtyID ?? 0
+                            };
+                            db.ConferenceSpecialties.Add(Specialty);
                             db.SaveChanges();
                             Console.WriteLine(" - Saved");
                         }
                         else
                         {
-                            Console.WriteLine(" - Pending");
+                            Console.WriteLine(" - Already Exists");
                         }
                     }
                     else
