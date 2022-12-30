@@ -13,9 +13,9 @@ namespace OSUCCMEDataImport
             //Console.WriteLine(" 1. Import Job User");
             //Console.WriteLine(" 2. System Data");
             //Console.WriteLine(" 3. User Data");
-            Console.WriteLine(" 4. Conferences");
-            Console.WriteLine(" 5. Webcasts");
-            Console.WriteLine(" 6. Enduring");
+            //Console.WriteLine(" 4. Conferences");
+            //Console.WriteLine(" 5. Webcasts");
+            //Console.WriteLine(" 6. Enduring");
             Console.WriteLine(" 7. RSSeries");
             //Console.WriteLine(" 8. Hospitals");
             //Console.WriteLine(" 9. FacultyDisclosures");
@@ -59,21 +59,21 @@ namespace OSUCCMEDataImport
                         //        UserJobs.Process(ImportUserID);
                         //        break;
                         //    }
-                        case "4":
-                            {
-                                ConferenceJobs.Process(ImportUserID);
-                                break;
-                            }
-                        case "5":
-                            {
-                                WebcastJobs.Process(ImportUserID);
-                                break;
-                            }
-                        case "6":
-                            {
-                                EnduringJobs.Process(ImportUserID);
-                                break;
-                            }
+                        //case "4":
+                        //    {
+                        //        ConferenceJobs.Process(ImportUserID);
+                        //        break;
+                        //    }
+                        //case "5":
+                        //    {
+                        //        WebcastJobs.Process(ImportUserID);
+                        //        break;
+                        //    }
+                        //case "6":
+                        //    {
+                        //        EnduringJobs.Process(ImportUserID);
+                        //        break;
+                        //    }
                         case "7":
                             {
                                 RSSeriesJobs.Process(ImportUserID);

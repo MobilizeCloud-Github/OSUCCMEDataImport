@@ -32,14 +32,15 @@ namespace OSUCCMEDataImport.Jobs
             //Console.WriteLine("");
             //Console.WriteLine("-----------------------------------");
             //Console.WriteLine("");
-            RSSeriespecialties(ImportUserID);
+            //RSSeriespecialties(ImportUserID);
+            ImportRSSeriesAdmins(ImportUserID);
 
             TimeSpan ts = stopWatch.Elapsed;
             string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
             ts.Hours, ts.Minutes, ts.Seconds,
             ts.Milliseconds / 10);
             Console.WriteLine("RunTime " + elapsedTime);
-        }
+        }        
 
         private static void RSSeriesSeries(string ImportUserID)
         {
@@ -552,6 +553,70 @@ namespace OSUCCMEDataImport.Jobs
             }
 
         }
+        private static void ImportRSSeriesAdmins(string importUserID)
+        {
+            var db = new NewOSUCCMEEntities();
+            var olddb = new OldOSUCCMEEntities();
 
+            db.Configuration.AutoDetectChangesEnabled = false;
+            olddb.Configuration.AutoDetectChangesEnabled = false;
+
+            var RSSeriesAdmins = (from h in olddb.RSSeriesAdminTitles
+                                  where h.IsDeleted == false
+                                  select new
+                                  {
+                                      h.TitleID,
+                                      h.UserID
+                                  }).ToList();
+
+            TextWriter tw = new StreamWriter("ImportRSSeriesAdminsLog.txt");
+
+            var Total = RSSeriesAdmins.Count();
+            Console.Write("Importing RSSeries Admins - Starting ");
+            Console.WriteLine(Total + " to Process");
+            var Index = 1;
+
+            foreach (var RSSAdmin in RSSeriesAdmins)
+            {
+                try
+                {
+                    Console.Write("Processing : " + RSSAdmin.UserID + " (" + Index + "/" + Total + ") ");
+
+                    var NewUser = (from h in db.UserProfiles
+                                   where h.UserID == RSSAdmin.UserID && h.IsDeleted == false
+                                   select h).FirstOrDefault();
+
+                    var NewSeries = (from h in db.RSSeriesSeries
+                                       where h.ID == RSSAdmin.TitleID && h.IsDeleted == false
+                                       select h).FirstOrDefault();
+                    if (NewUser != null && NewSeries != null)
+                    {
+                        var NewRSSeriesAdmin = new Models.RSSeriesSeriesAdmins()
+                        {
+                            UserID = NewUser.UserID,
+                            SeriesID = NewSeries.ID,
+                            IsDeleted = false,
+                            CreatedOn = DateTime.Now,
+                            CreatedBy = importUserID,
+                            LastUpdatedOn = DateTime.Now,
+                            LastUpdatedBy = importUserID
+                        };
+                        db.RSSeriesSeriesAdmins.Add(NewRSSeriesAdmin);
+                        db.SaveChanges();
+                    }
+
+                    Console.WriteLine(" - Complete");
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("");
+                    Console.WriteLine(" - " + e.Message);
+                    tw.WriteLineAsync(e.Message);
+                }
+                Index++;
+            }
+            tw.Close();
+        }
     }
+    
 }
