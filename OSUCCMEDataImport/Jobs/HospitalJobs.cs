@@ -29,6 +29,10 @@ namespace OSUCCMEDataImport.Jobs
             Console.WriteLine("-----------------------------------");
             Console.WriteLine("");
             ImportHospitalAdmins(ImportUserID);
+            Console.WriteLine("");
+            Console.WriteLine("-----------------------------------");
+            Console.WriteLine("");
+            ImportHospitalGroups(ImportUserID);
 
             TimeSpan ts = stopWatch.Elapsed;
             string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
@@ -269,6 +273,48 @@ namespace OSUCCMEDataImport.Jobs
             }
             tw.Close();
         }
+        private static void ImportHospitalGroups(string importUserID)
+        {
+            var db = new NewOSUCCMEEntities();            
 
+            //db.Configuration.AutoDetectChangesEnabled = false;
+            //olddb.Configuration.AutoDetectChangesEnabled = false;
+
+            var Hospitals = (from h in db.Hospitals
+                                  where h.IsDeleted == false
+                                  select h).ToList();
+
+            TextWriter tw = new StreamWriter("ImportHospitalGroupsLog.txt");
+
+            var Total = Hospitals.Count();
+            Console.Write("Importing Hospital Groups - Starting ");
+            Console.WriteLine(Total + " to Process");
+            var Index = 1;
+
+            var DefaultHospitalGroup = (from hg in db.HospitalGroups
+                                        where hg.ID == 1
+                                        select hg).FirstOrDefault();
+
+            foreach (var Hospital in Hospitals)
+            {
+                try
+                {
+                    Console.Write("Processing : " + Hospital.ID + " (" + Index + "/" + Total + ") ");
+
+                    DefaultHospitalGroup.Hospitals.Add(Hospital);
+                    db.SaveChanges();
+
+                    Console.WriteLine(" - Complete");
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("");
+                    Console.WriteLine(" - " + e.Message);
+                    tw.WriteLineAsync(e.Message);
+                }
+                Index++;
+            }
+            tw.Close();
+        }
     }
 }

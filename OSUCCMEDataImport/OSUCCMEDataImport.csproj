@@ -770,6 +770,7 @@
     </Content>
     <Content Include="OSU-FK.sql" />
     <Content Include="OSU-DeleteSpeakers.sql" />
+    <Content Include="OSU-FK.sql" />
     <Content Include="OSU-IdentityTables.sql" />
     <Content Include="OSU-RowCount.sql" />
     <Content Include="OSU-DeleteTesting.sql" />

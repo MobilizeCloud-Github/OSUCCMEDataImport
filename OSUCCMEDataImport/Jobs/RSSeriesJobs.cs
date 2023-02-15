@@ -16,30 +16,31 @@ namespace OSUCCMEDataImport.Jobs
             Stopwatch stopWatch = new Stopwatch();
             stopWatch.Start();
 
-            RSSeriesSeries(ImportUserID);
-            Console.WriteLine("");
-            Console.WriteLine("-----------------------------------");
-            Console.WriteLine("");
-            RSSeries(ImportUserID);
-            Console.WriteLine("");
-            Console.WriteLine("-----------------------------------");
-            Console.WriteLine("");
-            JointProviders();
-            Console.WriteLine("");
-            Console.WriteLine("-----------------------------------");
-            Console.WriteLine("");
-            RSSeriesRegistrations(ImportUserID);
-            Console.WriteLine("");
-            Console.WriteLine("-----------------------------------");
-            Console.WriteLine("");
-            RSSeriespecialties(ImportUserID);
+            //RSSeriesSeries(ImportUserID);
+            //Console.WriteLine("");
+            //Console.WriteLine("-----------------------------------");
+            //Console.WriteLine("");
+            //RSSeries(ImportUserID);
+            //Console.WriteLine("");
+            //Console.WriteLine("-----------------------------------");
+            //Console.WriteLine("");
+            //JointProviders();
+            //Console.WriteLine("");
+            //Console.WriteLine("-----------------------------------");
+            //Console.WriteLine("");
+            //RSSeriesRegistrations(ImportUserID);
+            //Console.WriteLine("");
+            //Console.WriteLine("-----------------------------------");
+            //Console.WriteLine("");
+            //RSSeriespecialties(ImportUserID);
+            ImportRSSeriesAdmins(ImportUserID);
 
             TimeSpan ts = stopWatch.Elapsed;
             string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
             ts.Hours, ts.Minutes, ts.Seconds,
             ts.Milliseconds / 10);
             Console.WriteLine("RunTime " + elapsedTime);
-        }
+        }        
 
         private static void RSSeriesSeries(string ImportUserID)
         {
@@ -90,7 +91,7 @@ namespace OSUCCMEDataImport.Jobs
 
                 var ArchivedSeries = new RSSeriesSeries()
                 {
-                    ID = 340,
+                    ID = 341,
                     Name = "ARCH",
                     URL = CommonFunctions.URLFriendly("ARCH"),
                     AttendanceOverrideExpiration = null,
@@ -483,7 +484,8 @@ namespace OSUCCMEDataImport.Jobs
             try
             {
                 var RSSeriespecialtiesToImport = (from cs in olddb.RSSeriesSearchCategories
-                                                  select cs).ToList();
+                                                  where cs.IsDeleted == false
+                                                  select cs).Distinct().ToList();
 
                 var Total = RSSeriespecialtiesToImport.Count();
                 Console.Write("Importing RSSeries Specialties - Starting ");
@@ -510,29 +512,29 @@ namespace OSUCCMEDataImport.Jobs
                     {
                         var NewSpecialtyID = (from v in CategoryMappings
                                               where v.OldID == c.CategoryID
-                                              select v.NewID).FirstOrDefault();
-
-                        var RSSerie = (from v in db.RSSeries
-                                       where v.ID == c.RSSeriesID
-                                       select v.ID).FirstOrDefault();
+                                              select v.NewID).FirstOrDefault();                                             
 
 
-                        var Specialty = new Models.RSSeriesSpecialties()
+                        var AlreadyExists = (from v in db.RSSeriesSpecialties
+                                             where v.RSSeriesID == c.RSSeriesID && v.SpecialtyID == NewSpecialtyID
+                                             select v).Any();
+
+                        if (!AlreadyExists)
                         {
-                            RSSeriesID = c.RSSeriesID ?? 0,
-                            SpecialtyID = NewSpecialtyID ?? 0
-                        };
-                        db.RSSeriesSpecialties.Add(Specialty);
-                        if (Index % 10 == 0)
-                        {
+
+                            var Specialty = new RSSeriesSpecialties()
+                            {
+                                RSSeriesID = c.RSSeriesID ?? 0,
+                                SpecialtyID = NewSpecialtyID ?? 0
+                            };
+                            db.RSSeriesSpecialties.Add(Specialty);
                             db.SaveChanges();
                             Console.WriteLine(" - Saved");
                         }
                         else
                         {
-                            Console.WriteLine(" - Pending");
+                            Console.WriteLine(" - Already Exists");
                         }
-
                     }
                     else
                     {
@@ -551,6 +553,70 @@ namespace OSUCCMEDataImport.Jobs
             }
 
         }
+        private static void ImportRSSeriesAdmins(string importUserID)
+        {
+            var db = new NewOSUCCMEEntities();
+            var olddb = new OldOSUCCMEEntities();
 
+            db.Configuration.AutoDetectChangesEnabled = false;
+            olddb.Configuration.AutoDetectChangesEnabled = false;
+
+            var RSSeriesAdmins = (from h in olddb.RSSeriesAdminTitles
+                                  where h.IsDeleted == false
+                                  select new
+                                  {
+                                      h.TitleID,
+                                      h.UserID
+                                  }).ToList();
+
+            TextWriter tw = new StreamWriter("ImportRSSeriesAdminsLog.txt");
+
+            var Total = RSSeriesAdmins.Count();
+            Console.Write("Importing RSSeries Admins - Starting ");
+            Console.WriteLine(Total + " to Process");
+            var Index = 1;
+
+            foreach (var RSSAdmin in RSSeriesAdmins)
+            {
+                try
+                {
+                    Console.Write("Processing : " + RSSAdmin.UserID + " (" + Index + "/" + Total + ") ");
+
+                    var NewUser = (from h in db.UserProfiles
+                                   where h.UserID == RSSAdmin.UserID && h.IsDeleted == false
+                                   select h).FirstOrDefault();
+
+                    var NewSeries = (from h in db.RSSeriesSeries
+                                       where h.ID == RSSAdmin.TitleID && h.IsDeleted == false
+                                       select h).FirstOrDefault();
+                    if (NewUser != null && NewSeries != null)
+                    {
+                        var NewRSSeriesAdmin = new Models.RSSeriesSeriesAdmins()
+                        {
+                            UserID = NewUser.UserID,
+                            SeriesID = NewSeries.ID,
+                            IsDeleted = false,
+                            CreatedOn = DateTime.Now,
+                            CreatedBy = importUserID,
+                            LastUpdatedOn = DateTime.Now,
+                            LastUpdatedBy = importUserID
+                        };
+                        db.RSSeriesSeriesAdmins.Add(NewRSSeriesAdmin);
+                        db.SaveChanges();
+                    }
+
+                    Console.WriteLine(" - Complete");
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("");
+                    Console.WriteLine(" - " + e.Message);
+                    tw.WriteLineAsync(e.Message);
+                }
+                Index++;
+            }
+            tw.Close();
+        }
     }
+    
 }

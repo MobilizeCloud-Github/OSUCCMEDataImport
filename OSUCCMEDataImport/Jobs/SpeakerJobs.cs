@@ -19,11 +19,11 @@ namespace OSUCCMEDataImport.Jobs
             Console.WriteLine("");
             Console.WriteLine("-----------------------------------");
             Console.WriteLine("");
-            ConferenceSpeakerCredit(ImportUserID);
+            //ConferenceSpeakerCredit(ImportUserID);
             Console.WriteLine("");
             Console.WriteLine("-----------------------------------");
             Console.WriteLine("");
-            WebcastSpeakerCredit(ImportUserID);
+            //WebcastSpeakerCredit(ImportUserID);
             Console.WriteLine("");
             Console.WriteLine("-----------------------------------");
             Console.WriteLine("");
@@ -31,7 +31,7 @@ namespace OSUCCMEDataImport.Jobs
             Console.WriteLine("");
             Console.WriteLine("-----------------------------------");
             Console.WriteLine("");
-            RSSeriesSpeakerCredit(ImportUserID);
+            //RSSeriesSpeakerCredit(ImportUserID);
             Console.WriteLine("");
             Console.WriteLine("-----------------------------------");
             Console.WriteLine("");
@@ -54,7 +54,7 @@ namespace OSUCCMEDataImport.Jobs
             try
             {
                 var SpeakersToImport = (from c in olddb.Speakers
-                                        where c.IsDeleted == false
+                                        where c.IsDeleted == false && c.Type == "Enduring"
                                         group c by c.UserID into cs
                                         select new
                                         {
@@ -84,64 +84,64 @@ namespace OSUCCMEDataImport.Jobs
                                     case ("conference"):
                                         {
 
-                                            var NewConferenceSpeaker = new ConferenceSpeakers()
-                                            {
-                                                ConferenceID = s.EventID ?? 0,
-                                                UserID = s.UserID,
-                                                CreatedOn = DateTime.Now,
-                                                LastUpdatedOn = DateTime.Now,
-                                                CreatedBy = ImportUserID,
-                                                LastUpdatedBy = ImportUserID,
-                                                SpeakerCheckListOnFile = false
-                                            };
-                                            db.ConferenceSpeakers.Add(NewConferenceSpeaker);
-                                            db.SaveChanges();
-                                            Console.Write(" - Speaker Saved");
+                                            //var NewConferenceSpeaker = new ConferenceSpeakers()
+                                            //{
+                                            //    ConferenceID = s.EventID ?? 0,
+                                            //    UserID = s.UserID,
+                                            //    CreatedOn = DateTime.Now,
+                                            //    LastUpdatedOn = DateTime.Now,
+                                            //    CreatedBy = ImportUserID,
+                                            //    LastUpdatedBy = ImportUserID,
+                                            //    SpeakerCheckListOnFile = false
+                                            //};
+                                            //db.ConferenceSpeakers.Add(NewConferenceSpeaker);
+                                            //db.SaveChanges();
+                                            //Console.Write(" - Speaker Saved");
 
-                                            var NewSpeakerTopic = new ConferenceSpeakerTopics()
-                                            {
-                                                ConferenceID = s.EventID ?? 0,
-                                                ConferenceSpeakerID = NewConferenceSpeaker.ID,
-                                                Topic = db.Conferences.Where(x => x.ID == s.EventID).Select(x => x.Title).FirstOrDefault(),
-                                                CreatedOn = DateTime.Now,
-                                                CreatedBy = ImportUserID,
-                                                LastUpdatedOn = DateTime.Now,
-                                                LastUpdatedBy = ImportUserID
-                                            };
-                                            db.ConferenceSpeakerTopics.Add(NewSpeakerTopic);
-                                            db.SaveChanges();
-                                            Console.WriteLine(" - Topic Saved");
+                                            //var NewSpeakerTopic = new ConferenceSpeakerTopics()
+                                            //{
+                                            //    ConferenceID = s.EventID ?? 0,
+                                            //    ConferenceSpeakerID = NewConferenceSpeaker.ID,
+                                            //    Topic = db.Conferences.Where(x => x.ID == s.EventID).Select(x => x.Title).FirstOrDefault(),
+                                            //    CreatedOn = DateTime.Now,
+                                            //    CreatedBy = ImportUserID,
+                                            //    LastUpdatedOn = DateTime.Now,
+                                            //    LastUpdatedBy = ImportUserID
+                                            //};
+                                            //db.ConferenceSpeakerTopics.Add(NewSpeakerTopic);
+                                            //db.SaveChanges();
+                                            //Console.WriteLine(" - Topic Saved");
                                             break;
                                         }
                                     case ("webcast"):
                                         {
-                                            var NewWebcastSpeaker = new WebcastSpeakers()
-                                            {
-                                                WebcastID = s.EventID ?? 0,
-                                                UserID = s.UserID,
-                                                CreatedOn = DateTime.Now,
-                                                LastUpdatedOn = DateTime.Now,
-                                                CreatedBy = ImportUserID,
-                                                LastUpdatedBy = ImportUserID,
-                                                SpeakerCheckListOnFile = false
-                                            };
-                                            db.WebcastSpeakers.Add(NewWebcastSpeaker);
-                                            db.SaveChanges();
-                                            Console.Write(" - Speaker Saved");
+                                            //var NewWebcastSpeaker = new WebcastSpeakers()
+                                            //{
+                                            //    WebcastID = s.EventID ?? 0,
+                                            //    UserID = s.UserID,
+                                            //    CreatedOn = DateTime.Now,
+                                            //    LastUpdatedOn = DateTime.Now,
+                                            //    CreatedBy = ImportUserID,
+                                            //    LastUpdatedBy = ImportUserID,
+                                            //    SpeakerCheckListOnFile = false
+                                            //};
+                                            //db.WebcastSpeakers.Add(NewWebcastSpeaker);
+                                            //db.SaveChanges();
+                                            //Console.Write(" - Speaker Saved");
 
-                                            var NewSpeakerTopic = new WebcastSpeakerTopics()
-                                            {
-                                                WebcastID = s.EventID ?? 0,
-                                                WebcastSpeakerID = NewWebcastSpeaker.ID,
-                                                Topic = db.Webcasts.Where(x => x.ID == s.EventID).Select(x => x.Title).FirstOrDefault(),
-                                                CreatedOn = DateTime.Now,
-                                                CreatedBy = ImportUserID,
-                                                LastUpdatedOn = DateTime.Now,
-                                                LastUpdatedBy = ImportUserID
-                                            };
-                                            db.WebcastSpeakerTopics.Add(NewSpeakerTopic);
-                                            db.SaveChanges();
-                                            Console.WriteLine(" - Topic Saved");
+                                            //var NewSpeakerTopic = new WebcastSpeakerTopics()
+                                            //{
+                                            //    WebcastID = s.EventID ?? 0,
+                                            //    WebcastSpeakerID = NewWebcastSpeaker.ID,
+                                            //    Topic = db.Webcasts.Where(x => x.ID == s.EventID).Select(x => x.Title).FirstOrDefault(),
+                                            //    CreatedOn = DateTime.Now,
+                                            //    CreatedBy = ImportUserID,
+                                            //    LastUpdatedOn = DateTime.Now,
+                                            //    LastUpdatedBy = ImportUserID
+                                            //};
+                                            //db.WebcastSpeakerTopics.Add(NewSpeakerTopic);
+                                            //db.SaveChanges();
+                                            //Console.WriteLine(" - Topic Saved");
                                             break;
                                         }
                                     case ("enduring"):
@@ -179,33 +179,33 @@ namespace OSUCCMEDataImport.Jobs
                                     case ("rsseries"):
                                         {
 
-                                            var NewRSSeriesSpeaker = new RSSeriesSpeakers()
-                                            {
-                                                RSSeriesID = s.EventID ?? 0,
-                                                UserID = s.UserID,
-                                                CreatedOn = DateTime.Now,
-                                                LastUpdatedOn = DateTime.Now,
-                                                CreatedBy = ImportUserID,
-                                                LastUpdatedBy = ImportUserID,
-                                                SpeakerCheckListOnFile = false
-                                            };
-                                            db.RSSeriesSpeakers.Add(NewRSSeriesSpeaker);
-                                            db.SaveChanges();
-                                            Console.Write(" - Speaker Saved");
+                                            //var NewRSSeriesSpeaker = new RSSeriesSpeakers()
+                                            //{
+                                            //    RSSeriesID = s.EventID ?? 0,
+                                            //    UserID = s.UserID,
+                                            //    CreatedOn = DateTime.Now,
+                                            //    LastUpdatedOn = DateTime.Now,
+                                            //    CreatedBy = ImportUserID,
+                                            //    LastUpdatedBy = ImportUserID,
+                                            //    SpeakerCheckListOnFile = false
+                                            //};
+                                            //db.RSSeriesSpeakers.Add(NewRSSeriesSpeaker);
+                                            //db.SaveChanges();
+                                            //Console.Write(" - Speaker Saved");
 
-                                            var NewSpeakerTopic = new RSSeriesSpeakerTopics()
-                                            {
-                                                RSSeriesID = s.EventID ?? 0,
-                                                RSSeriesSpeakerID = NewRSSeriesSpeaker.ID,
-                                                Topic = db.RSSeries.Where(x => x.ID == s.EventID).Select(x => x.Title).FirstOrDefault(),
-                                                CreatedOn = DateTime.Now,
-                                                CreatedBy = ImportUserID,
-                                                LastUpdatedOn = DateTime.Now,
-                                                LastUpdatedBy = ImportUserID
-                                            };
-                                            db.RSSeriesSpeakerTopics.Add(NewSpeakerTopic);
-                                            db.SaveChanges();
-                                            Console.WriteLine(" - Topic Saved");
+                                            //var NewSpeakerTopic = new RSSeriesSpeakerTopics()
+                                            //{
+                                            //    RSSeriesID = s.EventID ?? 0,
+                                            //    RSSeriesSpeakerID = NewRSSeriesSpeaker.ID,
+                                            //    Topic = db.RSSeries.Where(x => x.ID == s.EventID).Select(x => x.Title).FirstOrDefault(),
+                                            //    CreatedOn = DateTime.Now,
+                                            //    CreatedBy = ImportUserID,
+                                            //    LastUpdatedOn = DateTime.Now,
+                                            //    LastUpdatedBy = ImportUserID
+                                            //};
+                                            //db.RSSeriesSpeakerTopics.Add(NewSpeakerTopic);
+                                            //db.SaveChanges();
+                                            //Console.WriteLine(" - Topic Saved");
 
                                             break;
                                         }

@@ -16,22 +16,22 @@ namespace OSUCCMEDataImport.Jobs
             Stopwatch stopWatch = new Stopwatch();
             stopWatch.Start();
 
-            EnduringMaterialsSeries(ImportUserID);
-            Console.WriteLine("");
-            Console.WriteLine("-----------------------------------");
-            Console.WriteLine("");
-            EnduringMaterials(ImportUserID);
-            Console.WriteLine("");
-            Console.WriteLine("-----------------------------------");
-            Console.WriteLine("");
-            JointProviders();
-            Console.WriteLine("");
-            Console.WriteLine("-----------------------------------");
-            Console.WriteLine("");
-            EnduringMaterialRegistrations(ImportUserID);
-            Console.WriteLine("");
-            Console.WriteLine("-----------------------------------");
-            Console.WriteLine("");
+            //EnduringMaterialsSeries(ImportUserID);
+            //Console.WriteLine("");
+            //Console.WriteLine("-----------------------------------");
+            //Console.WriteLine("");
+            //EnduringMaterials(ImportUserID);
+            //Console.WriteLine("");
+            //Console.WriteLine("-----------------------------------");
+            //Console.WriteLine("");
+            //JointProviders();
+            //Console.WriteLine("");
+            //Console.WriteLine("-----------------------------------");
+            //Console.WriteLine("");
+            //EnduringMaterialRegistrations(ImportUserID);
+            //Console.WriteLine("");
+            //Console.WriteLine("-----------------------------------");
+            //Console.WriteLine("");
             EnduringMaterialspecialties(ImportUserID);
 
             TimeSpan ts = stopWatch.Elapsed;
@@ -527,7 +527,8 @@ namespace OSUCCMEDataImport.Jobs
             try
             {
                 var EnduringMaterialspecialtiesToImport = (from cs in olddb.EnduringMaterialsSearchCategories
-                                                           select cs).ToList();
+                                                           where cs.IsDeleted == false
+                                                           select cs).Distinct().ToList();
 
                 var Total = EnduringMaterialspecialtiesToImport.Count();
                 Console.Write("Importing EnduringMaterials Specialties - Starting ");
@@ -555,22 +556,27 @@ namespace OSUCCMEDataImport.Jobs
                     {
                         var NewSpecialtyID = (from v in CategoryMappings
                                               where v.OldID == c.CategoryID
-                                              select v.NewID).FirstOrDefault();
+                                              select v.NewID).FirstOrDefault();                       
 
-                        var Specialty = new Models.EnduringMaterialSpecialties()
+                        var AlreadyExists = (from v in db.EnduringMaterialSpecialties
+                                             where v.EnduringMaterialID == c.EnduringID && v.SpecialtyID == NewSpecialtyID
+                                             select v).Any();
+
+                        if (!AlreadyExists)
                         {
-                            EnduringMaterialID = c.EnduringID ?? 0,
-                            SpecialtyID = NewSpecialtyID ?? 0
-                        };
-                        db.EnduringMaterialSpecialties.Add(Specialty);
-                        if (Index % 10 == 0)
-                        {
+
+                            var Specialty = new EnduringMaterialSpecialties()
+                            {
+                                EnduringMaterialID = c.EnduringID ?? 0,
+                                SpecialtyID = NewSpecialtyID ?? 0
+                            };
+                            db.EnduringMaterialSpecialties.Add(Specialty);
                             db.SaveChanges();
                             Console.WriteLine(" - Saved");
                         }
                         else
                         {
-                            Console.WriteLine(" - Pending");
+                            Console.WriteLine(" - Already Exists");
                         }
                     }
                     else

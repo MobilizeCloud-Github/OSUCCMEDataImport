@@ -342,11 +342,11 @@ GO
 ALTER TABLE [dbo].[WebcastJointProviders] CHECK CONSTRAINT [FK_WebcastJointProviders_Webcasts]
 GO
 
-ALTER TABLE [dbo].[WebcastEvalutations]  WITH CHECK ADD  CONSTRAINT [FK_WebcastEvaluations_Webcasts] FOREIGN KEY([WebcastID])
+ALTER TABLE [dbo].[WebcastEvaluations]  WITH CHECK ADD  CONSTRAINT [FK_WebcastEvaluations_Webcasts] FOREIGN KEY([WebcastID])
 REFERENCES [dbo].[Webcasts] ([ID])
 GO
 
-ALTER TABLE [dbo].[WebcastEvalutations] CHECK CONSTRAINT [FK_WebcastEvaluations_Webcasts]
+ALTER TABLE [dbo].[WebcastEvaluations] CHECK CONSTRAINT [FK_WebcastEvaluations_Webcasts]
 GO
 
 ALTER TABLE [dbo].[WebcastOptionsGroups]  WITH CHECK ADD  CONSTRAINT [FK_WebcastOptionsGroups_Webcasts] FOREIGN KEY([WebcastID])
